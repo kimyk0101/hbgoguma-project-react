@@ -1,120 +1,168 @@
-// @TODO - 상품 리스트 페이지 구현
-import { useState } from "react";
-import { Input } from "../components/ui/input";
-import { Card, CardContent } from "../components/ui/card";
-import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
-import { Label } from "../components/ui/label";
+import React, { useState } from "react";
+import "../css/productListPage.css";
 
-const CATEGORY_ID = {
-  0: "전자제품",
-  1: "패션",
-  2: "가구",
-};
+const categories = ["전체", "전자기기", "의류", "도서", "가구", "기타"];
 
 const products = [
   {
     id: 1,
-    title: "아이폰 13",
-    price: 800000,
-    seller: "홍길동",
     image: "https://via.placeholder.com/150",
-    category: CATEGORY_ID[0],
+    title: "상품 1",
+    price: "₩10,000",
+    seller: "사용자1",
+    category: "전자기기",
   },
   {
     id: 2,
-    title: "닌텐도 스위치",
-    price: 300000,
-    seller: "김철수",
     image: "https://via.placeholder.com/150",
-    category: CATEGORY_ID[0],
+    title: "상품 2",
+    price: "₩20,000",
+    seller: "사용자2",
+    category: "의류",
   },
   {
     id: 3,
-    title: "책상",
-    price: 50000,
-    seller: "이영희",
     image: "https://via.placeholder.com/150",
-    category: CATEGORY_ID[2],
+    title: "상품 3",
+    price: "₩15,000",
+    seller: "사용자3",
+    category: "도서",
   },
   {
     id: 4,
-    title: "운동화",
-    price: 70000,
-    seller: "박준영",
     image: "https://via.placeholder.com/150",
-    category: CATEGORY_ID[1],
+    title: "상품 4",
+    price: "₩30,000",
+    seller: "사용자4",
+    category: "가구",
   },
   {
     id: 5,
-    title: "헤드폰",
-    price: 150000,
-    seller: "오수민",
     image: "https://via.placeholder.com/150",
-    category: CATEGORY_ID[0],
+    title: "상품 5",
+    price: "₩50,000",
+    seller: "사용자5",
+    category: "기타",
+  },
+  {
+    id: 6,
+    image: "https://via.placeholder.com/150",
+    title: "상품 6",
+    price: "₩5,000",
+    seller: "사용자6",
+    category: "전자기기",
+  },
+  {
+    id: 7,
+    image: "https://via.placeholder.com/150",
+    title: "상품 7",
+    price: "₩8,000",
+    seller: "사용자7",
+    category: "의류",
+  },
+  {
+    id: 8,
+    image: "https://via.placeholder.com/150",
+    title: "상품 8",
+    price: "₩12,000",
+    seller: "사용자8",
+    category: "도서",
+  },
+  {
+    id: 9,
+    image: "https://via.placeholder.com/150",
+    title: "상품 9",
+    price: "₩40,000",
+    seller: "사용자9",
+    category: "가구",
+  },
+  {
+    id: 10,
+    image: "https://via.placeholder.com/150",
+    title: "상품 10",
+    price: "₩22,000",
+    seller: "사용자10",
+    category: "기타",
+  },
+  {
+    id: 11,
+    image: "https://via.placeholder.com/150",
+    title: "상품 11",
+    price: "₩9,000",
+    seller: "사용자11",
+    category: "전자기기",
+  },
+  {
+    id: 12,
+    image: "https://via.placeholder.com/150",
+    title: "상품 12",
+    price: "₩18,000",
+    seller: "사용자12",
+    category: "의류",
+  },
+  {
+    id: 13,
+    image: "https://via.placeholder.com/150",
+    title: "상품 13",
+    price: "₩18,000",
+    seller: "사용자13",
+    category: "의류",
   },
 ];
 
-export default function ProductList() {
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+const ProductListPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("전체");
 
   const filteredProducts = products.filter(
-    (p) =>
-      p.title.includes(search) && (category ? p.category === category : true)
+    (product) =>
+      product.title.includes(searchTerm) &&
+      (selectedCategory === "전체" || product.category === selectedCategory)
   );
 
   return (
-    <div className="flex p-6 bg-[#FFB347] min-h-screen">
-      {/* Sidebar */}
-      <div className="w-1/4 p-4 bg-white rounded-lg shadow-md">
-        <h2 className="text-lg font-bold mb-2">카테고리</h2>
-        <RadioGroup onValueChange={setCategory}>
-          <Label className="flex items-center space-x-2">
-            <RadioGroupItem value="" checked={!category} /> <span>전체</span>
-          </Label>
-          <Label className="flex items-center space-x-2">
-            <RadioGroupItem value="전자제품" /> <span>전자제품</span>
-          </Label>
-          <Label className="flex items-center space-x-2">
-            <RadioGroupItem value="가구" /> <span>가구</span>
-          </Label>
-          <Label className="flex items-center space-x-2">
-            <RadioGroupItem value="패션" /> <span>패션</span>
-          </Label>
-        </RadioGroup>
-      </div>
+    <div className="container">
+      {/* 검색창 */}
+      <input
+        type="text"
+        placeholder="검색어를 입력하세요..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
 
-      {/* Main Content */}
-      <div className="w-3/4 p-4">
-        <Input
-          className="w-full p-2 mb-4 rounded-md"
-          placeholder="검색어를 입력하세요"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <div className="grid grid-cols-4 gap-4">
-          {filteredProducts.map((product) => (
-            <Card
-              key={product.id}
-              className="p-2 bg-white shadow-md rounded-lg"
-            >
-              <CardContent className="flex flex-col items-center">
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-32 h-32 object-cover rounded-md"
-                />
-                <h3 className="font-bold mt-2">{product.title}</h3>
-                <p className="text-sm text-gray-600">{product.seller}</p>
-                <p className="text-lg font-semibold text-[#FF7300]">
-                  {product.price}
-                </p>
-              </CardContent>
-            </Card>
+      <div className="content">
+        {/* 카테고리 필터 */}
+        <aside className="sidebar">
+          <h3>카테고리</h3>
+          {categories.map((category) => (
+            <label key={category}>
+              <input
+                type="radio"
+                name="category"
+                value={category}
+                checked={selectedCategory === category}
+                onChange={() => setSelectedCategory(category)}
+              />
+              {category}
+            </label>
           ))}
-        </div>
+        </aside>
+
+        {/* 상품 리스트 */}
+        <section className="product-list">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="product-card">
+              <img src={product.image} alt={product.title} />
+              <h4>{product.title}</h4>
+              <p className="price">{product.price}</p>
+              <p className="seller">판매자: {product.seller}</p>
+            </div>
+          ))}
+        </section>
       </div>
     </div>
   );
-}
+};
+
+export default ProductListPage;
