@@ -149,7 +149,7 @@ const products = [
 
 const ITEMS_PER_PAGE = 12;
 
-const ProductListPage = () => {
+const ProductListPage = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [currentPage, setCurrentPage] = useState(1);
@@ -166,6 +166,10 @@ const ProductListPage = () => {
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
+  // 상품 클릭 시 상세 페이지 이동
+  const goToDetailPage = (productId) => {
+    window.location.href = `/productDetail.html?id=${productId}`;
+  };
 
   return (
     <div className="container">
@@ -199,12 +203,20 @@ const ProductListPage = () => {
         {/* 상품 리스트 */}
         <section className="product-list">
           {displayedProducts.map((product) => (
-            <div key={product.id} className="product-card">
+            // <Link to={`/product/${product.id}`} key={product.id} className="product-card">
+            <div
+              key={product.id}
+              className="product-card"
+              onClick={() => onSelectProduct(product)} // 클릭하면 상세 페이지로 이동
+              style={{ cursor: "pointer" }}
+            >
               <img src={product.image} alt={product.title} />
               <h4>{product.title}</h4>
               <p className="price">{product.price}</p>
               <p className="seller">판매자: {product.seller}</p>
+              <p className="category">{product.category}</p>
             </div>
+            // </Link>
           ))}
         </section>
       </div>
