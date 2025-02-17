@@ -1,7 +1,44 @@
 import React, { useState } from "react";
 import "../css/productListPage.css";
 
-const categories = ["전체", "전자기기", "의류", "도서", "가구", "기타"];
+const categories = [
+  "전체",
+  "디지털기기",
+  "가구/인테리어",
+  "유아동",
+  "의류",
+  "잡화",
+  "생활가전",
+  "생활/주방",
+  "스포츠/레저",
+  "취미/게임/음반",
+  "뷰티/미용",
+  "식물",
+  "식품",
+  "반료동물",
+  "티켓/교환권",
+  "도서",
+  "기타",
+];
+
+const CATEGORY_ID = {
+  0: "디지털기기",
+  1: "가구/인테리어",
+  2: "유아동",
+  3: "의류",
+  4: "잡화",
+  5: "생활가전",
+  6: "생활/주방",
+  7: "스포츠/레저",
+  8: "취미/게임/음반",
+  9: "뷰티/미용",
+  10: "식물",
+  11: "식품",
+  12: "반려동물",
+  13: "티켓/교환권",
+  14: "도서",
+  15: "기타",
+};
 
 const products = [
   {
@@ -10,7 +47,7 @@ const products = [
     title: "상품 1",
     price: "₩10,000",
     seller: "사용자1",
-    category: "전자기기",
+    category: CATEGORY_ID[0],
   },
   {
     id: 2,
@@ -18,7 +55,7 @@ const products = [
     title: "상품 2",
     price: "₩20,000",
     seller: "사용자2",
-    category: "의류",
+    category: CATEGORY_ID[1],
   },
   {
     id: 3,
@@ -26,7 +63,7 @@ const products = [
     title: "상품 3",
     price: "₩15,000",
     seller: "사용자3",
-    category: "도서",
+    category: CATEGORY_ID[1],
   },
   {
     id: 4,
@@ -34,7 +71,7 @@ const products = [
     title: "상품 4",
     price: "₩30,000",
     seller: "사용자4",
-    category: "가구",
+    category: CATEGORY_ID[2],
   },
   {
     id: 5,
@@ -42,7 +79,7 @@ const products = [
     title: "상품 5",
     price: "₩50,000",
     seller: "사용자5",
-    category: "기타",
+    category: CATEGORY_ID[0],
   },
   {
     id: 6,
@@ -50,7 +87,7 @@ const products = [
     title: "상품 6",
     price: "₩5,000",
     seller: "사용자6",
-    category: "전자기기",
+    category: CATEGORY_ID[3],
   },
   {
     id: 7,
@@ -58,7 +95,7 @@ const products = [
     title: "상품 7",
     price: "₩8,000",
     seller: "사용자7",
-    category: "의류",
+    category: CATEGORY_ID[4],
   },
   {
     id: 8,
@@ -66,7 +103,7 @@ const products = [
     title: "상품 8",
     price: "₩12,000",
     seller: "사용자8",
-    category: "도서",
+    category: CATEGORY_ID[5],
   },
   {
     id: 9,
@@ -74,7 +111,7 @@ const products = [
     title: "상품 9",
     price: "₩40,000",
     seller: "사용자9",
-    category: "가구",
+    category: CATEGORY_ID[6],
   },
   {
     id: 10,
@@ -82,7 +119,7 @@ const products = [
     title: "상품 10",
     price: "₩22,000",
     seller: "사용자10",
-    category: "기타",
+    category: CATEGORY_ID[7],
   },
   {
     id: 11,
@@ -90,7 +127,7 @@ const products = [
     title: "상품 11",
     price: "₩9,000",
     seller: "사용자11",
-    category: "전자기기",
+    category: CATEGORY_ID[0],
   },
   {
     id: 12,
@@ -98,7 +135,7 @@ const products = [
     title: "상품 12",
     price: "₩18,000",
     seller: "사용자12",
-    category: "의류",
+    category: CATEGORY_ID[0],
   },
   {
     id: 13,
@@ -106,19 +143,33 @@ const products = [
     title: "상품 13",
     price: "₩18,000",
     seller: "사용자13",
-    category: "의류",
+    category: CATEGORY_ID[9],
   },
 ];
 
-const ProductListPage = () => {
+const ITEMS_PER_PAGE = 12;
+
+const ProductListPage = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filteredProducts = products.filter(
     (product) =>
       product.title.includes(searchTerm) &&
       (selectedCategory === "전체" || product.category === selectedCategory)
   );
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const displayedProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+  // 상품 클릭 시 상세 페이지 이동
+  const goToDetailPage = (productId) => {
+    window.location.href = `/productDetail.html?id=${productId}`;
+  };
 
   return (
     <div className="container">
@@ -151,15 +202,41 @@ const ProductListPage = () => {
 
         {/* 상품 리스트 */}
         <section className="product-list">
-          {filteredProducts.map((product) => (
-            <div key={product.id} className="product-card">
+          {displayedProducts.map((product) => (
+            // <Link to={`/product/${product.id}`} key={product.id} className="product-card">
+            <div
+              key={product.id}
+              className="product-card"
+              onClick={() => onSelectProduct(product)} // 클릭하면 상세 페이지로 이동
+              style={{ cursor: "pointer" }}
+            >
               <img src={product.image} alt={product.title} />
               <h4>{product.title}</h4>
               <p className="price">{product.price}</p>
               <p className="seller">판매자: {product.seller}</p>
+              <p className="category">{product.category}</p>
             </div>
+            // </Link>
           ))}
         </section>
+      </div>
+      {/* 페이지네이션 버튼 */}
+      <div className="pagination">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          이전
+        </button>
+        <span>
+          {currentPage} / {totalPages}
+        </span>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          다음
+        </button>
       </div>
     </div>
   );
