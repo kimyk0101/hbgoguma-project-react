@@ -1,9 +1,9 @@
 // @TODO - 상품 리스트 페이지 구현
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { Input } from "../components/ui/input";
+import { Card, CardContent } from "../components/ui/card";
+import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
+import { Label } from "../components/ui/label";
 
 const CATEGORY_ID = {
   0: "전자제품",
