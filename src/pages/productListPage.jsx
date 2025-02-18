@@ -170,11 +170,6 @@ const ProductListPage = ({ onSelectProduct }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRegion, setSelectedRegion] = useState("전체");
 
-  // const filteredProducts = products.filter(
-  //   (product) =>
-  //     product.title.includes(searchTerm) &&
-  //     (selectedCategory === "전체" || product.category === selectedCategory)
-  // );
   const filteredProducts = products.filter(
     (product) =>
       (selectedRegion === "전체" || product.region === selectedRegion) &&

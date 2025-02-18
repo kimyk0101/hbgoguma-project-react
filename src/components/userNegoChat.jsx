@@ -10,18 +10,6 @@ const UserNegoChat = ({ product, user }) => {
   const [isPurchased, setIsPurchased] = useState(false); // 구매 확정 여부
   const [isBuyerConfirmed, setIsBuyerConfirmed] = useState(false); // 구매 확정 버튼 활성화 여부
 
-  // 관심 구매자 추가 (구매 희망 버튼 클릭 시 실행)
-  // const handleInterest = () => {
-  //   const newBuyerId = "buyer" + Math.floor(Math.random() * 10000); // 랜덤 ID 생성
-  //   if (!interestedBuyers.some((buyer) => buyer.id === newBuyerId)) {
-  //     const newBuyer = {
-  //       id: newBuyerId,
-  //       name: `구매자 ${interestedBuyers.length + 1}`,
-  //     };
-  //     setInterestedBuyers((prevBuyers) => [...prevBuyers, newBuyer]);
-  //   }
-  // };
-
     // 구매 희망 버튼 클릭 시
     const handleInterest = () => {
       if (isBuyerConfirmed || isPurchased) {
