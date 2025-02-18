@@ -1,6 +1,8 @@
 // @TODO - 로그인 페이지 구현
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import dummyUsers from "./dummyUsers";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -10,15 +12,47 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  // 로그인 처리
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (!formData.username || !formData.password) {
-      setError("아이디와 비밀번호를 입력하세요.");
-      return;
+    // 로그인처리 검증
+    // if (formData.username && formData.password) {
+    //       alert("로그인 성공!");
+    //       navigate("/dashboard"); //@TODO - 로그인성공시에 이동할 페이지
+    //     } else {
+    //       alert("아이디와 비밀번호를 입력하세요.");
+    //     }
+    //   };
+
+    // 더미 데이터에서 유저 찾기
+    const user = dummyUsers.find(
+      (u) =>
+        u.username === formData.username && u.password === formData.password
+    );
+
+    if (user) {
+      alert(`환영합니다, ${user.nickname}님!`);
+      localStorage.setItem("loggedInUser", user.username); // 로그인한 사용자 저장
+      navigate("/userInfo"); // 유저 상세 페이지로 이동
+    } else {
+      setError("아이디 또는 비밀번호가 올바르지 않습니다.");
     }
-    // @TODO: 실제 로그인 API 연동
-    console.log("로그인 시도:", formData);
-    navigate("/"); // 로그인 성공 시 메인 페이지로 이동
+
+    // 실제 서버 요청이 필요할 경우 활성화
+    /*
+    try {
+      const response = await axios.post("/api/login", formData);
+      if (response.data.success) {
+        alert("로그인 성공!");
+        navigate("/userInfo"); 
+      } else {
+        setError("아이디 또는 비밀번호가 올바르지 않습니다.");
+      }
+    } catch (error) {
+      console.error("로그인 오류", error);
+      setError("서버 오류가 발생했습니다.");
+    }
+    */
   };
 
   return (
@@ -45,17 +79,16 @@ const LoginPage = () => {
           }
         />
 
+        {/* 로그인 오류메시지 출력 */}
         {error && <p className="error-message">{error}</p>}
 
-        <button type="submit">로그인</button>
+        <div className="button-group">
+          <button type="submit">로그인</button>
+          <button type="button" onClick={() => navigate("/joinPage")}>
+            회원가입
+          </button>
+        </div>
       </form>
-
-      <div className="login-links">
-        <button onClick={() => navigate("/joinPage")}>회원가입</button>
-        <p>
-          <a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a>
-        </p>
-      </div>
     </div>
   );
 };

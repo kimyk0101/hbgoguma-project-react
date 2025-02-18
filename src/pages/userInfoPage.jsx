@@ -1,14 +1,20 @@
 // @TODO - 유저 정보 페이지 구현
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import dummyUsers from "./dummyUsers";
 
 export default function UserInfoPage() {
   const [selectedTab, setSelectedTab] = useState("판매 중인 상품");
-  const [ciderScore, setCiderScore] = useState(75);
+  // const [ciderScore, setCiderScore] = useState(75);
+  // const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [contentImage, setContentImage] = useState(null);
   const [description, setDescription] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
+  // 파일 업로드 핸들러
   const handleImageUpload = (e, setImageFunc) => {
     const file = e.target.files[0];
     if (file) {
@@ -19,6 +25,19 @@ export default function UserInfoPage() {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    // 더미 데이터에서 로그인된 사용자 정보 가져오기
+    const loggedInUsername = localStorage.getItem("loggedInUser");
+    if (loggedInUsername) {
+      const loggedInUser = dummyUsers.find(
+        (u) => u.username === loggedInUsername
+      );
+      setCurrentUser(loggedInUser || null);
+    }
+  }, []);
+
+  if (!currentUser) return <p>사용자 정보를 불러오는 중...</p>;
 
   return (
     <div className="container">
@@ -41,13 +60,13 @@ export default function UserInfoPage() {
 
         {/* 사용자 정보 */}
         <div className="user-info">
-          <span className="nickname">닉네임</span>
+          <span className="nickname">{currentUser.nickname}</span>
           <div className="cider-bar-container">
-            <span>{ciderScore}%</span>
+            <span>{currentUser.ciderScore}%</span>
             <div className="cider-bar">
               <div
                 className="cider-fill"
-                style={{ width: `${ciderScore}%` }}
+                style={{ width: `${currentUser.ciderScore}%` }}
               ></div>
             </div>
           </div>
@@ -60,7 +79,13 @@ export default function UserInfoPage() {
             <p>📦 판매: 15회</p>
             <p>🛒 구매: 8회</p>
             <p>💰 포인트: 3,500P</p>
+            {/* <p>📦 판매: {user.salesCount}회</p>
+              <p>🛒 구매: {user.purchaseCount}회</p>
+              <p>💰 포인트: {user.points}P</p> */}
           </div>
+          <button type="button" onClick={() => navigate("/mainPage")}>
+            메인으로
+          </button>
         </div>
       </div>
 
@@ -104,11 +129,22 @@ export default function UserInfoPage() {
       {/* 버튼식 전환 */}
       <div className="tabs">
         {["판매 중인 상품", "구매 중인 상품", "나의 평가"].map((tab) => (
-          <button key={tab} onClick={() => setSelectedTab(tab)}>
+          <button
+            key={tab}
+            className={selectedTab === tab ? "active" : ""}
+            onClick={() => setSelectedTab(tab)}
+          >
             {tab}
           </button>
         ))}
       </div>
+      {/* <div className="tabs">
+          {["판매 중인 상품", "구매 중인 상품", "나의 평가"].map((tab) => (
+            <button key={tab} onClick={() => setSelectedTab(tab)}>
+              {tab}
+            </button>
+          ))}
+        </div> */}
 
       <div className="tab-content">{selectedTab} 내용 표시</div>
     </div>

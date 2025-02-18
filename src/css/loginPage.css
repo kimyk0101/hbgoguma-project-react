@@ -49,3 +49,9 @@
     background: #0056b3;
   }
   
+  /* 오류메시지 */
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
