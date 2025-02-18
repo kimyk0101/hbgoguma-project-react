@@ -6,6 +6,7 @@ import ProductDetailPage from "./productDetailPage";
 // import loginPage from "./loginPage";
 import ProductDetail from "./productDetailPage";
 import UserNegoChat from "../components/userNegoChat";
+import Footer from "../components/footer";
 
 const MainPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -20,6 +21,7 @@ const MainPage = () => {
       ) : (
         <ProductList onSelectProduct={setSelectedProduct} />
       )}
+      <Footer />
     </div>
   );
 };
