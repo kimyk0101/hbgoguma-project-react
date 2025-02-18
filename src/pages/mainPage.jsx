@@ -4,6 +4,8 @@ import { useState } from "react";
 import ProductList from "./productListPage";
 import ProductDetailPage from "./productDetailPage";
 // import loginPage from "./loginPage";
+import ProductDetail from "./productDetailPage";
+import UserNegoChat from "../components/userNegoChat";
 
 const MainPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);

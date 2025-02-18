@@ -1,0 +1,51 @@
+.product-detail-page {
+  padding: 20px;
+}
+
+.back-button {
+  background-color: #ddd;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.product-detail {
+  display: flex;
+  gap: 20px;
+}
+
+.product-left {
+  width: 50%;
+}
+
+.product-right {
+  width: 50%;
+}
+
+.product-image {
+  width: 100%;
+  max-width: 400px;
+}
+
+.buyer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.interest-button,
+.buyer-item button {
+  background-color: #ff9800;
+  border: none;
+  padding: 8px 12px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.interest-button:hover,
+.buyer-item button:hover {
+  background-color: #e68900;
+}
