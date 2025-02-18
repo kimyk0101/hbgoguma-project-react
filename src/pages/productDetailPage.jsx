@@ -3,7 +3,7 @@ import "../css/productDetailPage.css";
 import UserNegoChat from "../components/userNegoChat.jsx"; // 채팅 컴포넌트 임포트
 
 const ProductDetailPage = ({ onBack }) => {
-  const [interestedBuyers, setInterestedBuyers] = useState([]);
+  const [interestedBuyers, setInterestedBuyers] = useState([]); // 관심 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
 
   // TODO: 임의의 데이터 바꾸기
@@ -23,10 +23,11 @@ const ProductDetailPage = ({ onBack }) => {
   const handleInterest = () => {
     const newBuyerId = "buyer" + Math.floor(Math.random() * 10000); // 랜덤 ID 생성
 
-    console.log("✅ 구매 희망 버튼 클릭됨!");
-
     if (!interestedBuyers.some((buyer) => buyer.id === newBuyerId)) {
-      const newBuyer = { id: newBuyerId, name: `구매자 ${interestedBuyers.length + 1}` };
+      const newBuyer = {
+        id: newBuyerId,
+        name: `구매자 ${interestedBuyers.length + 1}`,
+      };
       setInterestedBuyers((prevBuyers) => [...prevBuyers, newBuyer]);
       console.log("🔹 새로운 구매자 추가됨:", newBuyer);
     } else {
@@ -36,20 +37,24 @@ const ProductDetailPage = ({ onBack }) => {
 
   // 채팅 시작 버튼 클릭 시 활성화/비활성화 토글
   const handleStartChat = (buyerId) => {
-    console.log("🗨 채팅 버튼 클릭됨! 구매자 ID:", buyerId);
-    setActiveChat((prevActiveChat) => (prevActiveChat === buyerId ? null : buyerId));
+    setActiveChat((prevActiveChat) =>
+      prevActiveChat === buyerId ? null : buyerId
+    );
   };
 
   return (
     <div>
-      {/* 뒤로가기 버튼 */}
       <button onClick={onBack} className="back-button">
         ← 뒤로가기
       </button>
 
       <div className="product-detail">
         <div className="product-left">
-          <img src={product.image} alt={product.title} className="product-image" />
+          <img
+            src={product.image}
+            alt={product.title}
+            className="product-image"
+          />
           <div className="seller-info">
             <p>판매자: {product.seller}</p>
             <p>거래 희망 지역: {product.location}</p>
@@ -64,34 +69,37 @@ const ProductDetailPage = ({ onBack }) => {
 
           {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
           {user.id !== product.seller && (
-  <button className="interest-button" onClick={handleInterest}>
-    구매 희망
-  </button>
-)}
-
-{user.id === product.seller && (
-  <div className="interested-buyers">
-    <h3>구매 희망자</h3>
-    <ul>
-      {interestedBuyers.length > 0 ? (
-        interestedBuyers.map((buyer) => (
-          <li key={buyer.id} className="buyer-item">
-            <span>{buyer.name}</span>
-            <button onClick={() => handleStartChat(buyer.id)}>
-              {activeChat === buyer.id ? "채팅 닫기" : "채팅 시작"}
+            <button className="interest-button" onClick={handleInterest}>
+              구매 희망
             </button>
-            {activeChat === buyer.id && <UserNegoChat buyerId={buyer.id} />}
-          </li>
-        ))
-      ) : (
-        <p>아직 구매 희망자가 없습니다.</p>
-      )}
-    </ul>
-  </div>
-)}
-
           )}
         </div>
+      </div>
+
+      {/* 상품 설명 끝난 후, 구매 희망자 리스트를 하단에 위치 */}
+      <div className="product-footer">
+        {user.id !== product.seller && (
+          <div className="interested-buyers">
+            <h3>구매 희망자</h3>
+            <ul>
+              {interestedBuyers.length > 0 ? (
+                interestedBuyers.map((buyer) => (
+                  <li key={buyer.id} className="buyer-item">
+                    <span>{buyer.name}</span>
+                    <button onClick={() => handleStartChat(buyer.id)}>
+                      {activeChat === buyer.id ? "채팅 닫기" : "채팅 시작"}
+                    </button>
+                    {activeChat === buyer.id && (
+                      <UserNegoChat buyerId={buyer.id} />
+                    )}
+                  </li>
+                ))
+              ) : (
+                <p>아직 구매 희망자가 없습니다.</p>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
