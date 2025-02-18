@@ -28,7 +28,7 @@
 }
 
 .seller-info {
-  font-size: 10px;
+  font-size: 15px;
   position: relative; /* absolute에서 relative로 변경 */
   bottom: 8px; /* 이미지 아래에서 10px 정도 떨어지게 조정 */
   /* padding-bottom: 5px; 이미지 하단에 겹치지 않도록 여백 추가 */
@@ -51,105 +51,11 @@
 
 .product-description {
   font-size: 20px;
+  text-align: left;
   margin-bottom: 20px;
 }
 
-.interest-button {
-  background-color: #F4A261;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.interest-button:hover {
-  background-color: #F4A261;
-}
-
-/* 상품 설명 하단 구매희망자 리스트 */
-.product-footer {
-  width: 100%;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
-}
-
-.interested-buyers {
-  margin-top: 10px;
-}
-
-.buyer-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.buyer-item button {
-  background-color: #F4A261;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.buyer-item button:hover {
-  background-color: #F4A261;
-}
-
-
-/* 구매자 확정 팝업 스타일 */
-.purchase-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  width: 300px;
-}
-
-.popup-content h3 {
-  margin-bottom: 20px;
-}
-
-.qr-code {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 20px;
-}
-
-.confirm-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.confirm-button:hover {
-  background-color: #45a049;
-}
-
-/* 구매 완료 상태 스타일 */
-.purchase-confirmation {
-  text-align: center;
-  margin-top: 20px;
-  color: green;
-}
-
+/* 신고버튼 */
 .report-button {
   background-color: #ff4d4d;
   color: white;
