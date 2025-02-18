@@ -52,6 +52,11 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     flex-grow: 1;
+    
+  img {
+    height: 300px;
+
+  }
   }
   
   /* 상품 카드 */

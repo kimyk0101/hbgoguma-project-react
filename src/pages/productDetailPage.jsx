@@ -3,21 +3,22 @@ import "../css/productDetailPage.css";
 import UserNegoChat from "../components/userNegoChat.jsx"; // 채팅 컴포넌트 임포트
 import "../css/sellerReviewPage.css";
 
-const ProductDetailPage = ({ onBack }) => {
+const ProductDetailPage = ({ product, onBack }) => {
   const [interestedBuyers, setInterestedBuyers] = useState([]); // 관심 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
   const [selectedBuyer, setSelectedBuyer] = useState(null); // 선택된 구매자
   const [isPurchased, setIsPurchased] = useState(false); // 구매 확정 여부
-
+  const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
+  const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
   // TODO: 임의의 데이터 바꾸기
-  const product = {
-    image: "../images/iphone14.png",
-    title: "아이폰 14",
-    description: "아이폰 14 팔아요",
-    seller: "판매자",
-    location: "역삼동",
-    category: "전자기기",
-  };
+  // const product = {
+  //   image: "../images/iphone14.png",
+  //   title: "아이폰 14",
+  //   description: "아이폰 14 팔아요",
+  //   seller: "판매자",
+  //   location: "역삼동",
+  //   category: "전자기기",
+  // };
 
   const user = { id: "buyer123" }; // 현재 로그인한 사용자 (판매자가 아니라면 구매자로 간주)
 
@@ -81,6 +82,47 @@ const ProductDetailPage = ({ onBack }) => {
     },
   ]);
 
+  //신고 기능
+  // 신고 사유 목록
+  const reportReasons = [
+    "허위 매물",
+    "부적절한 게시글",
+    "사기 의심",
+    "기타 사유",
+  ];
+
+  // 신고 버튼 클릭 시 팝업 열기
+  const handleOpenReportPopup = () => {
+    setShowReportPopup(true);
+  };
+
+  // 신고 팝업 닫기
+  const handleCloseReportPopup = () => {
+    setShowReportPopup(false);
+    setReportReason("");
+  };
+
+  // 신고 제출
+  const handleReportSubmit = () => {
+    if (!reportReason) {
+      alert("신고 사유를 선택해주세요.");
+      return;
+    }
+
+    const reportData = {
+      rid: Date.now(), // 신고 번호 (임시)
+      uid: user.id, // 신고한 사용자 ID
+      pid: product.id, // 신고당한 게시글 ID
+      reportId: reportReasons.indexOf(reportReason) + 1, // 신고 사유 ID
+      isConfirm: false, // 신고 처리 여부 (초기값 false)
+      reportDate: new Date().toISOString(), // 신고 일시
+    };
+
+    console.log("📌 신고 접수됨:", reportData);
+    alert("신고가 접수되었습니다.");
+    handleCloseReportPopup();
+  };
+
   return (
     <div>
       <button onClick={onBack} className="back-button">
@@ -104,6 +146,10 @@ const ProductDetailPage = ({ onBack }) => {
         <div className="product-right">
           <h2 className="product-title">{product.title}</h2>
           <p className="product-description">{product.description}</p>
+          {/* 신고하기 버튼 */}
+          <button className="report-button" onClick={handleOpenReportPopup}>
+            🚨 신고하기
+          </button>
 
           {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
           {user.id !== product.seller && !isPurchased && (
@@ -193,6 +239,37 @@ const ProductDetailPage = ({ onBack }) => {
                 onClick={handlePurchaseConfirm}
               >
                 확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* 신고 팝업 */}
+      {showReportPopup && (
+        <div className="report-popup">
+          <div className="popup-content">
+            <h3>게시글 신고</h3>
+            <p>신고 사유를 선택해주세요.</p>
+            <select
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+            >
+              <option value="">-- 신고 사유 선택 --</option>
+              {reportReasons.map((reason, index) => (
+                <option key={index} value={reason}>
+                  {reason}
+                </option>
+              ))}
+            </select>
+            <div className="popup-buttons">
+              <button className="submit-button" onClick={handleReportSubmit}>
+                신고하기
+              </button>
+              <button
+                className="cancel-button"
+                onClick={handleCloseReportPopup}
+              >
+                취소
               </button>
             </div>
           </div>

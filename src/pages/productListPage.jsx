@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../css/productListPage.css";
 
+const regions = ["전체", "강남구", "서초구"];
+
 const categories = [
   "전체",
   "디지털기기",
@@ -43,10 +45,11 @@ const CATEGORY_ID = {
 const products = [
   {
     id: 1,
-    image: "https://via.placeholder.com/150",
-    title: "상품 1",
-    price: "₩10,000",
-    seller: "사용자1",
+    image: "../images/iphone14.png",
+    title: "아이폰14",
+    price: "₩1,200,000",
+    seller: "김연경",
+    region: "강남구",
     category: CATEGORY_ID[0],
   },
   {
@@ -55,6 +58,7 @@ const products = [
     title: "상품 2",
     price: "₩20,000",
     seller: "사용자2",
+    region: "강남구",
     category: CATEGORY_ID[1],
   },
   {
@@ -63,6 +67,7 @@ const products = [
     title: "상품 3",
     price: "₩15,000",
     seller: "사용자3",
+    region: "강남구",
     category: CATEGORY_ID[1],
   },
   {
@@ -71,6 +76,7 @@ const products = [
     title: "상품 4",
     price: "₩30,000",
     seller: "사용자4",
+    region: "강남구",
     category: CATEGORY_ID[2],
   },
   {
@@ -79,6 +85,7 @@ const products = [
     title: "상품 5",
     price: "₩50,000",
     seller: "사용자5",
+    region: "강남구",
     category: CATEGORY_ID[0],
   },
   {
@@ -87,6 +94,7 @@ const products = [
     title: "상품 6",
     price: "₩5,000",
     seller: "사용자6",
+    region: "강남구",
     category: CATEGORY_ID[3],
   },
   {
@@ -95,6 +103,7 @@ const products = [
     title: "상품 7",
     price: "₩8,000",
     seller: "사용자7",
+    region: "서초구",
     category: CATEGORY_ID[4],
   },
   {
@@ -103,6 +112,7 @@ const products = [
     title: "상품 8",
     price: "₩12,000",
     seller: "사용자8",
+    region: "서초구",
     category: CATEGORY_ID[5],
   },
   {
@@ -111,6 +121,7 @@ const products = [
     title: "상품 9",
     price: "₩40,000",
     seller: "사용자9",
+    region: "서초구",
     category: CATEGORY_ID[6],
   },
   {
@@ -119,6 +130,7 @@ const products = [
     title: "상품 10",
     price: "₩22,000",
     seller: "사용자10",
+    region: "서초구",
     category: CATEGORY_ID[7],
   },
   {
@@ -127,6 +139,7 @@ const products = [
     title: "상품 11",
     price: "₩9,000",
     seller: "사용자11",
+    region: "서초구",
     category: CATEGORY_ID[0],
   },
   {
@@ -135,6 +148,7 @@ const products = [
     title: "상품 12",
     price: "₩18,000",
     seller: "사용자12",
+    region: "서초구",
     category: CATEGORY_ID[0],
   },
   {
@@ -143,6 +157,7 @@ const products = [
     title: "상품 13",
     price: "₩18,000",
     seller: "사용자13",
+    region: "서초구",
     category: CATEGORY_ID[9],
   },
 ];
@@ -153,11 +168,18 @@ const ProductListPage = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedRegion, setSelectedRegion] = useState("전체");
 
+  // const filteredProducts = products.filter(
+  //   (product) =>
+  //     product.title.includes(searchTerm) &&
+  //     (selectedCategory === "전체" || product.category === selectedCategory)
+  // );
   const filteredProducts = products.filter(
     (product) =>
-      product.title.includes(searchTerm) &&
-      (selectedCategory === "전체" || product.category === selectedCategory)
+      (selectedRegion === "전체" || product.region === selectedRegion) &&
+      (selectedCategory === "전체" || product.category === selectedCategory) &&
+      product.title.includes(searchTerm)
   );
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -185,6 +207,22 @@ const ProductListPage = ({ onSelectProduct }) => {
       <div className="content">
         {/* 카테고리 필터 */}
         <aside className="sidebar">
+          <h3>지역 선택</h3>
+          {regions.map((region) => (
+            <label key={region}>
+              <input
+                type="radio"
+                name="region"
+                value={region}
+                checked={selectedRegion === region}
+                onChange={() => {
+                  setSelectedRegion(region);
+                  setCurrentPage(1);
+                }}
+              />
+              {region}
+            </label>
+          ))}
           <h3>카테고리</h3>
           {categories.map((category) => (
             <label key={category}>
@@ -214,6 +252,7 @@ const ProductListPage = ({ onSelectProduct }) => {
               <h4>{product.title}</h4>
               <p className="price">{product.price}</p>
               <p className="seller">판매자: {product.seller}</p>
+              <p className="region">{product.region}</p>
               <p className="category">{product.category}</p>
             </div>
             // </Link>

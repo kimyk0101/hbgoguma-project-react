@@ -10,6 +10,10 @@ const Footer = () => {
           <h4>거래 안내</h4>
           <p>직거래 및 택배거래 가능</p>
           <p>교환/반품 관련 사항은 판매자와 협의 필요</p>
+          <h4>앱 다운로드</h4>
+          <div>
+            <img src="../images/가짜큐알.png" />
+          </div>
         </div>
 
         <div className="footer-section">

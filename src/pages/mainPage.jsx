@@ -7,12 +7,15 @@ import ProductDetailPage from "./productDetailPage";
 import ProductDetail from "./productDetailPage";
 import UserNegoChat from "../components/userNegoChat";
 import Footer from "../components/footer";
+import Header from "../components/header";
+import SellProductPage from "./sales";
 
 const MainPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   return (
     <div>
-      <h1>메인 페이지</h1>
+      {/* <h1>메인 페이지</h1> */}
+      <Header />
       {selectedProduct ? (
         <ProductDetailPage
           product={selectedProduct}
@@ -21,6 +24,7 @@ const MainPage = () => {
       ) : (
         <ProductList onSelectProduct={setSelectedProduct} />
       )}
+      {/* <SellProductPage /> */}
       <Footer />
     </div>
   );
