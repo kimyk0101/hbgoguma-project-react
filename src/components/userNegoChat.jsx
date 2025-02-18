@@ -47,8 +47,6 @@ const UserNegoChat = ({ buyerId, selectedBuyer }) => {
     setInputMessage(""); // 입력창 초기화
   };
 
-  // 구매 확정된 구매자와만 메시지를 주고받을 수 있도록 확인
-  const isChatDisabled = selectedBuyer && buyerId !== selectedBuyer; // 구매 확정된 구매자와만 채팅이 가능
 
   return (
     <div className="chat-container">
@@ -70,12 +68,11 @@ const UserNegoChat = ({ buyerId, selectedBuyer }) => {
           placeholder="메시지를 입력하세요..."
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          disabled={isChatDisabled} // 채팅 비활성화
         />
-        <button onClick={() => handleSendMessage(false)} disabled={isChatDisabled}>
+        <button onClick={() => handleSendMessage(false)}>
           구매자 전송
         </button>
-        <button onClick={() => handleSendMessage(true)} disabled={isChatDisabled}>
+        <button onClick={() => handleSendMessage(true)}>
           판매자 전송
         </button>
       </div>
