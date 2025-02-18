@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "../css/productDetailPage.css";
 import UserNegoChat from "../components/userNegoChat.jsx"; // 채팅 컴포넌트 임포트
+import "../css/sellerReviewPage.css";
 
 const ProductDetailPage = ({ onBack }) => {
   const [interestedBuyers, setInterestedBuyers] = useState([]); // 관심 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
+  const [selectedBuyer, setSelectedBuyer] = useState(null); // 선택된 구매자
+  const [isPurchased, setIsPurchased] = useState(false); // 구매 확정 여부
 
   // TODO: 임의의 데이터 바꾸기
   const product = {
@@ -14,7 +17,6 @@ const ProductDetailPage = ({ onBack }) => {
     seller: "판매자",
     location: "역삼동",
     category: "전자기기",
-    views: 1,
   };
 
   const user = { id: "buyer123" }; // 현재 로그인한 사용자 (판매자가 아니라면 구매자로 간주)
@@ -42,6 +44,43 @@ const ProductDetailPage = ({ onBack }) => {
     );
   };
 
+  // 구매자 확정 버튼 클릭 시
+  const handleConfirmBuyer = (buyerId) => {
+    setSelectedBuyer(buyerId);
+  };
+
+  // 구매 확정
+  const handlePurchaseConfirm = () => {
+    setIsPurchased(true);
+    console.log("✅ 구매 확정됨!");
+  };
+
+  const [newReview, setNewReview] = useState("");
+  const [rating, setRating] = useState(5);
+
+  const handleReviewSubmit = () => {
+    if (newReview.trim() === "") return;
+    const newReviewObj = {
+      id: reviews.length + 1,
+      author: "사용자", // 로그인 시스템이 없으므로 임시 이름 사용
+      rating,
+      content: newReview,
+      date: new Date().toISOString().split("T")[0],
+    };
+    setReviews([newReviewObj, ...reviews]); // 최신순 정렬
+    setNewReview("");
+    setRating(5);
+  };
+  const [reviews, setReviews] = useState([
+    {
+      id: 1,
+      author: "사용자1",
+      rating: 5,
+      content: "정말 친절한 판매자였습니다!",
+      date: "2025-02-18",
+    },
+  ]);
+
   return (
     <div>
       <button onClick={onBack} className="back-button">
@@ -59,7 +98,6 @@ const ProductDetailPage = ({ onBack }) => {
             <p>판매자: {product.seller}</p>
             <p>거래 희망 지역: {product.location}</p>
             <p>카테고리: {product.category}</p>
-            <p>조회수: {product.views}</p>
           </div>
         </div>
 
@@ -68,7 +106,7 @@ const ProductDetailPage = ({ onBack }) => {
           <p className="product-description">{product.description}</p>
 
           {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
-          {user.id !== product.seller && (
+          {user.id !== product.seller && !isPurchased && (
             <button className="interest-button" onClick={handleInterest}>
               구매 희망
             </button>
@@ -86,6 +124,9 @@ const ProductDetailPage = ({ onBack }) => {
                 interestedBuyers.map((buyer) => (
                   <li key={buyer.id} className="buyer-item">
                     <span>{buyer.name}</span>
+                    <button onClick={() => handleConfirmBuyer(buyer.id)}>
+                      구매 확정
+                    </button>
                     <button onClick={() => handleStartChat(buyer.id)}>
                       {activeChat === buyer.id ? "채팅 닫기" : "채팅 시작"}
                     </button>
@@ -101,6 +142,68 @@ const ProductDetailPage = ({ onBack }) => {
           </div>
         )}
       </div>
+
+      {/* 구매자 확정 팝업 */}
+      {selectedBuyer && !isPurchased && (
+        <div className="purchase-popup">
+          <div className="popup-content">
+            <h3>판매가 완료되었습니다</h3>
+            {/* TODO: 리뷰페이지로 이동(팝업) */}
+            <div className="seller-review-container">
+              <h3>판매자 리뷰</h3>
+              <div className="rating-input">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={star <= rating ? "star selected" : "star"}
+                    onClick={() => setRating(star)}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+              <textarea
+                value={newReview}
+                onChange={(e) => setNewReview(e.target.value)}
+                placeholder="판매자에 대한 리뷰를 작성하세요..."
+                className="review-input"
+              />
+              <button onClick={handleReviewSubmit} className="submit-button">
+                리뷰 등록
+              </button>
+
+              <ul className="review-list">
+                {/* 리뷰는 스크롤 가능한 영역에 표시 */}
+                <div className="reviews-scroll-container">
+                  {reviews.slice(1).map((review) => (
+                    <li key={review.id} className="review-item">
+                      <p>
+                        <strong>{review.author}</strong> ({review.date})
+                      </p>
+                      <p className="review-rating">
+                        평점: {"★".repeat(review.rating)}
+                      </p>
+                      <p>{review.content}</p>
+                    </li>
+                  ))}
+                </div>
+              </ul>
+              <button
+                className="confirm-button"
+                onClick={handlePurchaseConfirm}
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isPurchased && (
+        <div className="purchase-confirmation">
+          <h3>거래가 완료되었습니다!</h3>
+        </div>
+      )}
     </div>
   );
 };

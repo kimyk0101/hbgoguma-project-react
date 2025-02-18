@@ -55,7 +55,7 @@
 }
 
 .interest-button {
-  background-color: #4CAF50;
+  background-color: #F4A261;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -63,7 +63,7 @@
 }
 
 .interest-button:hover {
-  background-color: #45a049;
+  background-color: #F4A261;
 }
 
 /* 상품 설명 하단 구매희망자 리스트 */
@@ -86,7 +86,7 @@
 }
 
 .buyer-item button {
-  background-color: #4CAF50;
+  background-color: #F4A261;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -94,5 +94,58 @@
 }
 
 .buyer-item button:hover {
+  background-color: #F4A261;
+}
+
+
+/* 구매자 확정 팝업 스타일 */
+.purchase-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+}
+
+.popup-content h3 {
+  margin-bottom: 20px;
+}
+
+.qr-code {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.confirm-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.confirm-button:hover {
   background-color: #45a049;
+}
+
+/* 구매 완료 상태 스타일 */
+.purchase-confirmation {
+  text-align: center;
+  margin-top: 20px;
+  color: green;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../css/userNegoChat.css";
 
-const UserNegoChat = ({ buyerId }) => {
+const UserNegoChat = ({ buyerId, selectedBuyer }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -28,9 +28,11 @@ const UserNegoChat = ({ buyerId }) => {
 
   const [inputMessage, setInputMessage] = useState("");
 
+  // 메시지 전송 함수
   const handleSendMessage = (isUser1) => {
     if (inputMessage.trim() === "") return;
 
+    // 메시지 추가
     const newMessage = {
       id: messages.length + 1,
       userImage: isUser1
@@ -44,6 +46,9 @@ const UserNegoChat = ({ buyerId }) => {
     setMessages([...messages, newMessage]);
     setInputMessage(""); // 입력창 초기화
   };
+
+  // 구매 확정된 구매자와만 메시지를 주고받을 수 있도록 확인
+  const isChatDisabled = selectedBuyer && buyerId !== selectedBuyer; // 구매 확정된 구매자와만 채팅이 가능
 
   return (
     <div className="chat-container">
@@ -65,9 +70,14 @@ const UserNegoChat = ({ buyerId }) => {
           placeholder="메시지를 입력하세요..."
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
+          disabled={isChatDisabled} // 채팅 비활성화
         />
-        <button onClick={() => handleSendMessage(false)}>구매자 전송</button>
-        <button onClick={() => handleSendMessage(true)}>판매자 전송</button>
+        <button onClick={() => handleSendMessage(false)} disabled={isChatDisabled}>
+          구매자 전송
+        </button>
+        <button onClick={() => handleSendMessage(true)} disabled={isChatDisabled}>
+          판매자 전송
+        </button>
       </div>
     </div>
   );

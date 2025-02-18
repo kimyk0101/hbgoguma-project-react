@@ -1,10 +1,16 @@
+/* 채팅 컨테이너 스타일 */
 .chat-container {
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 10px;
+  background-color: #f9f9f9;
   width: 100%;
   max-width: 400px;
-  background-color: #f9f9f9;
+  /* TODO: 위치 조정 */
+  position: relative; 
+  top: 100%; /* 구매자1과 채팅 시작 버튼 바로 아래 위치 */
+  left: 0;
+  margin-top: 10px; /* 버튼 아래 여백 */
 }
 
 .chat-box {
@@ -67,7 +73,7 @@
 }
 
 .chat-input button {
-  background-color: #ff9800;
+  background-color: #F4A261;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -76,5 +82,7 @@
 }
 
 .chat-input button:hover {
-  background-color: #e68900;
+  background-color: #F4A261;
 }
+
+
