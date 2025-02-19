@@ -6,15 +6,18 @@
   border-top: 1px solid #ddd;
 }
 
+/* 구매 희망 버튼 */
 .interest-button {
-  width: 40%;
+  font-size: 25px;
+  width: 30%;
   height: 30px;
-  background-color: #F4A261;
+  background-color: #ff8c00;
   color: white;
   border: none;
-  padding: 20px 15px;
+  padding: 25px 15px;
   cursor: pointer;
-  margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 가운데로 위치 */
+  margin: 0 auto; 
+  border-radius: 8px;
 
   /* 텍스트를 가운데로 정렬하기 위한 Flexbox 설정 */
   display: flex;
@@ -24,7 +27,7 @@
 
 
 .interest-button:hover {
-  background-color: #cfc7c0;
+  background-color: #F4A261;;
 }
 
 
@@ -32,51 +35,57 @@
   margin-top: 10px;
 }
 
-/* .buyer-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-} */
-
+/* 구매희망자 */
 .buyer-item {
-  display: inline-block; /* 수평 정렬을 위해 inline-block 사용 */
-  width: 100%; /* 전체 너비 사용 */
+  display: inline-block; /* flex 사용 시 채팅 박스 오른쪽에 위치 */
+  font-size: 16px;
+  width: 100%; 
   margin-bottom: 5px;
-  text-align: center; /* justify-content 효과 */
+  text-align: center; 
   vertical-align: middle; /* 수직으로 정렬 */
 }
 
 .buyer-item span {
-  display: inline-block; /* 이름 부분을 왼쪽에 정렬 */
-  width: auto; /* 자동 너비 */
+  display: inline-block; 
+  width: auto; 
 }
 
 .buyer-item button {
-  background-color: #F4A261;
+  all: unset;
+  border-radius: 8px;
+  background-color: #ff8c00;
   color: white;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
-
-  display: inline-block; /* 버튼을 오른쪽에 정렬 */
-  margin-left: 50px; /* 버튼 사이 간격 */
+  display: inline-block; 
+  margin-left: 50px;
 }
 
 .buyer-item button:hover {
   background-color: #F4A261;
 }
 
+/* 거래 확정 메세지 */
+.confirmed-text {
+  background-color: #ddd;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  display: inline-block; 
+  margin-left: 50px;
 
-/* 채팅 컨테이너 스타일 수정 */
+}
+
+/* 채팅 컨테이너 */
 .chat-container {
-  clear: both; /* flex 흐름을 무시하고 아래로 내려가도록 설정 */
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 10px;
   background-color: #f9f9f9;
   width: 100%;
-  margin-top: 10px; /* 구매자1과 채팅 시작 버튼 바로 아래 위치 */
+  margin-top: 10px; 
 }
 
 .chat-box {
@@ -95,16 +104,18 @@
 }
 
 .chat-message.buyer {
-  flex-direction: row;
+  flex-direction: column; /* 세로 정렬 (이미지 위, 메시지 아래) */
+  align-items: flex-start; /* 왼쪽 정렬 */
 }
 
 .chat-message.seller {
-  flex-direction: row-reverse;
+  flex-direction: column; 
+  align-items: flex-end; 
 }
 
 .profile-img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -118,10 +129,14 @@
 }
 
 .chat-message.buyer .message-text {
+  margin-left: 55px;
+  margin-top: -18px;
   background-color: #d1e7ff;
 }
 
 .chat-message.seller .message-text {
+  margin-right: 55px;
+  margin-top: -18px;
   background-color: #ffdbdb;
 }
 
@@ -139,7 +154,7 @@
 }
 
 .chat-input button {
-  background-color: #F4A261;
+  background-color: #ff8c00;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -196,5 +211,16 @@
   text-align: center;
   margin-top: 20px;
   color: green;
+
+  /* 상세페이지 상단 - 거래 완료 글 표시 */
+  /* position: absolute; 
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%); 
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%; */
 }
 

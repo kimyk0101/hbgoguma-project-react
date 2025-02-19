@@ -1,34 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/userNegoChat.css";
+import SReviewPopup from "../pages/sellerReviewPage.jsx";
+import { IoCheckboxOutline } from "react-icons/io5";
+
 
 const UserNegoChat = ({ product, user }) => {
-  const [interestedBuyers, setInterestedBuyers] = useState([]); // 관심 구매자 리스트
+  const [interestedBuyers, setInterestedBuyers] = useState([]); // 구매 희망 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
   const [messages, setMessages] = useState([]); // 메시지 리스트
   const [inputMessage, setInputMessage] = useState(""); // 입력된 메시지
-  const [selectedBuyer, setSelectedBuyer] = useState(null); // 선택된 구매자
+  const [selectedBuyer, setSelectedBuyer] = useState(null); // 구매 확정자 / 확정된 구매자 ID 저장
   const [isPurchased, setIsPurchased] = useState(false); // 구매 확정 여부
   const [isBuyerConfirmed, setIsBuyerConfirmed] = useState(false); // 구매 확정 버튼 활성화 여부
 
-    // 구매 희망 버튼 클릭 시
-    const handleInterest = () => {
-      if (isBuyerConfirmed || isPurchased) {
-        return; // 거래가 완료되었거나 구매자가 확정된 경우 버튼 클릭을 막음
-      }
-  
-      const newBuyerId = "buyer" + Math.floor(Math.random() * 10000); // 랜덤 ID 생성
-      if (!interestedBuyers.some((buyer) => buyer.id === newBuyerId)) {
-        const newBuyer = {
-          id: newBuyerId,
-          name: `구매자 ${interestedBuyers.length + 1}`,
-        };
-        setInterestedBuyers((prevBuyers) => [...prevBuyers, newBuyer]);
-      }
-    };
+  const [showSReviewPopup, setShowSReviewPopup] = useState(false); //  판매자 작성 리뷰
+
+  // 구매 희망 버튼 클릭 시
+  const handleInterest = () => {
+    if (isBuyerConfirmed || isPurchased) {
+      return; // 거래가 완료되었거나 구매자가 확정된 경우 버튼 클릭을 막음
+    }
+
+    const newBuyerId = "buyer" + Math.floor(Math.random() * 10000); // 랜덤 ID 생성
+    if (!interestedBuyers.some((buyer) => buyer.id === newBuyerId)) {
+      const newBuyer = {
+        id: newBuyerId,
+        name: `구매자 ${interestedBuyers.length + 1}`,
+      };
+      setInterestedBuyers((prevBuyers) => [...prevBuyers, newBuyer]);
+    }
+  };
 
   // 구매 확정 버튼 클릭 시
   const handleConfirmBuyer = (buyerId) => {
-    setSelectedBuyer(buyerId);
+    setSelectedBuyer(buyerId); // 구매 확정한 사람의 ID 저장
     setIsBuyerConfirmed(true); // 버튼 비활성화 상태로 변경
   };
 
@@ -36,6 +41,18 @@ const UserNegoChat = ({ product, user }) => {
   const handlePurchaseConfirm = () => {
     setIsPurchased(true); // 거래가 완료되면 상태 변경
     setIsBuyerConfirmed(true); // 거래가 완료되면 구매 확정 버튼도 비활성화
+    setShowSReviewPopup(true); // 거래 완료 후 리뷰 팝업 띄우기
+  };
+
+  // 리뷰 제출
+  const handleReviewSubmit = (reviewData) => {
+    setReviews([...reviews, reviewData]);
+    handleCloseReviewPopup();
+  };
+
+  // 리뷰 닫기
+  const handleCloseReviewPopup = () => {
+    setShowSReviewPopup(false);
   };
 
   // 채팅 시작 버튼 클릭 시 활성화/비활성화 토글
@@ -70,10 +87,11 @@ const UserNegoChat = ({ product, user }) => {
       <div className="product-footer">
         {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
         {user.id !== product.seller && (
-          <button className="interest-button"
-        onClick={handleInterest}
-        disabled={isBuyerConfirmed || isPurchased} // 거래 완료되거나 구매자가 확정되면 비활성화
-      >
+          <button
+            className="interest-button"
+            onClick={handleInterest}
+            disabled={isBuyerConfirmed || isPurchased} // 거래 완료되거나 구매자가 확정되면 비활성화
+          >
             구매 희망
           </button>
         )}
@@ -85,15 +103,22 @@ const UserNegoChat = ({ product, user }) => {
                 interestedBuyers.map((buyer) => (
                   <li key={buyer.id} className="buyer-item">
                     <span>{buyer.name}</span>
-                    <button
-                      onClick={() => handleConfirmBuyer(buyer.id)}
-                      disabled={isBuyerConfirmed || isPurchased} // 거래 완료되면 비활성화
-                      className={
-                        isBuyerConfirmed || isPurchased ? "disabled-button" : ""
-                      }
-                    >
-                      구매 확정
-                    </button>
+
+                    {selectedBuyer === buyer.id ? ( // 선택된 구매자만 "거래 확정됨" 표시
+                      <span className="confirmed-text">거래 확정됨</span>
+                    ) : (
+                      <button
+                        onClick={() => handleConfirmBuyer(buyer.id)}
+                        disabled={isBuyerConfirmed || isPurchased} // 거래 완료되면 비활성화
+                        className={
+                          isBuyerConfirmed || isPurchased
+                            ? "disabled-button"
+                            : ""
+                        }
+                      >거래 확정
+                        <IoCheckboxOutline />
+                      </button>
+                    )}
                     <button onClick={() => handleStartChat(buyer.id)}>
                       {activeChat === buyer.id ? "채팅 닫기" : "채팅 시작"}
                     </button>
@@ -157,8 +182,17 @@ const UserNegoChat = ({ product, user }) => {
         </div>
       )}
 
-      {/* 거래 완료 후 초록색 텍스트와 함께 상태 표시 */}
-      {isPurchased && isBuyerConfirmed && (
+      {/* 거래 완료 후 리뷰 팝업 자동 표시 */}
+      {selectedBuyer && showSReviewPopup && (
+        <SReviewPopup
+       onClose={handleCloseReviewPopup}
+      onSubmit={handleReviewSubmit}
+      showPopup={setShowSReviewPopup}
+      />
+      )}
+
+      {/* 거래 완료 후 상태 표시 */}
+      {isPurchased && (
         <div className="purchase-confirmation">
           <h3>거래가 완료되었습니다!</h3>
         </div>

@@ -15,7 +15,6 @@ const MainPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   return (
     <div>
-      {/* <h1>메인 페이지</h1> */}
       <Header />
       <Advertise />
       {selectedProduct ? (

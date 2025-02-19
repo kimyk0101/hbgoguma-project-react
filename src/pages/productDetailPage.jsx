@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "../css/productDetailPage.css";
 import UserNegoChat from "../components/userNegoChat.jsx"; // 채팅 컴포넌트 임포트
-// import "../css/sellerReviewPage.css"; 리뷰
+import { MdOutlineBackspace } from "react-icons/md";  //  뒤로가기
 
 const ProductDetailPage = ({ onBack, product }) => {
   const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
   const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
 
-  //신고 기능
+  
   // 신고 사유 목록
   const reportReasons = [
     "허위 매물",
@@ -50,7 +50,7 @@ const ProductDetailPage = ({ onBack, product }) => {
   
   // 더미데이터
   const product1 = {
-    description: "상품1 팝니다, 11111111111111111111111111111111111111111111111111111111111111111111111111",
+    description: "상품1 팝니다, 111111111111111111111111111111111111111111111111",
    
   };
 
@@ -74,7 +74,7 @@ const ProductDetailPage = ({ onBack, product }) => {
 
         <div className="product-right">
           <button onClick={onBack} className="back-button">
-            ← 뒤로가기
+          <MdOutlineBackspace />
           </button>
           <h2 className="product-title">{product.title}</h2>
           <p className="product-description">{product1.description}</p>
@@ -117,7 +117,7 @@ const ProductDetailPage = ({ onBack, product }) => {
         </div>
       )}
 
-      <UserNegoChat product={product} user={user} />
+      <UserNegoChat onBack={onBack} product={product} user={user} />
     </div>
   );
 };
