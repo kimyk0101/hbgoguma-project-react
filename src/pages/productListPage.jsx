@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/productListPage.css";
 
 const regions = ["전체", "강남구", "서초구"];
@@ -42,16 +42,36 @@ const CATEGORY_ID = {
   15: "기타",
 };
 
+const GogumaPost = {
+  pid: 1, //  게시글 번호
+  uid: 1, //  작성자 id
+  selectedUid: 2, //  구매확정자 id
+  locaGu: 1,
+  locaDong: 1,
+  postTitle: "아이폰 14 팝니다",
+  postPhoto: "../resources/images/iphone14.png",
+  postContent: "아이폰 14 싸게 팔아요1111111111111",
+  postCategory: 0,
+  reportCnt: 0, //  해당 게시글 신고 횟수
+  postUpdate: "2025-02-19",
+};
+
 const products = [
   {
-    id: 1,
-    image: "../resources/images/iphone14.png",
-    title: "아이폰14",
-    price: "₩1,200,000",
-    seller: "김연경",
-    region: "강남구",
-    category: CATEGORY_ID[0],
+    pid: 1, //  게시글 번호
+    uid: 1, //  작성자 id
+    selectedUid: 2, //  구매확정자 id
+    locaGu: 1,
+    locaDong: 1,
+    price: 1200000,
+    postTitle: "아이폰 14 팝니다",
+    postPhoto: "../resources/images/iphone14.png",
+    postContent: "아이폰 14 싸게 팔아요1111111111111",
+    postCategory: CATEGORY_ID[1],
+    reportCnt: 0, //  해당 게시글 신고 횟수
+    postUpdate: "2025-02-19",
   },
+
   {
     id: 2,
     image: "https://via.placeholder.com/150",
@@ -165,11 +185,32 @@ const products = [
 const ITEMS_PER_PAGE = 12;
 
 const ProductListPage = ({ onSelectProduct }) => {
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedRegion, setSelectedRegion] = useState("전체");
+  const [currentPage, setCurrentPage] = useState(1);
 
+  //서버에서 데이터 가져오기
+  useEffect(() => {
+    fetch("http://localhost:18090/api/gogumapost") // 여기에 실제 API 입력
+      .then((response) => response.json())
+      .then((data) => {
+        const mappedData = data.map((item) => ({
+          id: pid, // 서버에서 받은 상품 ID
+          title: postTitle, // 제목
+          price: price || "가격 미정", // 가격 (백엔드에 따라 수정)
+          category: item.postCategory, // 카테고리
+          region: locaGu, // 지역 (구 정보만 사용)
+          image: postPhoto, // 상품 이미지
+          seller: uid, // 판매자 UID
+        }));
+        setProducts(mappedData);
+      })
+      .catch((error) => console.error("데이터 불러오기 실패:", error));
+  }, []);
+
+  // 필터링된 상품 리스트
   const filteredProducts = products.filter(
     (product) =>
       (selectedRegion === "전체" || product.region === selectedRegion) &&
@@ -177,16 +218,13 @@ const ProductListPage = ({ onSelectProduct }) => {
       product.title.includes(searchTerm)
   );
 
+  // 페이지네이션 계산
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedProducts = filteredProducts.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
-  // 상품 클릭 시 상세 페이지 이동
-  const goToDetailPage = (productId) => {
-    window.location.href = `/productDetail.html?id=${productId}`;
-  };
 
   return (
     <div className="container">
@@ -226,7 +264,10 @@ const ProductListPage = ({ onSelectProduct }) => {
                 name="category"
                 value={category}
                 checked={selectedCategory === category}
-                onChange={() => setSelectedCategory(category)}
+                onChange={() => {
+                  setSelectedCategory(category);
+                  setCurrentPage(1);
+                }}
               />
               {category}
             </label>
@@ -236,11 +277,10 @@ const ProductListPage = ({ onSelectProduct }) => {
         {/* 상품 리스트 */}
         <section className="product-list">
           {displayedProducts.map((product) => (
-            // <Link to={`/product/${product.id}`} key={product.id} className="product-card">
             <div
               key={product.id}
               className="product-card"
-              onClick={() => onSelectProduct(product)} // 클릭하면 상세 페이지로 이동
+              onClick={() => onSelectProduct(product)}
               style={{ cursor: "pointer" }}
             >
               <img src={product.image} alt={product.title} />
@@ -250,10 +290,10 @@ const ProductListPage = ({ onSelectProduct }) => {
               <p className="region">{product.region}</p>
               <p className="category">{product.category}</p>
             </div>
-            // </Link>
           ))}
         </section>
       </div>
+
       {/* 페이지네이션 버튼 */}
       <div className="pagination">
         <button
