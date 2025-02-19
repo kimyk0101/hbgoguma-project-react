@@ -45,7 +45,7 @@ const CATEGORY_ID = {
 const products = [
   {
     id: 1,
-    image: "../images/iphone14.png",
+    image: "../resources/images/iphone14.png",
     title: "아이폰14",
     price: "₩1,200,000",
     seller: "김연경",
