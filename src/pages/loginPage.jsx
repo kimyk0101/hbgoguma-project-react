@@ -6,7 +6,7 @@ import dummyUsers from "./dummyUsers";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     password: "",
   });
   const [error, setError] = useState("");
@@ -26,13 +26,21 @@ const LoginPage = () => {
 
     // 더미 데이터에서 유저 찾기
     const user = dummyUsers.find(
-      (u) =>
-        u.username === formData.username && u.password === formData.password
+      (u) => u.name === formData.name && u.password === formData.password
     );
+
+    // 더미 데이터에서 유저 찾기 (이메일 기반)
+    // const user = dummyUsers.find(
+    //   (u) => u.email === formData.email && u.password === formData.password
+    // );
 
     if (user) {
       alert(`환영합니다, ${user.nickname}님!`);
-      localStorage.setItem("loggedInUser", user.username); // 로그인한 사용자 저장
+      // localStorage.setItem("loggedInUser", user.username); // 로그인한 사용자 저장
+      localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify({ uid: user.uid, name: user.name })
+      ); //로그인 유저 저장
       navigate("/userInfo"); // 유저 상세 페이지로 이동
     } else {
       setError("아이디 또는 비밀번호가 올바르지 않습니다.");
@@ -63,10 +71,8 @@ const LoginPage = () => {
         <input
           type="text"
           placeholder="아이디를 입력하세요"
-          value={formData.username}
-          onChange={(e) =>
-            setFormData({ ...formData, username: e.target.value })
-          }
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
 
         <label>비밀번호:</label>

@@ -5,7 +5,6 @@ import dummyUsers from "./dummyUsers";
 
 export default function UserInfoPage() {
   const [selectedTab, setSelectedTab] = useState("판매 중인 상품");
-  // const [ciderScore, setCiderScore] = useState(75);
   // const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
@@ -14,13 +13,14 @@ export default function UserInfoPage() {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
-  // 파일 업로드 핸들러
-  const handleImageUpload = (e, setImageFunc) => {
+  // 파일 업로드 핸들러(썸네일 저장)
+  const handleImageUpload = (e, setImageFunc, storageKey) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageFunc(reader.result);
+        localStorage.setItem(storageKey, reader.result); // 이미지 저장
       };
       reader.readAsDataURL(file);
     }
@@ -28,16 +28,33 @@ export default function UserInfoPage() {
 
   useEffect(() => {
     // 더미 데이터에서 로그인된 사용자 정보 가져오기
-    const loggedInUsername = localStorage.getItem("loggedInUser");
-    if (loggedInUsername) {
-      const loggedInUser = dummyUsers.find(
-        (u) => u.username === loggedInUsername
-      );
+    // const loggedInUsername = localStorage.getItem("loggedInUser");
+    const storedUser = localStorage.getItem("loggedInUser");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser); // JSON 파싱
+      const loggedInUser = dummyUsers.find((u) => u.uid === parsedUser.uid); // uid로 검색
       setCurrentUser(loggedInUser || null);
+
+      // localStorage에서 썸네일 이미지 불러오기
+      const savedThumbnail = localStorage.getItem(
+        `thumbnail_${loggedInUser?.uid}`
+      );
+      if (savedThumbnail) setThumbnail(savedThumbnail);
     }
   }, []);
 
+  //   if (loggedInUsername) {
+  //     const loggedInUser = dummyUsers.find(
+  //       (u) => u.username === loggedInUsername
+  //     );
+  //     setCurrentUser(loggedInUser || null);
+  //   }
+  // }, []);
+
   if (!currentUser) return <p>사용자 정보를 불러오는 중...</p>;
+
+  // 🔹 게이지 바의 너비를 계산하여 백분위(%) 값에 맞게 조정 (최대 100%)
+  const gaugeWidth = `${Math.min(currentUser?.userRate / 100, 100)}%`;
 
   return (
     <div className="container">
@@ -47,7 +64,10 @@ export default function UserInfoPage() {
         <label className="hidden-file-input">
           <input
             type="file"
-            onChange={(e) => handleImageUpload(e, setThumbnail)}
+            // onChange={(e) => handleImageUpload(e, setThumbnail)}
+            onChange={(e) =>
+              handleImageUpload(e, setThumbnail, `thumbnail_${currentUser.uid}`)
+            }
           />
           <div className="thumb-box">
             {thumbnail ? (
@@ -60,13 +80,15 @@ export default function UserInfoPage() {
 
         {/* 사용자 정보 */}
         <div className="user-info">
-          <span className="nickname">{currentUser.nickname}</span>
+          <span className="nickname">{currentUser?.nickname}</span>
           <div className="cider-bar-container">
-            <span>{currentUser.ciderScore}%</span>
+            <span>{(currentUser?.userRate / 100).toFixed(2)}%</span>
             <div className="cider-bar">
               <div
                 className="cider-fill"
-                style={{ width: `${currentUser.ciderScore}%` }}
+                // style={{ width: `${currentUser.userRate}%` }}
+                style={{ width: gaugeWidth }}
+                // style={{ width: `${currentUser?.userRate}%` }}
               ></div>
             </div>
           </div>
@@ -78,12 +100,12 @@ export default function UserInfoPage() {
           <div className="stats">
             <p>📦 판매: 15회</p>
             <p>🛒 구매: 8회</p>
-            <p>💰 포인트: 3,500P</p>
+            <p>💰 포인트: {currentUser?.point.toLocaleString()}P</p>
             {/* <p>📦 판매: {user.salesCount}회</p>
               <p>🛒 구매: {user.purchaseCount}회</p>
-              <p>💰 포인트: {user.points}P</p> */}
+              <p>💰 포인트: {currentUser.point}P</p> */}
           </div>
-          <button type="button" onClick={() => navigate("/mainPage")}>
+          <button type="button" onClick={() => navigate("/")}>
             메인으로
           </button>
         </div>
