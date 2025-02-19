@@ -1,0 +1,32 @@
+services:
+  frontend:
+    platform: linux/x86_64
+    image: mrdos89/hbgoguma-project:latest
+    container_name: hbgoguma-container
+    ports:
+      - "80:80"
+    networks:
+      - my-network
+  api-server:
+    platform: linux/x86_64
+    image: mrdos89/hbgogumaserver:latest
+    container_name: hbgogumaserver-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://192.168.0.61:3306/${MYSQL_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "18090:8090"
+    networks:
+      - my-network
+      
+networks:
+  my-network:
+    external: true # 기존 네트워크에 합류 true
+
+# run
+# docker compose --env-file .env up -d
+
+# 서비스 종료
+# docker compose down
+
