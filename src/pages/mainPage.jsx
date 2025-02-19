@@ -9,6 +9,7 @@ import UserNegoChat from "../components/userNegoChat";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import SellProductPage from "./sales";
+import Advertise from "../components/advertise";
 
 const MainPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -16,6 +17,7 @@ const MainPage = () => {
     <div>
       {/* <h1>메인 페이지</h1> */}
       <Header />
+      <Advertise />
       {selectedProduct ? (
         <ProductDetailPage
           product={selectedProduct}
