@@ -121,7 +121,7 @@
 }
 
 .message-text {
-  max-width: 200px;
+  max-width: 330px;
   padding: 10px;
   border-radius: 10px;
   background-color: #fff;
@@ -132,13 +132,34 @@
   margin-left: 55px;
   margin-top: -18px;
   background-color: #d1e7ff;
+  color: black;
+  font-size: 18px;
 }
 
 .chat-message.seller .message-text {
   margin-right: 55px;
   margin-top: -18px;
   background-color: #ffdbdb;
+  color: black;
+  font-size: 18px;
 }
+
+.message-time {
+  font-size: 10px;
+  color: gray; /* 시간을 조금 더 흐리게 표시 */
+  margin-left: 5px; /* 메시지와 시간 사이에 간격 추가 */
+}
+
+/* 판매자와 구매자의 메시지 스타일 구분 */
+.chat-message.buyer .message-time {
+  margin-left: 385px; 
+}
+
+.chat-message.seller .message-time {
+  margin-right: 385px; 
+}
+
+
 
 .chat-input {
   display: flex;

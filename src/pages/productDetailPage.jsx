@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import "../css/productDetailPage.css";
 import UserNegoChat from "../components/userNegoChat.jsx"; // 채팅 컴포넌트 임포트
-import { MdOutlineBackspace } from "react-icons/md";  //  뒤로가기
+import { MdOutlineBackspace } from "react-icons/md"; //  뒤로가기
 
-const ProductDetailPage = ({ onBack, product }) => {
+const ProductDetailPage = ({ onBack }) => {
   const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
   const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
 
-  
   // 신고 사유 목록
   const reportReasons = [
     "허위 매물",
@@ -47,11 +46,89 @@ const ProductDetailPage = ({ onBack, product }) => {
     alert("신고가 접수되었습니다.");
     handleCloseReportPopup();
   };
-  
-  // 더미데이터
-  const product1 = {
-    description: "상품1 팝니다, 111111111111111111111111111111111111111111111111",
-   
+
+  // ENUM 정의
+  const PostCategory = {
+    0: "디지털기기",
+    1: "가구/인테리어",
+    2: "유아동",
+    3: "의류",
+    4: "잡화",
+    5: "생활가전",
+    6: "생활/주방",
+    7: "스포츠/레저",
+    8: "취미/게임/음반",
+    9: "뷰티/미용",
+    10: "식물",
+    11: "식품",
+    12: "반려동물",
+    13: "티켓/교환권",
+    14: "도서",
+    15: "기타",
+  };
+
+  // 강남구와 서초구에 대한 ENUM 정의
+  const Gu = {
+    0: "강남구",
+    1: "서초구",
+  }
+
+  const Dong = {
+    0: "개포1동",
+    1: "개포2동",
+    2: "개포3동",
+    3: "개포4동",
+    4: "논현1동",
+    5: "논현2동",
+    6: "대치1동",
+    7: "대치2동",
+    8: "대치4동",
+    9: "도곡1동",
+    10: "도곡2동",
+    11: "삼성1동",
+    12: "삼성2동",
+    13: "세곡동",
+    14: "수서동",
+    15: "신사동",
+    16: "압구정동",
+    17: "역삼1동",
+    18: "역삼2동",
+    19: "일원1동",
+    20: "일원본동",
+    21: "청담동",
+    22: "내곡동",
+    23: "반포1동",
+    24: "반포2동",
+    25: "반포3동",
+    26: "반포4동",
+    27: "반포본동",
+    28: "방배1동",
+    29: "방배2동",
+    30: "방배3동",
+    31: "방배4동",
+    32: "방배본동",
+    33: "서초1동",
+    34: "서초2동",
+    35: "서초3동",
+    36: "서초4동",
+    37: "양재1동",
+    38: "양재2동",
+    39: "잠원동",
+  };
+
+  // 더미 데이터 (서버에서 불러온다고 가정)
+  const GogumaPost = {
+    pid: 1,
+    uid: 1,
+    selectedUid: 2,
+    locaGu: 1,
+    locaDong: 1,
+    postTitle: "아이폰 14 팝니다",
+    postPhoto: "../resources/images/iphone14.png",
+    postContent: "아이폰 14 싸게 팔아요!",
+    postCategory: 0,
+    reportCnt: 0,
+    postUpdate: "2025-02-19",
   };
 
   const user = { id: "buyer123" }; // 현재 로그인한 사용자 (판매자가 아니라면 구매자로 간주)
@@ -61,31 +138,33 @@ const ProductDetailPage = ({ onBack, product }) => {
       <div className="product-detail">
         <div className="product-left">
           <img
-            src={product.image}
-            alt={product.title}
+            src={GogumaPost.postPhoto}
+            alt={GogumaPost.postTitle}
             className="product-image"
           />
           <div className="seller-info">
-            <p>판매자: {product.seller}</p>
-            <p>거래 희망 지역: {product.location}</p>
-            <p>카테고리: {product.category}</p>
+            <p>판매자: {GogumaPost.uid}</p>
+            <p>
+              거래 희망 지역: {Gu[GogumaPost.locaGu]},{" "}
+              {Dong[GogumaPost.locaDong]}
+            </p>
+            <p>카테고리: {PostCategory[GogumaPost.postCategory]}</p>
           </div>
         </div>
 
         <div className="product-right">
           <button onClick={onBack} className="back-button">
-          <MdOutlineBackspace />
+            <MdOutlineBackspace />
           </button>
-          <h2 className="product-title">{product.title}</h2>
-          <p className="product-description">{product1.description}</p>
+          <h2 className="product-title">{GogumaPost.postTitle}</h2>
+          <p className="product-description">{GogumaPost.postContent}</p>
         </div>
       </div>
-      <p className="product-description">{product.description}</p>
-          {/* 신고하기 버튼 */}
-          <button className="report-button" onClick={handleOpenReportPopup}>
-            🚨 신고하기
-          </button>
-          {/* 신고 팝업 */}
+      {/* 신고하기 버튼 */}
+      <button className="report-button" onClick={handleOpenReportPopup}>
+        🚨 신고하기
+      </button>
+      {/* 신고 팝업 */}
       {showReportPopup && (
         <div className="report-popup">
           <div className="popup-content">
@@ -117,7 +196,7 @@ const ProductDetailPage = ({ onBack, product }) => {
         </div>
       )}
 
-      <UserNegoChat onBack={onBack} product={product} user={user} />
+      <UserNegoChat onBack={onBack} user={user} GogumaPost={GogumaPost} />
     </div>
   );
 };
