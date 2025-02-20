@@ -16,13 +16,10 @@
   border: none;
   padding: 25px 15px;
   cursor: pointer;
-  margin: 0 auto; 
   border-radius: 8px;
-
-  /* 텍스트를 가운데로 정렬하기 위한 Flexbox 설정 */
   display: flex;
-  justify-content: center; /* 가로로 가운데 정렬 */
-  align-items: center; /* 세로로 가운데 정렬 */
+  justify-content: center;
+  align-items: center; 
 }
 
 
@@ -30,14 +27,21 @@
   background-color: #F4A261;;
 }
 
-
 .nego-interested-buyers {
   margin-top: 10px;
 }
 
+.nego-interested-buyers p {
+  text-align: left;
+}
+
+.nego-interested-buyers ul {
+  all: unset;
+}
+
 /* 구매희망자 */
 .nego-buyer-item {
-  display: inline-block; /* flex 사용 시 채팅 박스 오른쪽에 위치 */
+  display: inline-block; 
   font-size: 16px;
   width: 100%; 
   margin-bottom: 5px;
@@ -200,6 +204,24 @@
 
 
 /* 구매자 확정 팝업 스타일 */
+/* 상세 페이지 블러 처리 */
+.nego-detail-container.blur {
+  filter: blur(5px); /* 블러 효과 적용 */
+  pointer-events: none; /* 블러 처리된 요소 클릭 방지 */
+}
+
+/* 리뷰 팝업 스타일 (변경 없음) */
+.nego-review-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 20;
+}
+
 .nego-purchase-popup {
   position: fixed;
   top: 0;

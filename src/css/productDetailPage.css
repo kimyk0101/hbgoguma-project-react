@@ -1,8 +1,14 @@
-/* 뒤로가기 버튼 위치 조정 */
+.detail-product-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 뒤로가기 버튼 */
 .detail-back-button {
-  position: absolute;
+  align-self: flex-end; 
   width: 80px;
   height: 60px;
+  margin-top: 10px;
   top: 10px;
   right: 10px;
   background-color: transparent;
@@ -18,61 +24,114 @@
 }
 
 /* 상품 상세 */
-.detail-product-detail {
+.detail-product-body {
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  position: relative;
+  justify-content: space-between; 
 }
 
+/* 상품 상세 왼쪽 */
 .detail-product-left {
-  width: 40%;
+  width: 45%;
   margin-right: 20px;
   position: relative;
 }
 
 .detail-product-image {
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 25px;
   width: 100%;
   height: auto;
+  margin-bottom: 30px;
 }
 
 .detail-seller-info {
-  font-size: 25px;
-  position: relative; 
-  bottom: 8px; 
-  padding-bottom: 5px; 
+  font-size: 20px; 
+  text-align: left;
+  position: relative;
+  padding-bottom: 5px;
   letter-spacing: 2px; 
-  line-height: 2px; 
+  line-height: 5px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
 }
 
+.detail-seller-left {
+  display: flex;
+  align-items: center;
+}
 
+.detail-seller-left img {
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%; 
+  margin-right: 10px; 
+}
+
+.detail-seller-left p {
+  line-height: 25px; 
+  margin: 0; 
+}
+
+.detail-seller-left .detail-nickname {
+  font-weight: bold; 
+}
+
+.detail-seller-left .detail-location {
+  font-size: 14px; 
+}
+
+.detail-seller-right {
+  font-weight: bold; 
+}
+
+/* 상품 상세 오른쪽 */
 .detail-product-right {
-  width: 55%;
+  text-align: left;
+  width: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
 }
 
 .detail-product-title {
-  font-size: 60px;
+  font-size: 35px;
+  font-weight: bold;
+  margin: 0 0 3px 0;
+}
+
+.detail-product-category {
+  font-size: 14px;
+  color: #4A4A4A; 
   margin-bottom: 10px;
+  margin-top: -3px;
+}
+
+.detail-product-price {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .detail-product-description {
-  font-size: 20px;
-  text-align: left;
+  font-size: 18px;
   margin-bottom: 20px;
 }
 
 /* 신고버튼 */
 .detail-report-button {
+  width: auto;
+  height: auto;
+  font-size: 13px;
   background-color: #ff4d4d;
   color: white;
-  border: none;
-  padding: 8px 12px;
+  padding: 8px 10px;
+  border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 50px;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
 }
 
 .detail-report-button:hover {
@@ -81,6 +140,8 @@
 
 .detail-report-popup {
   position: fixed;
+  width: 300px;
+  height: 180px;
   border: 1px solid black;
   top: 50%;
   left: 50%;
@@ -97,31 +158,36 @@
 }
 
 .detail-popup-buttons {
-  margin-top: 10px;
+  margin-top: 15px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 3px;
 }
 
-.detail-report-popup .submit-button {
+.detail-submit-button {
+  width: auto;
   background-color: #ff4d4d; 
   color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 15px;
 }
 
-.detail-report-popup .submit-button:hover {
+.detail-submit-button:hover {
   background-color: #d93636;
 }
 
 .detail-cancel-button {
+  width: auto;
   background-color: gray;
   color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .detail-cancel-button:hover {

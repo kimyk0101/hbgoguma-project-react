@@ -5,16 +5,16 @@ import "../css/advertise.css";
 const adData = [
   {
     type: "image",
-    src: "../resources/images/nike.png/800x300",
+    src: "src/resources/images/nike.png",
   },
   {
     type: "image",
-    src: "../resources/images/phone16.png/800x300",
+    src: "src/resources/images/iphone16.png",
   },
   { type: "video", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
   {
     type: "image",
-    src: "../resources/images/lg_gram.png/800x300",
+    src: "src/resources/images/lg_gram.png",
   },
 ];
 

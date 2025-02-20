@@ -43,3 +43,8 @@
     background: rgba(0, 0, 0, 0.8);
   }
   
+  /* 광고 사진 크기 임의 값 */
+  .ad-content img {
+    width: 300px;
+    height: 176px;
+  }
