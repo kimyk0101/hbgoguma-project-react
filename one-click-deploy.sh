@@ -1,8 +1,9 @@
 # !/src/sh
+#!주의) 빌드 도커 배포용 코드 + mac 용이니 실행 하지 마세요.
 
-# docker에서 push 받아옴
-docker push mrdos89/hbgogumaserver:latest
-docker push mrdos89/hbgoguma-project:latest
+# docker에서 push 올림
+docker push mrdos89/hbgogumaserver
+docker push mrdos89/hbgoguma-project
 
 # compose 폴더에서 .env에 맞춰 docker compose 실행
 cd compose
