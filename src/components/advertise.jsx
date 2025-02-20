@@ -14,7 +14,7 @@ const adData = [
   { type: "video", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
   {
     type: "image",
-    src: "src/resources/images/lg_gram.png",
+    src: "src/resources/images/lggram.png",
   },
 ];
 
@@ -28,21 +28,21 @@ const Advertise = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + adData.length) % adData.length
-    );
-  };
+  // const prevSlide = () => {
+  //   setCurrentIndex(
+  //     (prevIndex) => (prevIndex - 1 + adData.length) % adData.length
+  //   );
+  // };
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % adData.length);
-  };
+  // const nextSlide = () => {
+  //   setCurrentIndex((prevIndex) => (prevIndex + 1) % adData.length);
+  // };
 
   return (
     <div className="ad-slider-container">
-      <button className="prev-button" onClick={prevSlide}>
+      {/* <button className="prev-button" onClick={prevSlide}>
         &#10094;
-      </button>
+      </button> */}
       <div className="ad-content">
         {adData[currentIndex].type === "image" ? (
           <img
@@ -59,10 +59,42 @@ const Advertise = () => {
             className="ad-video"
           ></video>
         )}
+         {adData[currentIndex].type === "image" ? (
+          <img
+            src={adData[currentIndex].src}
+            alt="광고 이미지"
+            className="ad-image"
+          />
+        ) : (
+          
+          <video
+            src={adData[currentIndex].src}
+            autoPlay
+            loop
+            muted
+            className="ad-video"
+          ></video>
+        )}
+         {adData[currentIndex].type === "image" ? (
+          <img
+            src={adData[currentIndex].src}
+            alt="광고 이미지"
+            className="ad-image"
+          />
+        ) : (
+          <video
+            src={adData[currentIndex].src}
+            autoPlay
+            loop
+            muted
+            className="ad-video"
+          ></video>
+        )}
+        
       </div>
-      <button className="next-button" onClick={nextSlide}>
+      {/* <button className="next-button" onClick={nextSlide}>
         &#10095;
-      </button>
+      </button> */}
     </div>
   );
 };

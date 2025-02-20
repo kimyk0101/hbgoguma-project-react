@@ -234,6 +234,11 @@ const popularKeywords = [
   "에어팟",
   "갤럭시",
   "닌텐도",
+  "다이소",
+  "레고",
+  "패딩",
+  "자전거",
+  "삼성"
 ];
 
 const ITEMS_PER_PAGE = 12;
@@ -243,7 +248,7 @@ const ProductListPage = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [selectedRegion, setSelectedRegion] = useState("전체");
-const [selectedDong, setSelectedDong] = useState("전체");
+  const [selectedDong, setSelectedDong] = useState("전체");
   const filteredDongs = selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
   const filteredProducts = products.filter(
     (product) =>

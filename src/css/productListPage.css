@@ -16,7 +16,28 @@
     outline: none;
     margin-bottom: 20px;
   }
-  
+  /* 인기검색어 */
+  .Listpopular-keywords {
+    font-size: 14px;
+    display: flex;
+    button {
+        background-color: white;
+        border: white;
+        color: #ff8c00;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        
+      }
+    button:hover {
+      background-color: #ff8c00;
+      color: white;
+    }
+  }
+
+
+
   /* 메인 콘텐츠 영역 */
   .Listcontent {
     display: flex;
