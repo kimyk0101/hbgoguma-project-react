@@ -71,7 +71,7 @@ const ProductDetailPage = ({ onBack }) => {
   const Gu = {
     0: "강남구",
     1: "서초구",
-  }
+  };
 
   const Dong = {
     0: "개포1동",

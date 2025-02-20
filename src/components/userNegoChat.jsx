@@ -210,13 +210,12 @@
 
 // export default UserNegoChat;
 
-
 import React, { useState, useEffect } from "react";
 import "../css/userNegoChat.css";
 import SReviewPopup from "../pages/sellerReviewPage.jsx";
 import { IoCheckboxOutline } from "react-icons/io5";
 
-// 채팅 데이터 종류 
+// 채팅 데이터 종류
 // long cid	- 채팅id
 // long pid	- 게시글id
 // long buyer_uid 	- 구매자id
@@ -295,7 +294,10 @@ const UserNegoChat = ({ user, GogumaPost }) => {
       send_uid: isUser1 ? user.id : selectedBuyer, // 보낸 메시지 ID
       receive_uid: isUser1 ? selectedBuyer : user.id, // 받는 메시지 ID
       chatContent: inputMessage,
-      updateTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // 시간만 반환 (예: "14:32")
+      updateTime: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }), // 시간만 반환 (예: "14:32")
     };
 
     setMessages([...messages, newMessage]);
@@ -336,7 +338,8 @@ const UserNegoChat = ({ user, GogumaPost }) => {
                             ? "disabled-button"
                             : ""
                         }
-                      >거래 확정
+                      >
+                        거래 확정
                         <IoCheckboxOutline />
                       </button>
                     )}
@@ -354,12 +357,22 @@ const UserNegoChat = ({ user, GogumaPost }) => {
                               }`}
                             >
                               <img
-                                src={msg.send_uid === user.id ? "https://www.w3schools.com/w3images/avatar2.png" : "https://www.w3schools.com/howto/img_avatar.png"}
-                                alt={msg.send_uid === user.id ? "판매자" : "구매자"}
+                                src={
+                                  msg.send_uid === user.id
+                                    ? "https://www.w3schools.com/w3images/avatar2.png"
+                                    : "https://www.w3schools.com/howto/img_avatar.png"
+                                }
+                                alt={
+                                  msg.send_uid === user.id ? "판매자" : "구매자"
+                                }
                                 className="profile-img"
                               />
-                              <div className="message-text">{msg.chatContent}</div>
-                              <div className="message-time">{msg.updateTime}</div>
+                              <div className="message-text">
+                                {msg.chatContent}
+                              </div>
+                              <div className="message-time">
+                                {msg.updateTime}
+                              </div>
                             </div>
                           ))}
                         </div>
