@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/userNegoChat.css";
 import SReviewPopup from "../pages/sellerReviewPage.jsx";
 import { IoCheckboxOutline } from "react-icons/io5";
+import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 있는 고구마
 
 // 채팅 데이터 종류
 // long cid	- 채팅id
@@ -113,6 +114,7 @@ const UserNegoChat = ({ user, GogumaPost }) => {
               {interestedBuyers.length > 0 ? (
                 interestedBuyers.map((buyer) => (
                   <li key={buyer.id} className="nego-buyer-item">
+                    <div className="nego-button-container">
                     <span>{buyer.name}</span>
 
                     {selectedBuyer === buyer.id ? ( // 선택된 구매자만 "거래 확정됨" 표시
@@ -128,12 +130,21 @@ const UserNegoChat = ({ user, GogumaPost }) => {
                         }
                       >
                         거래 확정
-                        <IoCheckboxOutline />
+                        <IoCheckboxOutline className="nego-chat-icon" />
                       </button>
                     )}
                     <button onClick={() => handleStartChat(buyer.id)}>
-                      {activeChat === buyer.id ? "채팅 닫기" : "채팅 시작"}
+                      <span className="nego-chat-text">
+                        {activeChat === buyer.id ? "채팅 닫기" : "호박고구마톡"}
+                      </span>
+
+                      <img
+                        src={spFilled}
+                        alt="고구마 아이콘"
+                        className="nego-chat-icon"
+                      />
                     </button>
+                    </div>
                     {activeChat === buyer.id && (
                       <div className="nego-chat-container">
                         <div className="nego-chat-box">
@@ -209,13 +220,10 @@ const UserNegoChat = ({ user, GogumaPost }) => {
 
       {/* 거래 완료 후 리뷰 팝업 자동 표시 */}
       {selectedBuyer && showSReviewPopup && (
-        <>
-          <div className="nego-blur-background"></div>
           <SReviewPopup
             onClose={handleCloseReviewPopup}
             onSubmit={handleReviewSubmit}
           />
-        </>
       )}
 
       {/* 거래 완료 후 상태 표시 */}
