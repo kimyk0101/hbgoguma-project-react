@@ -367,16 +367,17 @@ const UserNegoChat = ({ user, GogumaPost }) => {
                                 }
                                 className="profile-img"
                               />
-                              <div className="message-text">
-                                {msg.chatContent}
-                              </div>
-                              <div className="message-time">
-                                {msg.updateTime}
+                              <div className="message-container">
+                                <div className="message-text">
+                                  {msg.chatContent}
+                                </div>
+                                <div className="message-time">
+                                  {msg.updateTime}
+                                </div>
                               </div>
                             </div>
                           ))}
                         </div>
-
                         <div className="chat-input">
                           <input
                             type="text"
