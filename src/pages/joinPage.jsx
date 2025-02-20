@@ -47,7 +47,7 @@ const JoinPage = () => {
     // setPasswordStrength(passwordRegex.test(password) ? "강함" : "약함");
     setPasswordStrength(
       passwordRegex.test(password)
-        ? "강함"
+        ? "보안성 : 강함"
         : "비밀번호는 8자 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다."
     );
   };
@@ -62,7 +62,7 @@ const JoinPage = () => {
     e.preventDefault();
     const nicknameRegex = /^[a-zA-Z0-9가-힣]+$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phoneRegex = /^\d{10}$/;
+    const phoneRegex = /^\d{11}$/;
 
     if (!formData.name) {
       alert("아이디를 입력하세요.");
@@ -227,7 +227,7 @@ const JoinPage = () => {
           value={formData.password}
           onChange={handlePasswordChange}
         />
-        <span>강도: {passwordStrength}</span>
+        <span>{passwordStrength}</span>
 
         <label>비밀번호 확인:</label>
         <input
@@ -246,8 +246,10 @@ const JoinPage = () => {
         <input
           type="text"
           placeholder="- 없이 숫자만 입력"
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          value={formData.telNumber}
+          onChange={(e) =>
+            setFormData({ ...formData, telNumber: e.target.value })
+          }
         />
 
         <label>이메일:</label>
