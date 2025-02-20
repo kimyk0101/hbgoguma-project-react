@@ -1,5 +1,5 @@
 docker pull mrdos89/hbgogumaserver:latest
-docker pull mrdos89/hbgoguma-project:latest
+@REM docker pull mrdos89/hbgoguma-project:latest
 
 cd compose
 docker compose down
