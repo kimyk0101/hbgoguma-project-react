@@ -2,6 +2,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import dummyUsers from "./dummyUsers";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import "../css/header.css";
+import "../css/footer.css";
 
 export default function UserInfoPage() {
   const [selectedTab, setSelectedTab] = useState("판매 중인 상품");
@@ -58,6 +62,7 @@ export default function UserInfoPage() {
 
   return (
     <div className="user-info-container">
+      <Header />
       {/* <button type="button" onClick={() => navigate("/")}> // 메인이동 버튼 잠시 보류
         메인으로
       </button> */}
@@ -82,8 +87,13 @@ export default function UserInfoPage() {
         </label>
 
         {/* 사용자 정보 */}
-        <div className="user-info">
+        <div className="user-info-details">
           <span className="nickname">{currentUser?.nickname}</span>
+          <span className="user-info-location">
+            {currentUser?.locaGu}
+            &nbsp;
+            {currentUser?.locaDong}
+          </span>
           <div className="user-info-cider-bar-container">
             <span>{(currentUser?.userRate / 100).toFixed(2)}%</span>
             <div className="user-info-cider-bar">
@@ -104,6 +114,11 @@ export default function UserInfoPage() {
             <p>📦 판매: 15회</p>
             <p>🛒 구매: 8회</p>
             <p>💰 포인트: {currentUser?.point.toLocaleString()}P</p>
+            <p>📧 이메일: {currentUser?.email}</p>
+            <p>📞 연락처: {currentUser?.telNumber}</p>
+            {/* <p>
+              📍 주소: {currentUser?.locaGu} {currentUser?.locaDong}
+            </p> */}
             {/* <p>📦 판매: {user.salesCount}회</p>
               <p>🛒 구매: {user.purchaseCount}회</p>
               <p>💰 포인트: {currentUser.point}P</p> */}
@@ -168,6 +183,7 @@ export default function UserInfoPage() {
         </div> */}
 
       <div className="user-info-tab-content">{selectedTab} 내용 표시</div>
+      <Footer />
     </div>
   );
 }

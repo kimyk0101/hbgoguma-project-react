@@ -78,8 +78,8 @@ const dummyUsers = [
     password: "tmdghks123",
     telNumber: "01012345678",
     email: "tmdghks@example.com",
-    locaGu: "1", // int
-    locaDong: "8", // int
+    locaGu: "강남구", // int
+    locaDong: "압구정동", // int
     thumbnail: "", // 이미지주소
     recommend_uid: 0,
     point: 20000,
