@@ -37,7 +37,7 @@
   }
   
   /* 사용자 정보 (닉네임 & 사이다 지수) */
-  .user-info {
+  .user-info-details {
     display: flex;
     flex-direction: column;
     align-items: center;

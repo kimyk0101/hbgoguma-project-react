@@ -178,9 +178,9 @@ const JoinPage = () => {
   // };
 
   return (
-    <div className="signup-container">
-      <h2>회원가입</h2>
-      <form onSubmit={handleSignup}>
+    <div className="join-container">
+      <h2 className="join-h2">회원가입</h2>
+      <form className="join-form" onSubmit={handleSignup}>
         <label>아이디:</label>
         <input
           type="text"
@@ -350,50 +350,3 @@ export default JoinPage;
 // };
 
 // export default JoinPage;
-
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-// const JoinPage = () => {
-//   const [formData, setFormData] = useState({
-//     username: "",
-//     name: "",
-//     nickname: "",
-//     password: "",
-//     confirmPassword: "",
-//     phone: "",
-//     email: "",
-//     location: "강남구",
-//     referrer: "",
-//   });
-//   const [passwordStrength, setPasswordStrength] = useState("");
-//   const [isEmailVerified, setIsEmailVerified] = useState(false);
-//   const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
-//   const navigate = useNavigate();
-
-//   const checkUsernameAvailability = () => {
-//     setIsUsernameAvailable(formData.username.length > 3);
-//   };
-
-//   const handlePasswordChange = (e) => {
-//     const password = e.target.value;
-//     setFormData({ ...formData, password });
-//     setPasswordStrength(password.length > 8 ? "강함" : "약함");
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (formData.password !== formData.confirmPassword) {
-//       alert("비밀번호가 일치하지 않습니다.");
-//       return;
-//     }
-//     if (!isEmailVerified) {
-//       alert("이메일 인증이 필요합니다.");
-//       return;
-//     }
-//     if (isUsernameAvailable === false) {
-//       alert("사용할 수 없는 아이디입니다.");
-//       return;
-//     }
-//     navigate("/login");
-//   };
