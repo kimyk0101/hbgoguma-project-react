@@ -135,14 +135,14 @@ const ProductDetailPage = ({ onBack }) => {
 
   return (
     <div>
-      <div className="product-detail">
-        <div className="product-left">
+      <div className="detail-product-detail">
+        <div className="detail-product-left">
           <img
             src={GogumaPost.postPhoto}
             alt={GogumaPost.postTitle}
-            className="product-image"
+            className="detail-product-image"
           />
-          <div className="seller-info">
+          <div className="detail-seller-info">
             <p>판매자: {GogumaPost.uid}</p>
             <p>
               거래 희망 지역: {Gu[GogumaPost.locaGu]},{" "}
@@ -152,22 +152,22 @@ const ProductDetailPage = ({ onBack }) => {
           </div>
         </div>
 
-        <div className="product-right">
-          <button onClick={onBack} className="back-button">
+        <div className="detail-product-right">
+          <button onClick={onBack} className="detail-back-button">
             <MdOutlineBackspace />
           </button>
-          <h2 className="product-title">{GogumaPost.postTitle}</h2>
-          <p className="product-description">{GogumaPost.postContent}</p>
+          <h2 className="detail-product-title">{GogumaPost.postTitle}</h2>
+          <p className="detail-product-description">{GogumaPost.postContent}</p>
         </div>
       </div>
       {/* 신고하기 버튼 */}
-      <button className="report-button" onClick={handleOpenReportPopup}>
+      <button className="detail-report-button" onClick={handleOpenReportPopup}>
         🚨 신고하기
       </button>
       {/* 신고 팝업 */}
       {showReportPopup && (
-        <div className="report-popup">
-          <div className="popup-content">
+        <div className="detail-report-popup">
+          <div className="detail-popup-content">
             <h3>게시글 신고</h3>
             <p>신고 사유를 선택해주세요.</p>
             <select
@@ -181,12 +181,12 @@ const ProductDetailPage = ({ onBack }) => {
                 </option>
               ))}
             </select>
-            <div className="popup-buttons">
-              <button className="submit-button" onClick={handleReportSubmit}>
+            <div className="detail-popup-buttons">
+              <button className="detail-submit-button" onClick={handleReportSubmit}>
                 신고하기
               </button>
               <button
-                className="cancel-button"
+                className="detail-cancel-button"
                 onClick={handleCloseReportPopup}
               >
                 취소

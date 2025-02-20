@@ -44,15 +44,15 @@ const SReviewPopup = ({ onClose, onSubmit, reviewData }) => {
   if (isReviewed) return null; // 이미 리뷰를 작성한 경우 팝업을 띄우지 않음
 
   return (
-    <div className="seller-review-container">
-      <div className="seller-review-content">
-        <button className="closePopup-button" onClick={onClose}>
+    <div className="sreview-seller-review-container">
+      <div className="sreview-seller-review-content">
+        <button className="sreview-closePopup-button" onClick={onClose}>
           <CgCloseR />
         </button>
         <h3>리뷰를 작성해주세요</h3>
 
         {/* 평점 선택 */}
-        <div className="rating-input">
+        <div className="sreview-rating-input">
           {[1, 2, 3, 4, 5].map((index) => (
             <img
               key={index}  // 각 평점에 고유 키를 부여
@@ -69,7 +69,7 @@ const SReviewPopup = ({ onClose, onSubmit, reviewData }) => {
           value={newReview}
           onChange={(e) => setNewReview(e.target.value)}
           placeholder="구매자에 대한 리뷰를 작성하세요..."
-          className="review-input"
+          className="sreview-review-input"
         />
 
         <button
@@ -77,7 +77,7 @@ const SReviewPopup = ({ onClose, onSubmit, reviewData }) => {
             handleReviewSubmit();
             onClose();
           }}
-          className="confirm-button"
+          className="sreview-confirm-button"
         >
           확인
         </button>

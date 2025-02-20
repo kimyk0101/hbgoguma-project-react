@@ -1,4 +1,4 @@
-.seller-review-container {
+.sreview-seller-review-container {
     position: fixed;
     width: 500px;
     top: 50%;
@@ -11,24 +11,24 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  .rating-input {
+  .sreview-rating-input {
     display: flex;
     gap: 5px;
     margin-bottom: 10px;
     justify-content: center;
   }
   
-  .bottle {
+  .sreview-bottle {
     font-size: 30px;
     cursor: pointer;
     color: #ccc;
   }
   
-  .bottle.selected {
+  .sreview-bottle.selected {
     color: #1bb7ff;
   }
   
-  .review-input {
+  .sreview-review-input {
     width: 90%;
     height: 80px;
     padding: 10px;
@@ -37,7 +37,7 @@
     margin-bottom: 10px;
   }
   
-  .confirm-button {
+  .sreview-confirm-button {
     background-color: #4caf50;
     color: white;
     border: none;
@@ -46,12 +46,12 @@
     border-radius: 5px;
   }
 
-  .confirm-button:hover {
+  .sreview-confirm-button:hover {
     background-color: #45a049;
   }
 
   /* 닫기 버튼 스타일 */
-.closePopup-button {
+.sreview-closePopup-button {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -62,7 +62,7 @@
   color: #aaa;
 }
 
-.closePopup-button:hover {
+.sreview-closePopup-button:hover {
   color: #555;
 }
   

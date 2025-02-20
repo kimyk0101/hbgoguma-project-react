@@ -1,5 +1,5 @@
 /* 상품 설명 하단 구매희망자 리스트 */
-.product-footer {
+.nego-product-footer {
   width: 100%;
   margin-top: 100px;
   padding-top: 20px;
@@ -7,7 +7,7 @@
 }
 
 /* 구매 희망 버튼 */
-.interest-button {
+.nego-interest-button {
   font-size: 25px;
   width: 30%;
   height: 30px;
@@ -26,17 +26,17 @@
 }
 
 
-.interest-button:hover {
+.nego-interest-button:hover {
   background-color: #F4A261;;
 }
 
 
-.interested-buyers {
+.nego-interested-buyers {
   margin-top: 10px;
 }
 
 /* 구매희망자 */
-.buyer-item {
+.nego-buyer-item {
   display: inline-block; /* flex 사용 시 채팅 박스 오른쪽에 위치 */
   font-size: 16px;
   width: 100%; 
@@ -45,12 +45,12 @@
   vertical-align: middle; /* 수직으로 정렬 */
 }
 
-.buyer-item span {
+.nego-buyer-item span {
   display: inline-block; 
   width: auto; 
 }
 
-.buyer-item button {
+.nego-buyer-item button {
   all: unset;
   border-radius: 8px;
   background-color: #ff8c00;
@@ -62,12 +62,12 @@
   margin-left: 50px;
 }
 
-.buyer-item button:hover {
+.nego-buyer-item button:hover {
   background-color: #F4A261;
 }
 
 /* 거래 확정 메세지 */
-.confirmed-text {
+.nego-confirmed-text {
   background-color: #ddd;
   border-radius: 8px;
   color: white;
@@ -79,7 +79,7 @@
 }
 
 /* 채팅 컨테이너 */
-.chat-container {
+.nego-chat-container {
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 10px;
@@ -88,7 +88,7 @@
   margin-top: 10px; 
 }
 
-.chat-box {
+.nego-chat-box {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -97,7 +97,7 @@
   padding: 10px;
 }
 
-.chat-message {
+.nego-chat-message {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -106,21 +106,21 @@
   text-align: left;
 }
 
-.message-container {
+.nego-message-container {
   display: flex;
   align-items: center;
   gap: 15px; /* 메시지와 시간 사이 간격 */
 }
 
-.chat-message.buyer .message-container {
+.nego-chat-message.buyer .message-container {
   flex-direction: row; /* 메시지 왼쪽, 시간 오른쪽 */
 }
 
-.chat-message.seller .message-container {
+.nego-chat-message.seller .message-container {
   flex-direction: row-reverse; /* 메시지 오른쪽, 시간 왼쪽 */
 }
 
-.message-text {
+.nego-message-text {
   max-width: 400px;
   padding: 10px;
   border-radius: 10px;
@@ -131,7 +131,7 @@
   white-space: pre-wrap; /* 줄바꿈 문자(\n) 유지 */
 }
 
-.chat-message.buyer .message-text {
+.nego-chat-message.buyer .message-text {
   margin-left: 55px;
   margin-top: -18px;
   background-color: #d1e7ff;
@@ -139,7 +139,7 @@
   font-size: 18px;
 }
 
-.chat-message.seller .message-text {
+.nego-chat-message.seller .message-text {
   margin-right: 55px;
   margin-top: -18px;
   background-color: #ffdbdb;
@@ -147,7 +147,7 @@
   font-size: 18px;
 }
 
-.message-time {
+.nego-message-time {
   font-size: 10px;
   color: gray;
   white-space: nowrap; /* 시간 텍스트 줄바꿈 방지 */
@@ -155,37 +155,37 @@
   margin-top: 5px; /* 메시지와 시간 사이 간격 */
 }
 
-.chat-message.buyer {
+.nego-chat-message.buyer {
   flex-direction: column; /* 세로 정렬 (이미지 위, 메시지 아래) */
   align-items: flex-start; /* 왼쪽 정렬 */
 }
 
-.chat-message.seller {
+.nego-chat-message.seller {
   flex-direction: column; 
   align-items: flex-end; 
 }
 
-.profile-img {
+.nego-profile-img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.chat-input {
+.nego-chat-input {
   display: flex;
   gap: 5px;
   margin-top: 10px;
 }
 
-.chat-input input {
+.nego-chat-input input {
   flex: 1;
   padding: 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
-.chat-input button {
+.nego-chat-input button {
   background-color: #ff8c00;
   color: white;
   border: none;
@@ -194,13 +194,13 @@
   cursor: pointer;
 }
 
-.chat-input button:hover {
+.nego-chat-input button:hover {
   background-color: #F4A261;
 }
 
 
 /* 구매자 확정 팝업 스타일 */
-.purchase-popup {
+.nego-purchase-popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -213,7 +213,7 @@
   z-index: 1000;
 }
 
-.popup-content {
+.nego-popup-content {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
@@ -221,11 +221,11 @@
   width: 300px;
 }
 
-.popup-content h3 {
+.nego-popup-content h3 {
   margin-bottom: 20px;
 }
 
-.confirm-button {
+.nego-confirm-button {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -234,12 +234,12 @@
   border-radius: 5px;
 }
 
-.confirm-button:hover {
+.nego-confirm-button:hover {
   background-color: #45a049;
 }
 
 /* 구매 완료 상태 스타일 */
-.purchase-confirmation {
+.nego-purchase-confirmation {
   text-align: center;
   margin-top: 20px;
   color: green;

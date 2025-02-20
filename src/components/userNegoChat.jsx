@@ -307,11 +307,11 @@ const UserNegoChat = ({ user, GogumaPost }) => {
   return (
     <div>
       {/* 상품 설명 끝난 후, 구매 희망자 리스트를 하단에 위치 */}
-      <div className="product-footer">
+      <div className="nego-product-footer">
         {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
         {user.id !== GogumaPost.uid && (
           <button
-            className="interest-button"
+            className="nego-interest-button"
             onClick={handleInterest}
             disabled={isBuyerConfirmed || isPurchased} // 거래 완료되거나 구매자가 확정되면 비활성화
           >
@@ -319,23 +319,23 @@ const UserNegoChat = ({ user, GogumaPost }) => {
           </button>
         )}
         {user.id !== GogumaPost.uid && (
-          <div className="interested-buyers">
+          <div className="nego-interested-buyers">
             <h3>구매 희망자</h3>
             <ul>
               {interestedBuyers.length > 0 ? (
                 interestedBuyers.map((buyer) => (
-                  <li key={buyer.id} className="buyer-item">
+                  <li key={buyer.id} className="nego-buyer-item">
                     <span>{buyer.name}</span>
 
                     {selectedBuyer === buyer.id ? ( // 선택된 구매자만 "거래 확정됨" 표시
-                      <span className="confirmed-text">거래 확정됨</span>
+                      <span className="nego-confirmed-text">거래 확정됨</span>
                     ) : (
                       <button
                         onClick={() => handleConfirmBuyer(buyer.id)}
                         disabled={isBuyerConfirmed || isPurchased} // 거래 완료되면 비활성화
                         className={
                           isBuyerConfirmed || isPurchased
-                            ? "disabled-button"
+                            ? "nego-disabled-button"
                             : ""
                         }
                       >
@@ -347,12 +347,12 @@ const UserNegoChat = ({ user, GogumaPost }) => {
                       {activeChat === buyer.id ? "채팅 닫기" : "채팅 시작"}
                     </button>
                     {activeChat === buyer.id && (
-                      <div className="chat-container">
-                        <div className="chat-box">
+                      <div className="nego-chat-container">
+                        <div className="nego-chat-box">
                           {messages.map((msg) => (
                             <div
                               key={msg.cid} // cid로 메시지 고유식별
-                              className={`chat-message ${
+                              className={`nego-chat-message ${
                                 msg.send_uid === user.id ? "seller" : "buyer"
                               }`}
                             >
@@ -365,20 +365,20 @@ const UserNegoChat = ({ user, GogumaPost }) => {
                                 alt={
                                   msg.send_uid === user.id ? "판매자" : "구매자"
                                 }
-                                className="profile-img"
+                                className="nego-profile-img"
                               />
-                              <div className="message-container">
-                                <div className="message-text">
+                              <div className="nego-message-container">
+                                <div className="nego-message-text">
                                   {msg.chatContent}
                                 </div>
-                                <div className="message-time">
+                                <div className="nego-message-time">
                                   {msg.updateTime}
                                 </div>
                               </div>
                             </div>
                           ))}
                         </div>
-                        <div className="chat-input">
+                        <div className="nego-chat-input">
                           <input
                             type="text"
                             placeholder="메시지를 입력하세요..."
@@ -406,10 +406,10 @@ const UserNegoChat = ({ user, GogumaPost }) => {
 
       {/* 거래 완료 팝업 */}
       {selectedBuyer && !isPurchased && (
-        <div className="purchase-popup">
-          <div className="popup-content">
+        <div className="nego-purchase-popup">
+          <div className="nego-popup-content">
             <h3>거래가 완료되었습니다</h3>
-            <button className="confirm-button" onClick={handlePurchaseConfirm}>
+            <button className="nego-confirm-button" onClick={handlePurchaseConfirm}>
               확인
             </button>
           </div>
@@ -426,7 +426,7 @@ const UserNegoChat = ({ user, GogumaPost }) => {
 
       {/* 거래 완료 후 상태 표시 */}
       {isPurchased && (
-        <div className="purchase-confirmation">
+        <div className="nego-purchase-confirmation">
           <h3>거래가 완료되었습니다!</h3>
         </div>
       )}
