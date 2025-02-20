@@ -8,10 +8,10 @@ export default function UserInfoPage() {
   // const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
-  const [contentImage, setContentImage] = useState(null);
-  const [description, setDescription] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate();
+  // const [contentImage, setContentImage] = useState(null);
+  // const [description, setDescription] = useState("");
+  // const [isEditing, setIsEditing] = useState(false);
+  // const navigate = useNavigate();
 
   // 파일 업로드 핸들러(썸네일 저장)
   const handleImageUpload = (e, setImageFunc, storageKey) => {
@@ -57,7 +57,10 @@ export default function UserInfoPage() {
   const gaugeWidth = `${Math.min(currentUser?.userRate / 100, 100)}%`;
 
   return (
-    <div className="container">
+    <div className="user-info-container">
+      {/* <button type="button" onClick={() => navigate("/")}> // 메인이동 버튼 잠시 보류
+        메인으로
+      </button> */}
       {/* 상단 정보 블록 (닉네임 & 사이다 지수 + 본인인증 + 판매/구매 정보) */}
       <div className="user-info-block">
         {/* 썸네일 */}
@@ -69,7 +72,7 @@ export default function UserInfoPage() {
               handleImageUpload(e, setThumbnail, `thumbnail_${currentUser.uid}`)
             }
           />
-          <div className="thumb-box">
+          <div className="user-info-thumb-box">
             {thumbnail ? (
               <img src={thumbnail} alt="Thumbnail" />
             ) : (
@@ -81,11 +84,11 @@ export default function UserInfoPage() {
         {/* 사용자 정보 */}
         <div className="user-info">
           <span className="nickname">{currentUser?.nickname}</span>
-          <div className="cider-bar-container">
+          <div className="user-info-cider-bar-container">
             <span>{(currentUser?.userRate / 100).toFixed(2)}%</span>
-            <div className="cider-bar">
+            <div className="user-info-cider-bar">
               <div
-                className="cider-fill"
+                className="user-info-cider-fill"
                 // style={{ width: `${currentUser.userRate}%` }}
                 style={{ width: gaugeWidth }}
                 // style={{ width: `${currentUser?.userRate}%` }}
@@ -96,8 +99,8 @@ export default function UserInfoPage() {
 
         {/* 본인인증 + 판매/구매/포인트 정보 */}
         <div className="user-stats">
-          <p className="verified">✅ 본인인증 완료</p>
-          <div className="stats">
+          <p className="user-info-verified">✅ 본인인증 완료</p>
+          <div className="user-info-stats">
             <p>📦 판매: 15회</p>
             <p>🛒 구매: 8회</p>
             <p>💰 포인트: {currentUser?.point.toLocaleString()}P</p>
@@ -105,14 +108,10 @@ export default function UserInfoPage() {
               <p>🛒 구매: {user.purchaseCount}회</p>
               <p>💰 포인트: {currentUser.point}P</p> */}
           </div>
-          <button type="button" onClick={() => navigate("/")}>
-            메인으로
-          </button>
         </div>
       </div>
-
       {/* 제품 사진 */}
-      <label className="image-upload hidden-file-input">
+      {/* <label className="image-upload hidden-file-input">
         <input
           type="file"
           onChange={(e) => handleImageUpload(e, setContentImage)}
@@ -124,10 +123,10 @@ export default function UserInfoPage() {
             <span>사진 추가</span>
           )}
         </div>
-      </label>
+      </label> */}
 
       {/* 제품 설명 */}
-      <div className="content">
+      {/* <div className="content">
         {isEditing ? (
           <>
             <textarea
@@ -146,10 +145,10 @@ export default function UserInfoPage() {
         <button onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? "저장" : "작성/수정"}
         </button>
-      </div>
+      </div> */}
 
       {/* 버튼식 전환 */}
-      <div className="tabs">
+      <div className="user-info-tabs">
         {["판매 중인 상품", "구매 중인 상품", "나의 평가"].map((tab) => (
           <button
             key={tab}
@@ -168,7 +167,7 @@ export default function UserInfoPage() {
           ))}
         </div> */}
 
-      <div className="tab-content">{selectedTab} 내용 표시</div>
+      <div className="user-info-tab-content">{selectedTab} 내용 표시</div>
     </div>
   );
 }
