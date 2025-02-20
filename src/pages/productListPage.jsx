@@ -238,7 +238,7 @@ const popularKeywords = [
   "레고",
   "패딩",
   "자전거",
-  "삼성"
+  
 ];
 
 const ITEMS_PER_PAGE = 12;
@@ -394,7 +394,7 @@ onChange={(e) => setSelectedDong(e.target.value)}
       </div>
 
       {/* 페이지네이션 버튼 */}
-      <div className="pagination">
+      <div className="Listpagination">
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
@@ -410,7 +410,11 @@ onChange={(e) => setSelectedDong(e.target.value)}
         >
           다음
         </button>
+       
+          <button className="Listcreate">게시물 작성</button>
+        
       </div>
+        
     </div>
   );
 };
@@ -776,6 +780,7 @@ export default ProductListPage;
 //         >
 //           다음
 //         </button>
+{/* <button className="Listcreate">게시물 작성</button> */}
 //       </div>
 //     </div>
 //   );

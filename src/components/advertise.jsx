@@ -90,7 +90,21 @@ const Advertise = () => {
             className="ad-video"
           ></video>
         )}
-        
+        {adData[currentIndex].type === "image" ? (
+          <img
+            src={adData[currentIndex].src}
+            alt="광고 이미지"
+            className="ad-image"
+          />
+        ) : (
+          <video
+            src={adData[currentIndex].src}
+            autoPlay
+            loop
+            muted
+            className="ad-video"
+          ></video>
+        )}
       </div>
       {/* <button className="next-button" onClick={nextSlide}>
         &#10095;

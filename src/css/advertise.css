@@ -1,7 +1,9 @@
 
+
+
 .ad-slider-container {
     width: 100%;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
     overflow: hidden;
     position: relative;
@@ -45,6 +47,6 @@
   
   /* 광고 사진 크기 임의 값 */
   .ad-content img {
-    width: 300px;
+    width: 320px;
     height: 176px;
   }

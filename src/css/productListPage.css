@@ -114,25 +114,37 @@
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-  }
-  
-  .Listpagination button {
-    background-color: #E76F51;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    margin: 0 5px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .Listpagination button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+    position: relative;
+    button {
+      background-color: #E76F51;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .Listcreate {
+      position: absolute;
+      right: 0;
+      background-color:  #ff8c00;
+      
+    }
+    .Listcreate:hover { 
+     background-color: #c28f51e8;
+     color: white;
+      
+    }
   }
   
   .Listpagination span {
     font-size: 18px;
     font-weight: bold;
   }
+
+ 
