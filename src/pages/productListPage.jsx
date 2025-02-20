@@ -2,7 +2,19 @@
 // import "../css/productListPage.css";
 
 // const regions = ["전체", "강남구", "서초구"];
-
+// const dongs = [
+//   "전체",
+//   "서초동",
+//   "잠원동",
+//   "반포동",
+//   "양재동",
+//   "역삼동",
+//   "대치동",
+//   "청담동",
+//   "논현동",
+//   "삼성동",
+//   "압구정동",
+// ];
 // const categories = [
 //   "전체",
 //   "디지털기기",
@@ -182,6 +194,15 @@
 //   },
 // ];
 
+// const popularKeywords = [
+//   "아이폰",
+//   "노트북",
+//   "삼성",
+//   "에어팟",
+//   "갤럭시",
+//   "닌텐도",
+// ];
+
 // const ITEMS_PER_PAGE = 12;
 
 // const ProductListPage = ({ onSelectProduct }) => {
@@ -189,9 +210,10 @@
 //   const [searchTerm, setSearchTerm] = useState("");
 //   const [selectedCategory, setSelectedCategory] = useState("전체");
 //   const [selectedRegion, setSelectedRegion] = useState("전체");
+//   const [selectedDong, setSelectedDong] = useState("전체");
 //   const [currentPage, setCurrentPage] = useState(1);
 
-//   // 서버에서 데이터 가져오기
+//   //서버에서 데이터 가져오기
 //   useEffect(() => {
 //     fetch("http://localhost:18090/api/gogumapost") // 여기에 실제 API 입력
 //       .then((response) => response.json())
@@ -215,6 +237,7 @@
 //     (product) =>
 //       (selectedRegion === "전체" || product.region === selectedRegion) &&
 //       (selectedCategory === "전체" || product.category === selectedCategory) &&
+//       (selectedDong === "전체" || product.dong === selectedDong) &&
 //       product.title.includes(searchTerm)
 //   );
 
@@ -226,20 +249,43 @@
 //     startIndex + ITEMS_PER_PAGE
 //   );
 
+// 인기 검색어 클릭 시 검색창에 입력 후 자동 검색
+// const handlePopularKeywordClick = (keyword) => {
+//   setSearchTerm(keyword);
+// };
+
 //   return (
-//     <div className="container">
+//     <div className="Listcontainer">
 //       {/* 검색창 */}
 //       <input
 //         type="text"
 //         placeholder="검색어를 입력하세요..."
 //         value={searchTerm}
 //         onChange={(e) => setSearchTerm(e.target.value)}
-//         className="search-input"
+//         className="Listsearch-input"
 //       />
 
-//       <div className="content">
+{
+  /* 인기 검색어 목록 */
+}
+{
+  /* <div className="Listpopular-keywords">
+<p>인기 검색어</p>
+{popularKeywords.map((keyword) => (
+  <button
+    key={keyword}
+    className="Listkeyword-btn"
+    onClick={() => handlePopularKeywordClick(keyword)}
+  >
+    {keyword}
+  </button>
+))}
+</div> */
+}
+
+//       <div className="Listcontent">
 //         {/* 카테고리 필터 */}
-//         <aside className="sidebar">
+//         <aside className="Listsidebar">
 //           <h3>지역 선택</h3>
 //           {regions.map((region) => (
 //             <label key={region}>
@@ -256,6 +302,24 @@
 //               {region}
 //             </label>
 //           ))}
+{
+  /* <h3>동 선택</h3>
+{dongs.map((dong) => (
+  <label key={dong}>
+    <input
+      type="radio"
+      name="dong"
+      value={dong}
+      checked={selectedDong === dong}
+      onChange={() => {
+        setSelectedDong(dong);
+        setCurrentPage(1);
+      }}
+    />
+    {dong}
+  </label>
+))} */
+}
 //           <h3>카테고리</h3>
 //           {categories.map((category) => (
 //             <label key={category}>
@@ -275,7 +339,7 @@
 //         </aside>
 
 //         {/* 상품 리스트 */}
-//         <section className="product-list">
+//         <section className="Listproduct-list">
 //           {displayedProducts.map((product) => (
 //             <div
 //               key={product.id}
@@ -285,10 +349,10 @@
 //             >
 //               <img src={product.image} alt={product.title} />
 //               <h4>{product.title}</h4>
-//               <p className="price">{product.price}</p>
-//               <p className="seller">판매자: {product.seller}</p>
-//               <p className="region">{product.region}</p>
-//               <p className="category">{product.category}</p>
+//               <p className="Listprice">{product.price}</p>
+//               <p className="Listseller">판매자: {product.seller}</p>
+//               <p className="Listregion">{product.region}</p>
+//               <p className="Listcategory">{product.category}</p>
 //             </div>
 //           ))}
 //         </section>
@@ -318,10 +382,22 @@
 
 // export default ProductListPage;
 
-
 import React, { useState } from "react";
 import "../css/productListPage.css";
 const regions = ["전체", "강남구", "서초구"];
+const dongs = [
+  "전체",
+  "서초동",
+  "잠원동",
+  "반포동",
+  "양재동",
+  "역삼동",
+  "대치동",
+  "청담동",
+  "논현동",
+  "삼성동",
+  "압구정동",
+];
 const categories = [
   "전체",
   "디지털기기",
@@ -376,6 +452,7 @@ const products = [
     price: "₩20,000",
     seller: "사용자2",
     region: "강남구",
+    dong: "역삼동",
     category: CATEGORY_ID[1],
   },
   {
@@ -478,16 +555,27 @@ const products = [
     category: CATEGORY_ID[9],
   },
 ];
+const popularKeywords = [
+  "아이폰",
+  "노트북",
+  "삼성",
+  "에어팟",
+  "갤럭시",
+  "닌텐도",
+];
+
 const ITEMS_PER_PAGE = 12;
 const ProductListPage = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRegion, setSelectedRegion] = useState("전체");
+  const [selectedDong, setSelectedDong] = useState("전체");
   const filteredProducts = products.filter(
     (product) =>
       (selectedRegion === "전체" || product.region === selectedRegion) &&
       (selectedCategory === "전체" || product.category === selectedCategory) &&
+      (selectedDong === "전체" || product.dong === selectedDong) &&
       product.title.includes(searchTerm)
   );
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -500,8 +588,13 @@ const ProductListPage = ({ onSelectProduct }) => {
   const goToDetailPage = (productId) => {
     window.location.href = `/productDetail.html?id=${productId}`;
   };
+
+  // 인기 검색어 클릭 시 검색창에 입력 후 자동 검색
+  const handlePopularKeywordClick = (keyword) => {
+    setSearchTerm(keyword);
+  };
   return (
-    <div className="container">
+    <div className="Listcontainer">
       {/* 검색창 */}
       <input
         type="text"
@@ -510,9 +603,23 @@ const ProductListPage = ({ onSelectProduct }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
-      <div className="content">
+      {/* 인기 검색어 목록 */}
+      <div className="Listpopular-keywords">
+        <p>인기 검색어</p>
+        {popularKeywords.map((keyword) => (
+          <button
+            key={keyword}
+            className="keyword-btn"
+            onClick={() => handlePopularKeywordClick(keyword)}
+          >
+            {keyword}
+          </button>
+        ))}
+      </div>
+
+      <div className="Listcontent">
         {/* 카테고리 필터 */}
-        <aside className="sidebar">
+        <aside className="Listsidebar">
           <h3>지역 선택</h3>
           {regions.map((region) => (
             <label key={region}>
@@ -527,6 +634,22 @@ const ProductListPage = ({ onSelectProduct }) => {
                 }}
               />
               {region}
+            </label>
+          ))}
+          <h3>동 선택</h3>
+          {dongs.map((dong) => (
+            <label key={dong}>
+              <input
+                type="radio"
+                name="dong"
+                value={dong}
+                checked={selectedDong === dong}
+                onChange={() => {
+                  setSelectedDong(dong);
+                  setCurrentPage(1);
+                }}
+              />
+              {dong}
             </label>
           ))}
           <h3>카테고리</h3>
@@ -544,28 +667,29 @@ const ProductListPage = ({ onSelectProduct }) => {
           ))}
         </aside>
         {/* 상품 리스트 */}
-        <section className="product-list">
+        <section className="Listproduct-list">
           {displayedProducts.map((product) => (
+            //라우터 쓸경우 link 사용
             // <Link to={`/product/${product.id}`} key={product.id} className="product-card">
             <div
               key={product.id}
-              className="product-card"
+              className="Listproduct-card"
               onClick={() => onSelectProduct(product)} // 클릭하면 상세 페이지로 이동
               style={{ cursor: "pointer" }}
             >
               <img src={product.image} alt={product.title} />
               <h4>{product.title}</h4>
-              <p className="price">{product.price}</p>
-              <p className="seller">판매자: {product.seller}</p>
-              <p className="region">{product.region}</p>
-              <p className="category">{product.category}</p>
+              <p className="Listprice">{product.price}</p>
+              <p className="Listseller">판매자: {product.seller}</p>
+              <p className="Listregion">{product.region}</p>
+              <p className="Listcategory">{product.category}</p>
             </div>
             // </Link>
           ))}
         </section>
       </div>
       {/* 페이지네이션 버튼 */}
-      <div className="pagination">
+      <div className="Listpagination">
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
