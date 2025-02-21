@@ -143,9 +143,7 @@ const ITEMS_PER_PAGE = 12;
 
 const ProductListPage = ({ onSelectProduct }) => {
   //@note - 서버 위치
-  const API_POST_URL = `http://${
-    import.meta.env.VITE_API_HOST
-  }:18090/api/gogumapost`;
+  const API_POST_URL = `http://localhost:18090/api/gogumapost`;
 
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
