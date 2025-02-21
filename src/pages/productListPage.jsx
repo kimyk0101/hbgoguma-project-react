@@ -3,8 +3,46 @@ import "../css/productListPage.css";
 
 const regions = ["전체", "강남구", "서초구"];
 const allDongs = {
-  강남구: ["개포1동", "개포2동", "개포3동", "개포4동", "논현1동", "논현2동", "대치1동", "대치2동", "대치4동", "삼성1동", "삼성2동", "도곡1동", "도곡2동", "세곡동", "수서동", "신사동", "압구정동", "역삼1동", "역삼2동", "일원동", "일원본동", "청담동",],
-  서초구: ["내곡동", "방배1동", "방배2동", "방배3동", "방배4동", "방배본동", "서초1동","서초2동", "서초3동", "서초4동", "반포동", "양재1동", "양재2동", "잠원동"],
+  강남구: [
+    "개포1동",
+    "개포2동",
+    "개포3동",
+    "개포4동",
+    "논현1동",
+    "논현2동",
+    "대치1동",
+    "대치2동",
+    "대치4동",
+    "삼성1동",
+    "삼성2동",
+    "도곡1동",
+    "도곡2동",
+    "세곡동",
+    "수서동",
+    "신사동",
+    "압구정동",
+    "역삼1동",
+    "역삼2동",
+    "일원동",
+    "일원본동",
+    "청담동",
+  ],
+  서초구: [
+    "내곡동",
+    "방배1동",
+    "방배2동",
+    "방배3동",
+    "방배4동",
+    "방배본동",
+    "서초1동",
+    "서초2동",
+    "서초3동",
+    "서초4동",
+    "반포동",
+    "양재1동",
+    "양재2동",
+    "잠원동",
+  ],
 };
 const categories = [
   "전체",
@@ -27,45 +65,45 @@ const categories = [
 ];
 const dongs = {
   0: "개포1동",
-    1: "개포2동",
-    2: "개포3동",
-    3: "개포4동",
-    4: "논현1동",
-    5: "논현2동",
-    6: "대치1동",
-    7: "대치2동",
-    8: "대치4동",
-    9: "도곡1동",
-    10: "도곡2동",
-    11: "삼성1동",
-    12: "삼성2동",
-    13: "세곡동",
-    14: "수서동",
-    15: "신사동",
-    16: "압구정동",
-    17: "역삼1동",
-    18: "역삼2동",
-    19: "일원1동",
-    20: "일원본동",
-    21: "청담동",
-    22: "내곡동",
-    23: "반포1동",
-    24: "반포2동",
-    25: "반포3동",
-    26: "반포4동",
-    27: "반포본동",
-    28: "방배1동",
-    29: "방배2동",
-    30: "방배3동",
-    31: "방배4동",
-    32: "방배본동",
-    33: "서초1동",
-    34: "서초2동",
-    35: "서초3동",
-    36: "서초4동",
-    37: "양재1동",
-    38: "양재2동",
-    39: "잠원동",
+  1: "개포2동",
+  2: "개포3동",
+  3: "개포4동",
+  4: "논현1동",
+  5: "논현2동",
+  6: "대치1동",
+  7: "대치2동",
+  8: "대치4동",
+  9: "도곡1동",
+  10: "도곡2동",
+  11: "삼성1동",
+  12: "삼성2동",
+  13: "세곡동",
+  14: "수서동",
+  15: "신사동",
+  16: "압구정동",
+  17: "역삼1동",
+  18: "역삼2동",
+  19: "일원1동",
+  20: "일원본동",
+  21: "청담동",
+  22: "내곡동",
+  23: "반포1동",
+  24: "반포2동",
+  25: "반포3동",
+  26: "반포4동",
+  27: "반포본동",
+  28: "방배1동",
+  29: "방배2동",
+  30: "방배3동",
+  31: "방배4동",
+  32: "방배본동",
+  33: "서초1동",
+  34: "서초2동",
+  35: "서초3동",
+  36: "서초4동",
+  37: "양재1동",
+  38: "양재2동",
+  39: "잠원동",
 };
 
 const CATEGORY_ID = {
@@ -238,7 +276,6 @@ const popularKeywords = [
   "레고",
   "패딩",
   "자전거",
-  
 ];
 
 const ITEMS_PER_PAGE = 12;
@@ -249,7 +286,8 @@ const ProductListPage = ({ onSelectProduct }) => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [selectedDong, setSelectedDong] = useState("전체");
-  const filteredDongs = selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
+  const filteredDongs =
+    selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
   const filteredProducts = products.filter(
     (product) =>
       (selectedRegion === "전체" || product.region === selectedRegion) &&
@@ -258,7 +296,9 @@ const ProductListPage = ({ onSelectProduct }) => {
       product.title.includes(searchTerm)
   );
 
-
+  const handleNavigation = (path) => {
+    window.location.href = path;
+  };
   const [currentPage, setCurrentPage] = useState(1);
 
   //서버에서 데이터 가져오기
@@ -280,8 +320,6 @@ const ProductListPage = ({ onSelectProduct }) => {
       .catch((error) => console.error("데이터 불러오기 실패:", error));
   }, []);
 
-
-
   // 페이지네이션 계산
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -290,10 +328,10 @@ const ProductListPage = ({ onSelectProduct }) => {
     startIndex + ITEMS_PER_PAGE
   );
 
-//인기 검색어 클릭 시 검색창에 입력 후 자동 검색
-const handlePopularKeywordClick = (keyword) => {
-  setSearchTerm(keyword);
-};
+  //인기 검색어 클릭 시 검색창에 입력 후 자동 검색
+  const handlePopularKeywordClick = (keyword) => {
+    setSearchTerm(keyword);
+  };
 
   return (
     <div className="Listcontainer">
@@ -306,55 +344,54 @@ const handlePopularKeywordClick = (keyword) => {
         className="Listsearch-input"
       />
       {/* 인기검색어 */}
- <div className="Listpopular-keywords">
-<p>인기 검색어</p>
-{popularKeywords.map((keyword) => (
-  <button
-    key={keyword}
-    className="Listkeyword-btn"
-    onClick={() => handlePopularKeywordClick(keyword)}
-  >
-    {keyword}
-  </button>
-))}
-</div> 
+      <div className="Listpopular-keywords">
+        <p>인기 검색어</p>
+        {popularKeywords.map((keyword) => (
+          <button
+            key={keyword}
+            className="Listkeyword-btn"
+            onClick={() => handlePopularKeywordClick(keyword)}
+          >
+            {keyword}
+          </button>
+        ))}
+      </div>
 
       <div className="Listcontent">
         {/* 카테고리 필터 */}
         <aside className="Listsidebar">
-              <h3>지역 선택</h3>
-{regions.map((region) => (
-  <label key={region}>
-    <input
-      type="radio"
-      name="region"
-      value={region}
-      checked={selectedRegion === region}
-      onChange={() => {
-        setSelectedRegion(region);
-        setSelectedDong("전체"); // 지역 변경 시 동 초기화
-      }}
-    />
-    {region}
-  </label>
-))}
+          <h3>지역 선택</h3>
+          {regions.map((region) => (
+            <label key={region}>
+              <input
+                type="radio"
+                name="region"
+                value={region}
+                checked={selectedRegion === region}
+                onChange={() => {
+                  setSelectedRegion(region);
+                  setSelectedDong("전체"); // 지역 변경 시 동 초기화
+                }}
+              />
+              {region}
+            </label>
+          ))}
 
-{selectedRegion !== "전체" && (
-  <>
-<select
-value={selectedDong}
-onChange={(e) => setSelectedDong(e.target.value)}
->
-<option value="전체">-- 동 선택 --</option>
-{filteredDongs.map((dong, index) => (
-<option key={index} value={dong}>
-{dong}
-</option>
-))}
-</select>
-
-  </>
-)}
+          {selectedRegion !== "전체" && (
+            <>
+              <select
+                value={selectedDong}
+                onChange={(e) => setSelectedDong(e.target.value)}
+              >
+                <option value="전체">-- 동 선택 --</option>
+                {filteredDongs.map((dong, index) => (
+                  <option key={index} value={dong}>
+                    {dong}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
           <h3>카테고리</h3>
           {categories.map((category) => (
             <label key={category}>
@@ -410,11 +447,14 @@ onChange={(e) => setSelectedDong(e.target.value)}
         >
           다음
         </button>
-       
-          <button className="Listcreate">게시물 작성</button>
-        
+
+        <button
+          className="Listcreate"
+          onClick={() => handleNavigation("/salesPage")}
+        >
+          게시물 작성
+        </button>
       </div>
-        
     </div>
   );
 };
@@ -780,7 +820,9 @@ export default ProductListPage;
 //         >
 //           다음
 //         </button>
-{/* <button className="Listcreate">게시물 작성</button> */}
+{
+  /* <button className="Listcreate">게시물 작성</button> */
+}
 //       </div>
 //     </div>
 //   );

@@ -15,6 +15,7 @@ import MainPage from "./pages/mainPage";
 import ProductDetailPage from "./pages/productDetailPage";
 import ProductListPage from "./pages/productListPage";
 // import ReviewPage from "./pages/reviewPage";
+import SellProductPage from "./pages/sales";
 
 import "./css/productDetailPage.css";
 import "./css/productListPage.css";
@@ -27,7 +28,7 @@ function App() {
         <Route path="/joinPage" element={<JoinPage />} />
         <Route path="/loginPage" element={<LoginPage />} />
         <Route path="/userInfo" element={<UserInfoPage />} />
-
+        <Route path="/salesPage" element={<SellProductPage />} />
         <Route path="/detail" element={<ProductDetailPage />} />
         <Route path="/list" element={<ProductListPage />} />
         {/* <Route path="/review" element={<ReviewPage />} /> */}

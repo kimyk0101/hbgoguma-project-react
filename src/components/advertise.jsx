@@ -59,14 +59,13 @@ const Advertise = () => {
             className="ad-video"
           ></video>
         )}
-         {adData[currentIndex].type === "image" ? (
+        {adData[currentIndex].type === "image" ? (
           <img
             src={adData[currentIndex].src}
             alt="광고 이미지"
             className="ad-image"
           />
         ) : (
-          
           <video
             src={adData[currentIndex].src}
             autoPlay
@@ -75,7 +74,7 @@ const Advertise = () => {
             className="ad-video"
           ></video>
         )}
-         {adData[currentIndex].type === "image" ? (
+        {adData[currentIndex].type === "image" ? (
           <img
             src={adData[currentIndex].src}
             alt="광고 이미지"
