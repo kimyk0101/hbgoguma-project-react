@@ -107,24 +107,25 @@ const dongs = {
   40: "잠원동",
 };
 
-const CATEGORY_ID = {
-  1: "디지털기기",
-  2: "가구/인테리어",
-  3: "유아동",
-  4: "의류",
-  5: "잡화",
-  6: "생활가전",
-  7: "생활/주방",
-  8: "스포츠/레저",
-  9: "취미/게임/음반",
-  10: "뷰티/미용",
-  11: "식물",
-  12: "식품",
-  13: "반려동물",
-  14: "티켓/교환권",
-  15: "도서",
-  16: "기타",
-};
+const CATEGORY_ID = [
+  ["0", "전체"],
+  ["1", "디지털기기"],
+  ["2", "가구/인테리어"],
+  ["3", "유아동"],
+  ["4", "의류"],
+  ["5", "잡화"],
+  ["6", "생활가전"],
+  ["7", "생활/주방"],
+  ["8", "스포츠/레저"],
+  ["9", "취미/게임/음반"],
+  ["10", "뷰티/미용"],
+  ["11", "식물"],
+  ["12", "식품"],
+  ["13", "반려동물"],
+  ["14", "티켓/교환권"],
+  ["15", "도서"],
+  ["16", "기타"],
+];
 
 const popularKeywords = [
   "아이폰",
@@ -147,7 +148,7 @@ const ProductListPage = ({ onSelectProduct }) => {
 
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [selectedDong, setSelectedDong] = useState("전체");
   const filteredDongs =
@@ -156,7 +157,7 @@ const ProductListPage = ({ onSelectProduct }) => {
     (post) =>
       (selectedRegion === "전체" || post.region === selectedRegion) &&
       (selectedDong === "전체" || post.dong === selectedDong) &&
-      (selectedCategory === "전체" || post.category === selectedCategory) &&
+      (selectedCategory === 0 || post.category === selectedCategory) &&
       post.title.includes(searchTerm)
   );
 
@@ -269,19 +270,19 @@ const ProductListPage = ({ onSelectProduct }) => {
             </>
           )}
           <h3>카테고리</h3>
-          {categories.map((category) => (
-            <label key={category}>
+          {Object.entries(CATEGORY_ID).map(([key, category]) => (
+            <label key={key}>
               <input
                 type="radio"
                 name="category"
-                value={category}
-                checked={selectedCategory === category}
+                value={key}
+                checked={selectedCategory === Number(key)}
                 onChange={() => {
-                  setSelectedCategory(category);
+                  setSelectedCategory(Number(key));
                   setCurrentPage(1);
                 }}
               />
-              {category}
+              {categories[key]}
             </label>
           ))}
         </aside>
@@ -303,7 +304,9 @@ const ProductListPage = ({ onSelectProduct }) => {
               </p>
               <p className="Listseller">판매자: {post.seller}</p>
               <p className="Listregion">{post.region}</p>
-              <p className="Listcategory">{CATEGORY_ID[post.category]}</p>
+              <p className="Listcategory">
+                {categories[Number(post.category)]}
+              </p>
             </div>
           ))}
         </section>
