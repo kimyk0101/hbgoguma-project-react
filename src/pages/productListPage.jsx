@@ -65,65 +65,65 @@ const categories = [
   "기타",
 ];
 const dongs = {
-  0: "개포1동",
-  1: "개포2동",
-  2: "개포3동",
-  3: "개포4동",
-  4: "논현1동",
-  5: "논현2동",
-  6: "대치1동",
-  7: "대치2동",
-  8: "대치4동",
-  9: "도곡1동",
-  10: "도곡2동",
-  11: "삼성1동",
-  12: "삼성2동",
-  13: "세곡동",
-  14: "수서동",
-  15: "신사동",
-  16: "압구정동",
-  17: "역삼1동",
-  18: "역삼2동",
-  19: "일원1동",
-  20: "일원본동",
-  21: "청담동",
-  22: "내곡동",
-  23: "반포1동",
-  24: "반포2동",
-  25: "반포3동",
-  26: "반포4동",
-  27: "반포본동",
-  28: "방배1동",
-  29: "방배2동",
-  30: "방배3동",
-  31: "방배4동",
-  32: "방배본동",
-  33: "서초1동",
-  34: "서초2동",
-  35: "서초3동",
-  36: "서초4동",
-  37: "양재1동",
-  38: "양재2동",
-  39: "잠원동",
+  1: "개포1동",
+  2: "개포2동",
+  3: "개포3동",
+  4: "개포4동",
+  5: "논현1동",
+  6: "논현2동",
+  7: "대치1동",
+  8: "대치2동",
+  9: "대치4동",
+  10: "도곡1동",
+  11: "도곡2동",
+  12: "삼성1동",
+  13: "삼성2동",
+  14: "세곡동",
+  15: "수서동",
+  16: "신사동",
+  17: "압구정동",
+  18: "역삼1동",
+  19: "역삼2동",
+  20: "일원1동",
+  21: "일원본동",
+  22: "청담동",
+  23: "내곡동",
+  24: "반포1동",
+  25: "반포2동",
+  26: "반포3동",
+  27: "반포4동",
+  28: "반포본동",
+  29: "방배1동",
+  30: "방배2동",
+  31: "방배3동",
+  32: "방배4동",
+  33: "방배본동",
+  34: "서초1동",
+  35: "서초2동",
+  36: "서초3동",
+  37: "서초4동",
+  38: "양재1동",
+  39: "양재2동",
+  40: "잠원동",
 };
 
 const CATEGORY_ID = {
-  0: "디지털기기",
-  1: "가구/인테리어",
-  2: "유아동",
-  3: "의류",
-  4: "잡화",
-  5: "생활가전",
-  6: "생활/주방",
-  7: "스포츠/레저",
-  8: "취미/게임/음반",
-  9: "뷰티/미용",
-  10: "식물",
-  11: "식품",
-  12: "반려동물",
-  13: "티켓/교환권",
-  14: "도서",
-  15: "기타",
+  1: "디지털기기",
+  2: "가구/인테리어",
+  3: "유아동",
+  4: "의류",
+  5: "잡화",
+  6: "생활가전",
+  7: "생활/주방",
+  8: "스포츠/레저",
+  9: "취미/게임/음반",
+  10: "뷰티/미용",
+  11: "식물",
+  12: "식품",
+  13: "반려동물",
+  14: "티켓/교환권",
+  15: "도서",
+  16: "기타",
 };
 
 const popularKeywords = [
@@ -147,19 +147,19 @@ const ProductListPage = ({ onSelectProduct }) => {
     import.meta.env.VITE_API_HOST
   }:18090/api/gogumapost`;
 
-  const [products, setProducts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [selectedDong, setSelectedDong] = useState("전체");
   const filteredDongs =
     selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
-  const filteredProducts = products.filter(
-    (product) =>
-      (selectedRegion === "전체" || product.region === selectedRegion) &&
-      (selectedDong === "전체" || product.dong === selectedDong) &&
-      (selectedCategory === "전체" || product.category === selectedCategory) &&
-      product.title.includes(searchTerm)
+  const filteredPosts = posts.filter(
+    (post) =>
+      (selectedRegion === "전체" || post.region === selectedRegion) &&
+      (selectedDong === "전체" || post.dong === selectedDong) &&
+      (selectedCategory === "전체" || post.category === selectedCategory) &&
+      post.title.includes(searchTerm)
   );
 
   const handleNavigation = (path) => {
@@ -168,33 +168,39 @@ const ProductListPage = ({ onSelectProduct }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   //서버에서 데이터 가져오기
-  // useEffect(() => {
-  //   fetch("http://localhost:18090/api/gogumapost") // 여기에 실제 API 입력
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const mappedData = data.map((item) => ({
-  //         id: pid, // 서버에서 받은 상품 ID
-  //         title: postTitle, // 제목
-  //         price: price || "가격 미정", // 가격 (백엔드에 따라 수정)
-  //         category: item.postCategory, // 카테고리
-  //         region: locaGu, // 지역 (구 정보만 사용)
-  //         image: postPhoto, // 상품 이미지
-  //         seller: uid, // 판매자 UID
-  //       }));
-  //       setProducts(mappedData);
-  //     })
-  //     .catch((error) => console.error("데이터 불러오기 실패:", error));
-  // }, []);
-
   useEffect(() => {
-    // API 대신 더미 데이터 사용
-    setProducts(dummyProducts);
+    fetch(API_POST_URL) // 여기에 실제 API 입력
+      .then((response) => response.json())
+      .then((data) => {
+        const postData = data.map((item) => ({
+          id: item.pid, // 서버에서 받은 상품 ID
+          seller: item.uid, // 판매자 UID
+          selectedUser: item.selected_user, // 선택된 유저
+          regionGu: item.loca_gu, // 지역 (구 정보만 사용)
+          regionDong: item.loca_dong, // 지역 (동 정보만 사용)
+          title: item.post_title, // 제목
+          image: item.post_photo, // 상품 이미지
+          content: item.post_content, // 상품 설명
+          category: item.post_category, // 카테고리
+          price: item.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
+          userList: item.user_list, // 구매 희망하는 유저 리스트
+          reportCnt: item.report_cnt, // 신고 횟수
+          updateTime: item.upd_date, // 마지막 업데이트 시간
+        }));
+        setPosts(postData);
+      })
+      .catch((error) => console.error("데이터 불러오기 실패:", error));
   }, []);
 
+  // useEffect(() => {
+  //   // API 대신 더미 데이터 사용
+  //   setPosts(dummyProducts);
+  // }, []);
+
   // 페이지네이션 계산
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const displayedProducts = filteredProducts.slice(
+  const displayedPosts = filteredPosts.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -283,7 +289,7 @@ const ProductListPage = ({ onSelectProduct }) => {
 
         {/* 상품 리스트 */}
         <section className="Listproduct-list">
-          {displayedProducts.map((product) => (
+          {displayedPosts.map((product) => (
             <div
               key={product.id}
               className="product-card"
@@ -556,16 +562,16 @@ export default ProductListPage;
 //   const [selectedRegion, setSelectedRegion] = useState("전체");
 //   const [selectedDong, setSelectedDong] = useState("전체");
 //   const filteredDongs = selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
-//   const filteredProducts = products.filter(
+//   const filteredPosts = products.filter(
 //     (product) =>
 //       (selectedRegion === "전체" || product.region === selectedRegion) &&
 //       (selectedDong === "전체" || product.dong === selectedDong) &&
 //       (selectedCategory === "전체" || product.category === selectedCategory) &&
 //       product.title.includes(searchTerm)
 //   );
-//   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+//   const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
 //   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-//   const displayedProducts = filteredProducts.slice(
+//   const displayedPosts = filteredPosts.slice(
 //     startIndex,
 //     startIndex + ITEMS_PER_PAGE
 //   );
@@ -654,7 +660,7 @@ export default ProductListPage;
 //         </aside>
 //         {/* 상품 리스트 */}
 //         <section className="Listproduct-list">
-//           {displayedProducts.map((product) => (
+//           {displayedPosts.map((product) => (
 //             //라우터 쓸경우 link 사용
 //             // <Link to={`/product/${product.id}`} key={product.id} className="product-card">
 //             <div
