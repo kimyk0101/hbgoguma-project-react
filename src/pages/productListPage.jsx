@@ -172,7 +172,7 @@ const ProductListPage = ({ onSelectProduct }) => {
       .then((data) => {
         const postData = data.map((item) => ({
           id: item.pid, // 서버에서 받은 상품 ID
-          seller: item.uid, // 판매자 UID
+          sellerUid: item.uid, // 판매자 UID
           selectedUser: item.selected_user, // 선택된 유저
           regionGu: item.loca_gu, // 지역 (구 정보만 사용)
           regionDong: item.loca_dong, // 지역 (동 정보만 사용)
@@ -184,6 +184,7 @@ const ProductListPage = ({ onSelectProduct }) => {
           userList: item.user_list, // 구매 희망하는 유저 리스트
           reportCnt: item.report_cnt, // 신고 횟수
           updateTime: item.upd_date, // 마지막 업데이트 시간
+          seller: item.nickname, // 판매자 닉네임
         }));
         setPosts(postData);
       })
@@ -287,19 +288,22 @@ const ProductListPage = ({ onSelectProduct }) => {
 
         {/* 상품 리스트 */}
         <section className="Listproduct-list">
-          {displayedPosts.map((product) => (
+          {displayedPosts.map((post) => (
             <div
-              key={product.id}
+              key={post.id}
               className="product-card"
-              onClick={() => onSelectProduct(product)}
+              onClick={() => onSelectProduct(post)}
               style={{ cursor: "pointer" }}
             >
-              <img src={product.image} alt={product.title} />
-              <h4>{product.title}</h4>
-              <p className="Listprice">{product.price}</p>
-              <p className="Listseller">판매자: {product.seller}</p>
-              <p className="Listregion">{product.region}</p>
-              <p className="Listcategory">{product.category}</p>
+              <img src={post.image} alt={post.title} />
+              <h4>{post.title}</h4>
+              <p className="Listprice">
+                {post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                  " 원"}
+              </p>
+              <p className="Listseller">판매자: {post.seller}</p>
+              <p className="Listregion">{post.region}</p>
+              <p className="Listcategory">{CATEGORY_ID[post.category]}</p>
             </div>
           ))}
         </section>
