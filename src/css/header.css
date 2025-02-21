@@ -1,5 +1,5 @@
-.header {
-    background-color: #ff8c00; /* 호박고구마 색상 */
+/* .header {
+    background-color: #ff8c00; 
     padding: 15px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -43,4 +43,73 @@
     background-color: #ff8c00;
     color: white;
   }
+   */
+
+   .header {
+    position: relative;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%;
+  }
+  
+  .header-logo {
+    font-size: 30px;
+    font-weight: bold;
+    color: #ff8c00;
+    cursor: pointer;
+    text-align: left;
+    display: flex; /* 로고와 텍스트를 수평으로 정렬 */
+    align-items: center;
+    position: relative; 
+    border-bottom: 2px solid transparent; 
+    transition: all 0.2s ease;
+  }
+  
+  .header-logo img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px; /* 로고와 텍스트 사이 간격 */
+  }
+  
+  .header-logo:hover {
+    color: #ff8c00;
+    border-color: #ff8c00; 
+  }
+
+  .header-buttons {
+    display: flex;
+    gap: 15px;
+    position: absolute;
+    right: 0; 
+    top: 0;
+    transform: translateY(-50%); 
+  }
+
+  .header-btn {
+    all: unset;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+    font-size: 13px;
+    cursor: pointer;
+    position: relative; 
+    border-bottom: 0.3px solid rgb(150, 150, 150); 
+    transition: all 0.2s ease;
+  }
+  
+  .header-btn:hover {
+    color: #ff8c00;
+    border-color: #ff8c00; 
+  }
+  
+  
+  
   
