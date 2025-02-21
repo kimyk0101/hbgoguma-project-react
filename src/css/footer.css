@@ -17,6 +17,9 @@
     flex: 1;
     min-width: 250px;
     margin: 10px;
+    a {
+      text-decoration-line: none;
+    }
   }
   
   .footer-section h4 {

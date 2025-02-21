@@ -20,8 +20,12 @@ const Footer = () => {
           <h4>고객센터</h4>
           <p>문의사항은 빠르게 답변해 드립니다.</p>
           {/* 버튼 기능은 없어욤 나중에 시간남으면 합시다*/}
-          <button className="contact-btn kakao">카카오톡 문의하기</button>
-          <button className="contact-btn naver">네이버 문의하기</button>
+          <a href="https://open.kakao.com/o/gsQNncVg">
+            <button className="contact-btn kakao">카카오톡 문의하기</button>
+          </a>
+          <a href="https://help.naver.com/index.help">
+            <button className="contact-btn naver">네이버 문의하기</button>
+          </a>
           <p>운영시간: 월-금 10:00 - 18:00 (점심 12:00 - 13:00)</p>
           <p>(주말 및 공휴일 휴무)</p>
         </div>
