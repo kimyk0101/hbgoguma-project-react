@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../css/productListPage.css";
+import dummyProducts from "./dummyProducts"; // 더미 데이터 가져오기
 
 const regions = ["전체", "강남구", "서초구"];
 const allDongs = {
@@ -125,146 +126,6 @@ const CATEGORY_ID = {
   15: "기타",
 };
 
-const GogumaPost = {
-  pid: 1, //  게시글 번호
-  uid: 1, //  작성자 id
-  selectedUid: 2, //  구매확정자 id
-  locaGu: 1,
-  locaDong: 1,
-  postTitle: "아이폰 14 팝니다",
-  postPhoto: "../resources/images/iphone14.png",
-  postContent: "아이폰 14 싸게 팔아요1111111111111",
-  postCategory: 0,
-  reportCnt: 0, //  해당 게시글 신고 횟수
-  postUpdate: "2025-02-19",
-};
-
-const products = [
-  {
-    pid: 1, //  게시글 번호
-    uid: 1, //  작성자 id
-    selectedUid: 2, //  구매확정자 id
-    locaGu: 1,
-    locaDong: 1,
-    price: 1200000,
-    postTitle: "아이폰 14 팝니다",
-    postPhoto: "../resources/images/iphone14.png",
-    postContent: "아이폰 14 싸게 팔아요1111111111111",
-    postCategory: CATEGORY_ID[1],
-    reportCnt: 0, //  해당 게시글 신고 횟수
-    postUpdate: "2025-02-19",
-  },
-
-  {
-    id: 2,
-    image: "https://via.placeholder.com/150",
-    title: "상품 2",
-    price: "₩20,000",
-    seller: "사용자2",
-    region: "강남구",
-    category: CATEGORY_ID[1],
-  },
-  {
-    id: 3,
-    image: "https://via.placeholder.com/150",
-    title: "상품 3",
-    price: "₩15,000",
-    seller: "사용자3",
-    region: "강남구",
-    category: CATEGORY_ID[1],
-  },
-  {
-    id: 4,
-    image: "https://via.placeholder.com/150",
-    title: "상품 4",
-    price: "₩30,000",
-    seller: "사용자4",
-    region: "강남구",
-    category: CATEGORY_ID[2],
-  },
-  {
-    id: 5,
-    image: "https://via.placeholder.com/150",
-    title: "상품 5",
-    price: "₩50,000",
-    seller: "사용자5",
-    region: "강남구",
-    category: CATEGORY_ID[0],
-  },
-  {
-    id: 6,
-    image: "https://via.placeholder.com/150",
-    title: "상품 6",
-    price: "₩5,000",
-    seller: "사용자6",
-    region: "강남구",
-    category: CATEGORY_ID[3],
-  },
-  {
-    id: 7,
-    image: "https://via.placeholder.com/150",
-    title: "상품 7",
-    price: "₩8,000",
-    seller: "사용자7",
-    region: "서초구",
-    category: CATEGORY_ID[4],
-  },
-  {
-    id: 8,
-    image: "https://via.placeholder.com/150",
-    title: "상품 8",
-    price: "₩12,000",
-    seller: "사용자8",
-    region: "서초구",
-    category: CATEGORY_ID[5],
-  },
-  {
-    id: 9,
-    image: "https://via.placeholder.com/150",
-    title: "상품 9",
-    price: "₩40,000",
-    seller: "사용자9",
-    region: "서초구",
-    category: CATEGORY_ID[6],
-  },
-  {
-    id: 10,
-    image: "https://via.placeholder.com/150",
-    title: "상품 10",
-    price: "₩22,000",
-    seller: "사용자10",
-    region: "서초구",
-    category: CATEGORY_ID[7],
-  },
-  {
-    id: 11,
-    image: "https://via.placeholder.com/150",
-    title: "상품 11",
-    price: "₩9,000",
-    seller: "사용자11",
-    region: "서초구",
-    category: CATEGORY_ID[0],
-  },
-  {
-    id: 12,
-    image: "https://via.placeholder.com/150",
-    title: "상품 12",
-    price: "₩18,000",
-    seller: "사용자12",
-    region: "서초구",
-    category: CATEGORY_ID[0],
-  },
-  {
-    id: 13,
-    image: "https://via.placeholder.com/150",
-    title: "상품 13",
-    price: "₩18,000",
-    seller: "사용자13",
-    region: "서초구",
-    category: CATEGORY_ID[9],
-  },
-];
-
 const popularKeywords = [
   "아이폰",
   "노트북",
@@ -307,22 +168,27 @@ const ProductListPage = ({ onSelectProduct }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   //서버에서 데이터 가져오기
+  // useEffect(() => {
+  //   fetch("http://localhost:18090/api/gogumapost") // 여기에 실제 API 입력
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       const mappedData = data.map((item) => ({
+  //         id: pid, // 서버에서 받은 상품 ID
+  //         title: postTitle, // 제목
+  //         price: price || "가격 미정", // 가격 (백엔드에 따라 수정)
+  //         category: item.postCategory, // 카테고리
+  //         region: locaGu, // 지역 (구 정보만 사용)
+  //         image: postPhoto, // 상품 이미지
+  //         seller: uid, // 판매자 UID
+  //       }));
+  //       setProducts(mappedData);
+  //     })
+  //     .catch((error) => console.error("데이터 불러오기 실패:", error));
+  // }, []);
+
   useEffect(() => {
-    fetch(API_POST_URL) // 여기에 실제 API 입력
-      .then((response) => response.json())
-      .then((data) => {
-        const mappedData = data.map((item) => ({
-          id: pid, // 서버에서 받은 상품 ID
-          title: postTitle, // 제목
-          price: price || "가격 미정", // 가격 (백엔드에 따라 수정)
-          category: item.postCategory, // 카테고리
-          region: locaGu, // 지역 (구 정보만 사용)
-          image: postPhoto, // 상품 이미지
-          seller: uid, // 판매자 UID
-        }));
-        setProducts(mappedData);
-      })
-      .catch((error) => console.error("데이터 불러오기 실패:", error));
+    // API 대신 더미 데이터 사용
+    setProducts(dummyProducts);
   }, []);
 
   // 페이지네이션 계산

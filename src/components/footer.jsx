@@ -12,7 +12,7 @@ const Footer = () => {
           <p>교환/반품 관련 사항은 판매자와 협의 필요</p>
           <h4>앱 다운로드</h4>
           <div>
-            <img src="../resources/images/가짜큐알.png" />
+            <img src="src/resources/images/fake_qr.png" />
           </div>
         </div>
 
