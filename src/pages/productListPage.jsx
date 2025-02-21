@@ -281,6 +281,11 @@ const popularKeywords = [
 const ITEMS_PER_PAGE = 12;
 
 const ProductListPage = ({ onSelectProduct }) => {
+  //@note - 서버 위치
+  const API_POST_URL = `http://${
+    import.meta.env.VITE_API_HOST
+  }:18090/api/gogumapost`;
+
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("전체");
@@ -303,7 +308,7 @@ const ProductListPage = ({ onSelectProduct }) => {
 
   //서버에서 데이터 가져오기
   useEffect(() => {
-    fetch("http://localhost:18090/api/gogumapost") // 여기에 실제 API 입력
+    fetch(API_POST_URL) // 여기에 실제 API 입력
       .then((response) => response.json())
       .then((data) => {
         const mappedData = data.map((item) => ({
