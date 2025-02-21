@@ -25,10 +25,10 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/salesPage" element={<SellProductPage />} />
         <Route path="/joinPage" element={<JoinPage />} />
         <Route path="/loginPage" element={<LoginPage />} />
         <Route path="/userInfo" element={<UserInfoPage />} />
-        <Route path="/salesPage" element={<SellProductPage />} />
         <Route path="/detail" element={<ProductDetailPage />} />
         <Route path="/list" element={<ProductListPage />} />
         {/* <Route path="/review" element={<ReviewPage />} /> */}
