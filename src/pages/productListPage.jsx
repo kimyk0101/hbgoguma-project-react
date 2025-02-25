@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../css/productListPage.css";
 import ProductDetailPage from "./productDetailPage";
+import { useNavigate } from "react-router-dom";
 
 const regions = ["전체", "강남구", "서초구"];
 
@@ -151,11 +152,12 @@ const popularKeywords = [
 
 const ITEMS_PER_PAGE = 12;
 
-const ProductListPage = ({ onSelectProduct }) => {
+const ProductListPage = () => {
   //@note - 서버 위치
   const API_POST_URL = `http://localhost:18090/api/gogumapost`;
 
   const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글 상태 추가
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedRegion, setSelectedRegion] = useState("전체");
@@ -183,7 +185,7 @@ const ProductListPage = ({ onSelectProduct }) => {
         const postData = data.map((item) => ({
           id: item.pid, // 서버에서 받은 상품 ID
           sellerUid: item.uid, // 판매자 UID
-          selectedUser: item.selected_user, // 선택된 유저
+          selectedUser: item.selected_uid, // 선택된 유저
           regionGu: regionMap[item.loca_gu] || "알 수 없음", // 숫자를 지역명으로 변환
           regionDong: dongMap[item.loca_dong] || "알 수 없음", // 숫자를 동명으로 변환
           title: item.post_title, // 제목
@@ -193,9 +195,12 @@ const ProductListPage = ({ onSelectProduct }) => {
           price: item.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
           userList: item.user_list, // 구매 희망하는 유저 리스트
           reportCnt: item.report_cnt, // 신고 횟수
-          updateTime: item.upd_date, // 마지막 업데이트 시간
+          // updateTime: item.upd_date, // 마지막 업데이트 시간
           seller: item.nickname, // 판매자 닉네임
         }));
+
+        console.log("리스트 쪽 업뎃 타임:" + postData.updateTime);
+
         setPosts(postData);
       })
       .catch((error) => console.error("데이터 불러오기 실패:", error));
@@ -212,6 +217,22 @@ const ProductListPage = ({ onSelectProduct }) => {
   //인기 검색어 클릭 시 검색창에 입력 후 자동 검색
   const handlePopularKeywordClick = (keyword) => {
     setSearchTerm(keyword);
+  };
+
+  // const handlePostClick = (post) => {
+  //   setSelectedPost(post); // 클릭된 게시글을 상태에 저장
+  // };
+
+  // if (selectedPost) {
+  //   // 선택된 게시글이 있으면 상세 페이지로 리다이렉트
+  //   return <ProductDetailPage post={selectedPost} />;
+  // }
+
+  const navigate = useNavigate();
+
+  const handleProductClick = (post) => {
+    // 상세 페이지로 이동하면서 post 전체 데이터를 state로 전달
+    navigate(`/${post.id}`, { state: { post } });
   };
 
   return (
@@ -296,20 +317,20 @@ const ProductListPage = ({ onSelectProduct }) => {
             <div
               key={post.id}
               className="product-card"
-              onClick={() => ProductDetailPage(post)}
+              onClick={() => handleProductClick(post)}
               style={{ cursor: "pointer" }}
             >
-              <img src={post.image} alt={post.title} />
-              <h4>{post.title}</h4>
-              <p className="Listprice">
-                {post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-                  " 원"}
-              </p>
-              <p className="Listseller">판매자: {post.seller}</p>
-              <p className="ListregionDong">{post.regionDong}</p>
-              <p className="Listcategory">
-                {categories[Number(post.category)]}
-              </p>
+                <img src={post.image} alt={post.title} />
+                <h4>{post.title}</h4>
+                <p className="Listprice">
+                  {post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                    " 원"}
+                </p>
+                <p className="Listseller">판매자: {post.seller}</p>
+                <p className="ListregionDong">{post.regionDong}</p>
+                <p className="Listcategory">
+                  {categories[Number(post.category)]}
+                </p>
             </div>
           ))}
         </section>

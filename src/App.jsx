@@ -30,7 +30,7 @@ function App() {
         <Route path="/joinPage" element={<JoinPage />} />
         <Route path="/loginPage" element={<LoginPage />} />
         <Route path="/userInfo" element={<UserInfoPage />} />
-        <Route path="/product/:postId" element={<ProductDetailPage />} />
+        <Route path="/:postId" element={<ProductDetailPage />} />
         <Route path="/list" element={<ProductListPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/seller" element={<SellerReviewPage />} />
