@@ -10,7 +10,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.logo-container {
+.login-logo-container {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -21,31 +21,31 @@
   margin-bottom: 10px;
 }
 
-h1 {
+.login-logo-container h1 {
   font-family: 'Ownglyph_ParkDaHyun', sans-serif;
   font-size: 30px;
   color: #ff8c00;
   margin: 0;
 }
 
-h2 {
+.login-container h2 {
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
 }
 
-form {
+.login-container form {
   width: 100%;
 }
 
-label {
+.login-container label {
   font-size: 16px;
   margin-bottom: 8px;
   color: #333;
   display: block;
 }
 
-input {
+.login-container input {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
@@ -55,12 +55,12 @@ input {
   background-color: #fff;
 }
 
-input:focus {
+.login-container input:focus {
   border-color: #ff8c00;
   outline: none;
 }
 
-button {
+.login-button-group button {
   width: 100%;
   padding: 12px;
   border: none;
@@ -71,22 +71,22 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button[type="submit"] {
+.login-button-group button[type="submit"] {
   background-color: #ff8c00;
   color: white;
 }
 
-button[type="submit"]:hover {
+.login-button-group button[type="submit"]:hover {
   background-color: #e67e00;
 }
 
-button[type="button"] {
+.login-button-group button[type="button"] {
   background-color: #fff;
   border: 2px solid #ff8c00;
   color: #ff8c00;
 }
 
-button[type="button"]:hover {
+.login-button-group button[type="button"]:hover {
   background-color: #ff8c00;
   color: white;
 }
@@ -97,7 +97,7 @@ button[type="button"]:hover {
   font-size: 14px;
 }
 
-.button-group {
+.login-button-group {
   display: flex;
   flex-direction: column;
   gap: 10px;

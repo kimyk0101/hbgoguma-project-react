@@ -67,7 +67,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <h2>로그인</h2>
-      <div className="logo-container">
+      <div className="login-logo-container">
         <img src={logoImage} alt="호박고구마 로고" className="login-logo" />
         <h1>호박고구마</h1>
       </div>
