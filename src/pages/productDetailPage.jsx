@@ -6,22 +6,70 @@ import Header from "../components/header";
 import Advertise from "../components/advertise";
 import { MdOutlineBackspace } from "react-icons/md"; // 뒤로가기
 import { useNavigate } from "react-router-dom"; // useNavigate 임포트
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ProductDetailPage = () => {
-  const location = useLocation(); // location을 통해 state에서 post 데이터 받기
-  const post = location.state?.post; // state가 있을 때 post 데이터 가져오기
+  const { postId } = useParams(); // URL에서 ID 가져오기
 
-  const [newPost, setNewPost] = useState(null); // 변경된 상품 데이터 저장
+  const [newPost, setNewPost] = useState([]); // 변경된 상품 데이터 저장
   const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
   const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
 
+  // const [user, setUser] = useState([]);  //  login 부분
+
+  /*
   useEffect(() => {
-    const API_POST_URL = `http://localhost:18090/api/gogumapost/${post.id}`;
+    const API_USER_URL = `http://localhost:18090/api/gogumauser`;
+
+    fetch(API_USER_URL + "/login", {
+      credentials: "include", // 쿠키 기반 세션 로그인 유지
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("로그인이 필요합니다.");
+        }
+        return response.json();
+      })
+      .then((currentUser) => {
+        if (!currentUser || typeof currentUser !== "object") {
+          throw new Error("유효한 유저 정보가 없습니다.");
+        }
+
+        const currentUserData = {
+          id: currentUser.uid,
+          name: currentUser.name,
+          nickname: currentUser.nickname,
+          tel_number: currentUser.tel_number,
+          email: currentUser.email,
+          loca_gu: currentUser.loca_gu,
+          loca_dong: currentUser.loca_dong,
+          thumbnail: currentUser.thumbnail,
+          recommend_uid: currentUser.recommend_uid,
+          pumpkin_point: currentUser.pumpkin_point,
+          user_rate: currentUser.user_rate,
+          register_date: currentUser.register_date, // 현재 날짜로 기본값 설정
+          is_deleted: currentUser.is_deleted, // 탈퇴 여부
+          is_admin: currentUser.is_admin, // 관리자 여부
+          upd_date: currentUser.upd_date, // 기본 업데이트 시간
+        };
+
+        setUser(currentUserData);
+      })
+      .catch((error) => {
+        console.error("유저 정보 불러오기 실패:", error);
+        alert("로그인이 필요합니다.");
+        navigate("/loginpage"); // 로그인 페이지로 이동
+      });
+  }, []);
+  */
+
+  useEffect(() => {
+    const API_POST_URL = `http://localhost:18090/api/gogumapost/${postId}`;
 
     fetch(API_POST_URL) // 여기에 실제 API 입력
       .then((response) => response.json())
       .then((data) => {
+        console.log("🔍 응답 데이터 확인:", data); // 응답 데이터 로그 확인
         const postData = {
           id: data.pid, // 서버에서 받은 상품 ID
           sellerUid: data.uid, // 판매자 UID
@@ -41,6 +89,7 @@ const ProductDetailPage = () => {
           userRate: data.user_rate, // 판매자 평점
         };
         setNewPost(postData);
+        console.log("🔍 newPost 데이터 확인:", formattedData); // 콘솔 로그 추가
       })
       .catch((error) => {
         console.error("데이터 불러오기 실패:", error);
@@ -161,7 +210,7 @@ const ProductDetailPage = () => {
   };
 
   // 현재 로그인한 사용자 (더미 데이터)
-  const user = { id: 123 };
+  // const user = { id: 123 };
 
   return (
     <>
@@ -178,23 +227,23 @@ const ProductDetailPage = () => {
         <div className="detail-product-body">
           <div className="detail-product-left">
             <img
-              src={post.image}
-              alt={post.title}
+              src={newPost.image}
+              alt={newPost.title}
               className="detail-product-image"
             />
 
             <div className="detail-seller-info">
               <div className="detail-seller-left">
-                <img src={post.thumbnail} alt="판매자 이미지" />
+                <img src={newPost.thumbnail} alt="판매자 이미지" />
                 <div>
-                  <p className="detail-nickname">{post.seller}</p>
+                  <p className="detail-nickname">{newPost.seller}</p>
                   <p className="detail-location">
-                    {post.regionGu}, {post.regionDong}
+                    {Gu[newPost.regionGu]}, {Dong[newPost.regionDong]}
                   </p>
                 </div>
               </div>
               <div className="detail-seller-right">
-                <p>{post.userRate} / 5</p>
+                <p>{newPost.userRate} / 5</p>
               </div>
             </div>
             {/* 신고하기 버튼 */}
@@ -241,19 +290,20 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="detail-product-right">
-            <h2 className="detail-product-title">{post.title}</h2>
+            <h2 className="detail-product-title">{newPost.title}</h2>
 
             {/* 카테고리와 날짜 추가 */}
             <p className="detail-product-category">
-              {PostCategory[post.category]} | {/* post.updateTime */}
+              {PostCategory[newPost.category]} | {newPost.updateTime}
             </p>
 
-            {/* 가격 추가 */}
             <p className="detail-product-price">
-              {post.price.toLocaleString() + "원"}
+              {newPost && newPost.price
+                ? newPost.price.toLocaleString() + "원"
+                : "가격 미정"}
             </p>
 
-            <p className="detail-product-description">{post.content}</p>
+            <p className="detail-product-description">{newPost.content}</p>
             {/* <UserNegoChat user_id={{ id: 123 }} post={newPost} /> */}
           </div>
         </div>

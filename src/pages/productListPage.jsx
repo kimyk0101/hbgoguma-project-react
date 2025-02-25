@@ -165,7 +165,7 @@ const ProductListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [selectedDong, setSelectedDong] = useState("전체");
-  const [user, setUser] = useState([]);
+  // const [user, setUser] = useState([]);  //  login 부분
   const filteredDongs =
     selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
   const filteredPosts = posts.filter(
@@ -181,6 +181,7 @@ const ProductListPage = () => {
   };
   const [currentPage, setCurrentPage] = useState(1);
 
+  /*
   useEffect(() => {
     fetch(API_USER_URL + "/login", {
       credentials: "include", // 쿠키 기반 세션 로그인 유지
@@ -222,6 +223,7 @@ const ProductListPage = () => {
         navigate("/loginpage"); // 로그인 페이지로 이동
       });
   }, []);
+  */
 
   //서버에서 데이터 가져오기
   useEffect(() => {
@@ -268,9 +270,8 @@ const ProductListPage = () => {
   //  상세 페이지로 이동
   const navigate = useNavigate();
 
-  const handleProductClick = (post) => {
-    // 상세 페이지로 이동하면서 post 전체 데이터를 state로 전달
-    navigate(`/${post.id}`, { state: { post } });
+  const goToDetail = (postId) => {
+    navigate(`/${postId}`);
   };
 
   return (
@@ -358,7 +359,7 @@ const ProductListPage = () => {
               <div
                 key={post.id}
                 className="product-card"
-                onClick={() => handleProductClick(post)}
+                onClick={() => goToDetail(post.id)}
                 style={{ cursor: "pointer" }}
               >
                 <img src={post.image} alt={post.title} />
@@ -368,10 +369,10 @@ const ProductListPage = () => {
                     " 원"}
                 </p>
                 <p className="Listseller">판매자: {post.seller}</p>
-                {/* <p className="ListregionDong">{post.regionDong}</p>
+                <p className="ListregionDong">{post.regionDong}</p>
                 <p className="Listcategory">
                   {categories[Number(post.category)]}
-                </p> */}
+                </p>
               </div>
             ))}
           </section>

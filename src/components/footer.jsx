@@ -1,6 +1,7 @@
 // @TODO - 푸터 구현
 import React from "react";
 import "../css/footer.css";
+import QRCodeGenerator from "../components/qrCode.jsx"
 
 const Footer = () => {
   return (
@@ -11,8 +12,9 @@ const Footer = () => {
           <p>직거래 및 택배거래 가능</p>
           <p>교환/반품 관련 사항은 판매자와 협의 필요</p>
           <h4>앱 다운로드</h4>
-          <div>
-            <img src="src/resources/images/fake_qr.png" />
+          <div className="footer-qr">
+          <QRCodeGenerator url="http://l72.29.80.1/" />
+            {/* <img src="src/resources/images/fake_qr.png" /> */}
           </div>
         </div>
 
