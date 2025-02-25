@@ -25,6 +25,7 @@ const LoginPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // ✅ 세션 유지
         body: JSON.stringify(formData),
       });
 

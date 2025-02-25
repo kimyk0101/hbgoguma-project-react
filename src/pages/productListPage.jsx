@@ -54,6 +54,7 @@ const allDongs = {
     "잠원동",
   ],
 };
+
 const categories = [
   "전체",
   "디지털기기",
@@ -116,9 +117,11 @@ const dongs = [
   ["39", "양재2동"],
   ["40", "잠원동"],
 ];
+
 const dongMap = Object.fromEntries(
   dongs.map(([id, name]) => [Number(id), name])
 );
+
 const CATEGORY_ID = [
   ["0", "전체"],
   ["1", "디지털기기"],
@@ -181,49 +184,40 @@ const ProductListPage = () => {
   };
   const [currentPage, setCurrentPage] = useState(1);
 
-  /*
-  useEffect(() => {
-    fetch(API_USER_URL + "/login", {
-      credentials: "include", // 쿠키 기반 세션 로그인 유지
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("로그인이 필요합니다.");
-        }
-        return response.json();
-      })
-      .then((currentUser) => {
-        if (!currentUser || typeof currentUser !== "object") {
-          throw new Error("유효한 유저 정보가 없습니다.");
-        }
+  // useEffect(() => {
+  //   fetch(API_USER_URL + "/login", {
+  //     credentials: "include",
+  //     method: "POST",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((currentUser) => {
+  //       const currentUserData = currentUser.map((user) => ({
+  //         id: user.uid,
+  //         name: user.name,
+  //         nickname: user.nickname,
+  //         password: user.password,
+  //         tel_number: user.tel_number,
+  //         email: user.email,
+  //         loca_gu: user.loca_gu,
+  //         loca_dong: user.loca_dong,
+  //         thumbnail: user.thumbnail,
+  //         recommend_uid: user.recommend_uid,
+  //         pumpkin_point: user.pumpkin_point,
+  //         user_rate: user.user_rate,
+  //         register_date: user.register_date, // 현재 날짜로 기본값 설정
+  //         is_deleted: user.is_deleted, // 탈퇴 여부
+  //         is_admin: user.is_admin, // 관리자 여부
+  //         upd_date: user.upd_date, // 기본 업데이트 시간
+  //       }));
 
-        const currentUserData = {
-          id: currentUser.uid,
-          name: currentUser.name,
-          nickname: currentUser.nickname,
-          tel_number: currentUser.tel_number,
-          email: currentUser.email,
-          loca_gu: currentUser.loca_gu,
-          loca_dong: currentUser.loca_dong,
-          thumbnail: currentUser.thumbnail,
-          recommend_uid: currentUser.recommend_uid,
-          pumpkin_point: currentUser.pumpkin_point,
-          user_rate: currentUser.user_rate,
-          register_date: currentUser.register_date, // 현재 날짜로 기본값 설정
-          is_deleted: currentUser.is_deleted, // 탈퇴 여부
-          is_admin: currentUser.is_admin, // 관리자 여부
-          upd_date: currentUser.upd_date, // 기본 업데이트 시간
-        };
-
-        setUser(currentUserData);
-      })
-      .catch((error) => {
-        console.error("유저 정보 불러오기 실패:", error);
-        alert("로그인이 필요합니다.");
-        navigate("/loginpage"); // 로그인 페이지로 이동
-      });
-  }, []);
-  */
+  //       setUser(currentUserData);
+  //     })
+  //     .catch((error) => {
+  //       console.error("유저 정보 불러오기 실패:", error);
+  //       alert("로그인이 필요합니다.");
+  //       navigate("/loginpage"); // 로그인 페이지로 이동
+  //     });
+  // });
 
   //서버에서 데이터 가져오기
   useEffect(() => {

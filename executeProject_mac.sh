@@ -8,7 +8,7 @@ cd ..
 
 npm install react-icons
 npm install react-router-dom
-npm install axios
+npm install qrcode.react
 npm install react-dom
 
 npm install && npm run dev
