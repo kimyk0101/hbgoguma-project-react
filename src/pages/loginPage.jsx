@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import dummyUsers from "./dummyUsers";
+import logoImage from "../resources/images/sweet-potato-Filled.png"; // 로고 이미지
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -66,6 +67,10 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <h2>로그인</h2>
+      <div className="logo-container">
+        <img src={logoImage} alt="호박고구마 로고" className="login-logo" />
+        <h1>호박고구마</h1>
+      </div>
       <form onSubmit={handleLogin}>
         <label>아이디:</label>
         <input

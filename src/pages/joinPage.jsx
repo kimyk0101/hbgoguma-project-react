@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import dummyUsers from "./dummyUsers";
+import logoImage from "../resources/images/sweet-potato-Filled.png"; // 로고이미지
 
 const allDongs = {
   1: [
@@ -218,6 +219,10 @@ const JoinPage = () => {
 
   return (
     <div className="join-container">
+      <div className="logo-container">
+        <img src={logoImage} alt="호박고구마 로고" className="join-logo" />
+        <h1>호박고구마</h1>
+      </div>
       <h2 className="join-h2">회원가입</h2>
       <form className="join-form" onSubmit={handleSignup}>
         <label>아이디:</label>

@@ -49,3 +49,19 @@
     color: green;
     margin-top: 5px;
   } 
+
+  .join-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .logo-container {
+    margin-bottom: 20px;
+  }
+  
+  .logo-container img {
+    width: 150px;  /* 로고 크기 조정 */
+    height: auto;
+  }
