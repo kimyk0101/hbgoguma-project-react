@@ -219,7 +219,7 @@ const JoinPage = () => {
 
   return (
     <div className="join-container">
-      <div className="logo-container">
+      <div className="join-logo-container">
         <img src={logoImage} alt="호박고구마 로고" className="join-logo" />
         <h1>호박고구마</h1>
       </div>
