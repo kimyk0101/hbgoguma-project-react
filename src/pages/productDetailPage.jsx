@@ -189,7 +189,7 @@ const ProductDetailPage = () => {
                 <div>
                   <p className="detail-nickname">{post.seller}</p>
                   <p className="detail-location">
-                    {Gu[post.regionGu]}, {Dong[post.regionDong]}
+                    {post.regionGu}, {post.regionDong}
                   </p>
                 </div>
               </div>
