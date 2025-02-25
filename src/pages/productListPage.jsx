@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../css/productListPage.css";
-import ProductDetailPage from "./productDetailPage";
+import Footer from "../components/footer";
+import Header from "../components/header";
+import Advertise from "../components/advertise";
 import { useNavigate } from "react-router-dom";
 
 const regions = ["전체", "강남구", "서초구"];
@@ -219,15 +221,7 @@ const ProductListPage = () => {
     setSearchTerm(keyword);
   };
 
-  // const handlePostClick = (post) => {
-  //   setSelectedPost(post); // 클릭된 게시글을 상태에 저장
-  // };
-
-  // if (selectedPost) {
-  //   // 선택된 게시글이 있으면 상세 페이지로 리다이렉트
-  //   return <ProductDetailPage post={selectedPost} />;
-  // }
-
+  //  상세 페이지로 이동
   const navigate = useNavigate();
 
   const handleProductClick = (post) => {
@@ -236,90 +230,93 @@ const ProductListPage = () => {
   };
 
   return (
-    <div className="Listcontainer">
-      {/* 검색창 */}
-      <input
-        type="text"
-        placeholder="검색어를 입력하세요..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="Listsearch-input"
-      />
-      {/* 인기검색어 */}
-      <div className="Listpopular-keywords">
-        <p>인기 검색어</p>
-        {popularKeywords.map((keyword) => (
-          <button
-            key={keyword}
-            className="Listkeyword-btn"
-            onClick={() => handlePopularKeywordClick(keyword)}
-          >
-            {keyword}
-          </button>
-        ))}
-      </div>
-
-      <div className="Listcontent">
-        {/* 카테고리 필터 */}
-        <aside className="Listsidebar">
-          <h3>지역 선택</h3>
-          {regions.map((region) => (
-            <label key={region}>
-              <input
-                type="radio"
-                name="region"
-                value={region}
-                checked={selectedRegion === region}
-                onChange={() => {
-                  setSelectedRegion(region);
-                  setSelectedDong("전체"); // 지역 변경 시 동 초기화
-                }}
-              />
-              {region}
-            </label>
-          ))}
-
-          {/* 동 선택 (지역이 전체가 아닐 때만 노출) */}
-          {selectedRegion !== "전체" && (
-            <select
-              value={selectedDong}
-              onChange={(e) => setSelectedDong(e.target.value)}
+    <>
+      <Header />
+      <Advertise />
+      <div className="Listcontainer">
+        {/* 검색창 */}
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="Listsearch-input"
+        />
+        {/* 인기검색어 */}
+        <div className="Listpopular-keywords">
+          <p>인기 검색어</p>
+          {popularKeywords.map((keyword) => (
+            <button
+              key={keyword}
+              className="Listkeyword-btn"
+              onClick={() => handlePopularKeywordClick(keyword)}
             >
-              <option value="전체">-- 동 선택 --</option>
-              {filteredDongs.map((dong) => (
-                <option key={dong} value={dong}>
-                  {dong}
-                </option>
-              ))}
-            </select>
-          )}
-          <h3>카테고리</h3>
-          {Object.entries(CATEGORY_ID).map(([key, category]) => (
-            <label key={key}>
-              <input
-                type="radio"
-                name="category"
-                value={key}
-                checked={selectedCategory === Number(key)}
-                onChange={() => {
-                  setSelectedCategory(Number(key));
-                  setCurrentPage(1);
-                }}
-              />
-              {categories[key]}
-            </label>
+              {keyword}
+            </button>
           ))}
-        </aside>
+        </div>
 
-        {/* 상품 리스트 */}
-        <section className="Listproduct-list">
-          {displayedPosts.map((post) => (
-            <div
-              key={post.id}
-              className="product-card"
-              onClick={() => handleProductClick(post)}
-              style={{ cursor: "pointer" }}
-            >
+        <div className="Listcontent">
+          {/* 카테고리 필터 */}
+          <aside className="Listsidebar">
+            <h3>지역 선택</h3>
+            {regions.map((region) => (
+              <label key={region}>
+                <input
+                  type="radio"
+                  name="region"
+                  value={region}
+                  checked={selectedRegion === region}
+                  onChange={() => {
+                    setSelectedRegion(region);
+                    setSelectedDong("전체"); // 지역 변경 시 동 초기화
+                  }}
+                />
+                {region}
+              </label>
+            ))}
+
+            {/* 동 선택 (지역이 전체가 아닐 때만 노출) */}
+            {selectedRegion !== "전체" && (
+              <select
+                value={selectedDong}
+                onChange={(e) => setSelectedDong(e.target.value)}
+              >
+                <option value="전체">-- 동 선택 --</option>
+                {filteredDongs.map((dong) => (
+                  <option key={dong} value={dong}>
+                    {dong}
+                  </option>
+                ))}
+              </select>
+            )}
+            <h3>카테고리</h3>
+            {Object.entries(CATEGORY_ID).map(([key, category]) => (
+              <label key={key}>
+                <input
+                  type="radio"
+                  name="category"
+                  value={key}
+                  checked={selectedCategory === Number(key)}
+                  onChange={() => {
+                    setSelectedCategory(Number(key));
+                    setCurrentPage(1);
+                  }}
+                />
+                {categories[key]}
+              </label>
+            ))}
+          </aside>
+
+          {/* 상품 리스트 */}
+          <section className="Listproduct-list">
+            {displayedPosts.map((post) => (
+              <div
+                key={post.id}
+                className="product-card"
+                onClick={() => handleProductClick(post)}
+                style={{ cursor: "pointer" }}
+              >
                 <img src={post.image} alt={post.title} />
                 <h4>{post.title}</h4>
                 <p className="Listprice">
@@ -331,37 +328,39 @@ const ProductListPage = () => {
                 <p className="Listcategory">
                   {categories[Number(post.category)]}
                 </p>
-            </div>
-          ))}
-        </section>
-      </div>
+              </div>
+            ))}
+          </section>
+        </div>
 
-      {/* 페이지네이션 버튼 */}
-      <div className="Listpagination">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          이전
-        </button>
-        <span>
-          {currentPage} / {totalPages}
-        </span>
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          다음
-        </button>
+        {/* 페이지네이션 버튼 */}
+        <div className="Listpagination">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            이전
+          </button>
+          <span>
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            다음
+          </button>
 
-        <button
-          className="Listcreate"
-          onClick={() => handleNavigation("/salesPage")}
-        >
-          게시물 작성
-        </button>
+          <button
+            className="Listcreate"
+            onClick={() => handleNavigation("/salesPage")}
+          >
+            게시물 작성
+          </button>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
