@@ -26,7 +26,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/salesPage" element={<SellProductPage />} />
+        {/* <Route path="/salesPage" element={<SellProductPage />} /> */}
         <Route path="/joinPage" element={<JoinPage />} />
         <Route path="/loginPage" element={<LoginPage />} />
         <Route path="/userInfo" element={<UserInfoPage />} />

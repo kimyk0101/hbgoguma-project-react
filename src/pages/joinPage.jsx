@@ -1,26 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import dummyUsers from "./dummyUsers";
 
+const allDongs = {
+  1: [
+    "개포1동",
+    "개포2동",
+    "개포3동",
+    "개포4동",
+    "논현1동",
+    "논현2동",
+    "대치1동",
+    "대치2동",
+    "대치4동",
+    "삼성1동",
+    "삼성2동",
+    "도곡1동",
+    "도곡2동",
+    "세곡동",
+    "수서동",
+    "신사동",
+    "압구정동",
+    "역삼1동",
+    "역삼2동",
+    "일원동",
+    "일원본동",
+    "청담동",
+  ],
+  2: [
+    "내곡동",
+    "방배1동",
+    "방배2동",
+    "방배3동",
+    "방배4동",
+    "방배본동",
+    "서초1동",
+    "서초2동",
+    "서초3동",
+    "서초4동",
+    "반포동",
+    "양재1동",
+    "양재2동",
+    "잠원동",
+  ],
+};
+
 const JoinPage = () => {
+  //@note - 회원 정보 URL
+  const API_USER_URL = `http://localhost:18090/api/gogumauser`;
+
   const [formData, setFormData] = useState({
     name: "",
     nickname: "",
     password: "",
-    confirmPassword: "",
-    telNumber: "",
+    tel_number: "",
     email: "",
-    locaGu: "",
-    locaDong: "",
+    loca_gu: 1,
+    loca_dong: "",
     thumbnail: "",
     recommend_uid: "", // 추천인 ID (기본값 0)
-    point: 0, // 기본 포인트 값
-    userRate: 0, // 기본 사용자 지수
-    registerDate: new Date().toISOString(), // 현재 날짜로 기본값 설정
-    isDeleted: false, // 탈퇴 여부
-    isAdmin: false, // 관리자 여부
-    updateTime: new Date().toISOString(), // 기본 업데이트 시간
+    pumpkin_point: 1000, // 기본 포인트 값
+    user_rate: 3500, // 기본 사용자 지수
+    register_date: new Date().toISOString(), // 현재 날짜로 기본값 설정
+    is_deleted: false, // 탈퇴 여부
+    is_admin: false, // 관리자 여부
+    upd_date: new Date().toISOString(), // 기본 업데이트 시간
   });
 
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
@@ -92,90 +137,25 @@ const JoinPage = () => {
       alert("아이디 중복 확인이 필요합니다.");
       return;
     }
+
+    // 회원가입 처리
+    fetch(API_USER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
     alert("회원가입 성공! 로그인 페이지로 이동합니다.");
     navigate("/loginPage");
   };
 
-  // 아이디 중복 확인
-  // const checkUsernameAvailability = () => {
-  //   if (!formData.username) {
-  //     alert("아이디를 입력하세요.");
-  //     return;
-  //   }
-
-  // const isTaken = dummyUsers.some((user) => user.name === formData.name);
-  // setIsUsernameAvailable(!isTaken);
-  // };
-
-  // const checkUsernameAvailability = async () => {
-  //   if (!formData.username) {
-  //     alert("아이디를 입력하세요.");
-  //     return;
-  //   }
-  //   try {
-  //     const response = await axios.post("/api/check-username", {
-  //       username: formData.username,
-  //     });
-  //     setIsUsernameAvailable(response.data.available);
-  //   } catch (error) {
-  //     console.error("아이디 중복 확인 오류", error);
-  //     alert("아이디 중복 확인 중 오류가 발생했습니다.");
-  //   }
-  // };
-
-  // 비밀번호 강도 체크
-  // const handlePasswordChange = (e) => {
-  //   const password = e.target.value;
-  //   setFormData({ ...formData, password });
-
-  // 비밀번호 강도 체크 로직 (간단한 예시)
-  //   if (password.length < 8) {
-  //     setPasswordStrength("약함");
-  //   } else if (
-  //     password.match(/[A-Za-z]/) &&
-  //     password.match(/[0-9]/) &&
-  //     password.match(/[^A-Za-z0-9]/)
-  //   ) {
-  //     setPasswordStrength("강함");
-  //   } else {
-  //     setPasswordStrength("보통");
-  //   }
-  // };
-
-  // 비밀번호 확인 즉시 반영
-  // const handleConfirmPasswordChange = (e) => {
-  //   const confirmPassword = e.target.value;
-  //   setFormData({ ...formData, confirmPassword });
-
-  //   if (formData.password && confirmPassword) {
-  //     setPasswordMatch(formData.password === confirmPassword);
-  //   } else {
-  //     setPasswordMatch(null);
-  //   }
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (formData.password !== formData.confirmPassword) {
-  //     setPasswordStrength("비밀번호가 일치하지 않습니다.");
-  //     return;
-  //   }
-  //   alert("회원가입 성공! 로그인 페이지로 이동합니다.");
-  //   navigate("/loginPage");
-
-  // try {
-  //   const response = await axios.post("/api/join", formData);
-  //   if (response.data.success) {
-  //     alert("회원가입 성공! 로그인 페이지로 이동합니다.");
-  //     navigate("/login");
-  //   } else {
-  //     alert("회원가입 실패: " + response.data.message);
-  //   }
-  // } catch (error) {
-  //   console.error("회원가입 오류", error);
-  //   alert("서버 오류가 발생했습니다.");
-  // }
-  // };
+  useEffect(() => {
+    // loca_gu 값이 바뀌면 loca_dong을 해당 구의 첫 번째 동네로 업데이트
+    const firstDong = allDongs[formData.loca_gu]?.[0] || "";
+    setFormData((prev) => ({ ...prev, loca_dong: firstDong }));
+  }, [formData.loca_gu]);
 
   return (
     <div className="join-container">
@@ -194,22 +174,6 @@ const JoinPage = () => {
         {isUsernameAvailable !== null && (
           <span>{isUsernameAvailable ? "사용 가능" : "사용 불가"}</span>
         )}
-        {/* {isUsernameAvailable !== null && (
-          <span style={{ color: isUsernameAvailable ? "green" : "red" }}>
-            {isUsernameAvailable
-              ? "사용 가능한 아이디입니다."
-              : "이미 사용 중인 아이디입니다."}
-          </span>
-        )} */}
-
-        {/* <label>이름:</label>
-        <input
-          type="text"
-          placeholder="이름을 입력하세요"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        /> */}
-
         <label>닉네임:</label>
         <input
           type="text"
@@ -219,7 +183,6 @@ const JoinPage = () => {
             setFormData({ ...formData, nickname: e.target.value })
           }
         />
-
         <label>비밀번호:</label>
         <input
           type="password"
@@ -228,7 +191,6 @@ const JoinPage = () => {
           onChange={handlePasswordChange}
         />
         <span>{passwordStrength}</span>
-
         <label>비밀번호 확인:</label>
         <input
           type="password"
@@ -241,7 +203,6 @@ const JoinPage = () => {
             {passwordMatch ? "비밀번호 일치" : "비밀번호 불일치"}
           </span>
         )}
-
         <label>전화번호:</label>
         <input
           type="text"
@@ -251,7 +212,6 @@ const JoinPage = () => {
             setFormData({ ...formData, telNumber: e.target.value })
           }
         />
-
         <label>이메일:</label>
         <input
           type="email"
@@ -263,18 +223,29 @@ const JoinPage = () => {
           이메일 인증
         </button>
         {isEmailVerified && <span>인증 완료</span>}
-
-        <label>위치:</label>
+        <label>구 위치:</label>
         <select
-          value={formData.location}
+          value={formData.loca_gu}
           onChange={(e) =>
-            setFormData({ ...formData, location: e.target.value })
+            setFormData({ ...formData, loca_gu: e.target.value })
           }
         >
-          <option value="강남구">강남구</option>
-          <option value="송파구">송파구</option>
+          <option value="1">강남구</option>
+          <option value="2">송파구</option>
         </select>
-
+        <label>동 위치:</label>
+        <select
+          value={formData.loca_dong}
+          onChange={(e) =>
+            setFormData({ ...formData, loca_dong: e.target.value })
+          }
+        >
+          {allDongs[formData.loca_gu].map((dong, index) => (
+            <option key={index} value={dong}>
+              {dong}
+            </option>
+          ))}
+        </select>
         <label>추천인:</label>
         <input
           type="text"
@@ -284,7 +255,6 @@ const JoinPage = () => {
             setFormData({ ...formData, referrer: e.target.value })
           }
         />
-
         <div className="button-group">
           <button type="submit">가입</button>
           <button type="button" onClick={() => navigate(-1)}>
@@ -297,56 +267,3 @@ const JoinPage = () => {
 };
 
 export default JoinPage;
-
-//   return (
-//     <div className="signup-container">
-//       <h2>회원가입</h2>
-//       <form onSubmit={handleSubmit}>
-//         <label>아이디:</label>
-//         <input
-//           type="text"
-//           value={formData.username}
-//           onChange={(e) =>
-//             setFormData({ ...formData, username: e.target.value })
-//           }
-//         />
-
-//         <label>닉네임:</label>
-//         <input
-//           type="text"
-//           value={formData.nickname}
-//           onChange={(e) =>
-//             setFormData({ ...formData, nickname: e.target.value })
-//           }
-//         />
-
-//         <label>비밀번호:</label>
-//         <input
-//           type="password"
-//           value={formData.password}
-//           onChange={(e) =>
-//             setFormData({ ...formData, password: e.target.value })
-//           }
-//         />
-
-//         <label>비밀번호 확인:</label>
-//         <input
-//           type="password"
-//           value={formData.confirmPassword}
-//           onChange={(e) =>
-//             setFormData({ ...formData, confirmPassword: e.target.value })
-//           }
-//         />
-
-//         <div className="button-group">
-//           <button type="submit">가입</button>
-//           <button type="button" onClick={() => navigate("/login")}>
-//             취소
-//           </button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default JoinPage;
