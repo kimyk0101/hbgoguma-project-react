@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../css/productListPage.css";
-import dummyProducts from "./dummyProducts"; // 더미 데이터 가져오기
 
 const regions = ["전체", "강남구", "서초구"];
+
+const regionMap = {
+  1: "강남구",
+  2: "서초구",
+};
+
 const allDongs = {
   강남구: [
     "개포1동",
@@ -64,49 +69,52 @@ const categories = [
   "도서",
   "기타",
 ];
-const dongs = {
-  1: "개포1동",
-  2: "개포2동",
-  3: "개포3동",
-  4: "개포4동",
-  5: "논현1동",
-  6: "논현2동",
-  7: "대치1동",
-  8: "대치2동",
-  9: "대치4동",
-  10: "도곡1동",
-  11: "도곡2동",
-  12: "삼성1동",
-  13: "삼성2동",
-  14: "세곡동",
-  15: "수서동",
-  16: "신사동",
-  17: "압구정동",
-  18: "역삼1동",
-  19: "역삼2동",
-  20: "일원1동",
-  21: "일원본동",
-  22: "청담동",
-  23: "내곡동",
-  24: "반포1동",
-  25: "반포2동",
-  26: "반포3동",
-  27: "반포4동",
-  28: "반포본동",
-  29: "방배1동",
-  30: "방배2동",
-  31: "방배3동",
-  32: "방배4동",
-  33: "방배본동",
-  34: "서초1동",
-  35: "서초2동",
-  36: "서초3동",
-  37: "서초4동",
-  38: "양재1동",
-  39: "양재2동",
-  40: "잠원동",
-};
 
+const dongs = [
+  ["1", "개포1동"],
+  ["2", "개포2동"],
+  ["3", "개포3동"],
+  ["4", "개포4동"],
+  ["5", "논현1동"],
+  ["6", "논현2동"],
+  ["7", "대치1동"],
+  ["8", "대치2동"],
+  ["9", "대치4동"],
+  ["10", "도곡1동"],
+  ["11", "도곡2동"],
+  ["12", "삼성1동"],
+  ["13", "삼성2동"],
+  ["14", "세곡동"],
+  ["15", "수서동"],
+  ["16", "신사동"],
+  ["17", "압구정동"],
+  ["18", "역삼1동"],
+  ["19", "역삼2동"],
+  ["20", "일원1동"],
+  ["21", "일원본동"],
+  ["22", "청담동"],
+  ["23", "내곡동"],
+  ["24", "반포1동"],
+  ["25", "반포2동"],
+  ["26", "반포3동"],
+  ["27", "반포4동"],
+  ["28", "반포본동"],
+  ["29", "방배1동"],
+  ["30", "방배2동"],
+  ["31", "방배3동"],
+  ["32", "방배4동"],
+  ["33", "방배본동"],
+  ["34", "서초1동"],
+  ["35", "서초2동"],
+  ["36", "서초3동"],
+  ["37", "서초4동"],
+  ["38", "양재1동"],
+  ["39", "양재2동"],
+  ["40", "잠원동"],
+];
+const dongMap = Object.fromEntries(
+  dongs.map(([id, name]) => [Number(id), name])
+);
 const CATEGORY_ID = [
   ["0", "전체"],
   ["1", "디지털기기"],
@@ -155,8 +163,8 @@ const ProductListPage = ({ onSelectProduct }) => {
     selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
   const filteredPosts = posts.filter(
     (post) =>
-      (selectedRegion === "전체" || post.region === selectedRegion) &&
-      (selectedDong === "전체" || post.dong === selectedDong) &&
+      (selectedRegion === "전체" || post.regionGu === selectedRegion) &&
+      (selectedDong === "전체" || post.regionDong === selectedDong) &&
       (selectedCategory === 0 || post.category === selectedCategory) &&
       post.title.includes(searchTerm)
   );
@@ -175,8 +183,8 @@ const ProductListPage = ({ onSelectProduct }) => {
           id: item.pid, // 서버에서 받은 상품 ID
           sellerUid: item.uid, // 판매자 UID
           selectedUser: item.selected_user, // 선택된 유저
-          regionGu: item.loca_gu, // 지역 (구 정보만 사용)
-          regionDong: item.loca_dong, // 지역 (동 정보만 사용)
+          regionGu: regionMap[item.loca_gu] || "알 수 없음", // 숫자를 지역명으로 변환
+          regionDong: dongMap[item.loca_dong] || "알 수 없음", // 숫자를 동명으로 변환
           title: item.post_title, // 제목
           image: item.post_photo, // 상품 이미지
           content: item.post_content, // 상품 설명
@@ -191,11 +199,6 @@ const ProductListPage = ({ onSelectProduct }) => {
       })
       .catch((error) => console.error("데이터 불러오기 실패:", error));
   }, []);
-
-  // useEffect(() => {
-  //   // API 대신 더미 데이터 사용
-  //   setPosts(dummyProducts);
-  // }, []);
 
   // 페이지네이션 계산
   const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
@@ -254,20 +257,19 @@ const ProductListPage = ({ onSelectProduct }) => {
             </label>
           ))}
 
+          {/* 동 선택 (지역이 전체가 아닐 때만 노출) */}
           {selectedRegion !== "전체" && (
-            <>
-              <select
-                value={selectedDong}
-                onChange={(e) => setSelectedDong(e.target.value)}
-              >
-                <option value="전체">-- 동 선택 --</option>
-                {filteredDongs.map((dong, index) => (
-                  <option key={index} value={dong}>
-                    {dong}
-                  </option>
-                ))}
-              </select>
-            </>
+            <select
+              value={selectedDong}
+              onChange={(e) => setSelectedDong(e.target.value)}
+            >
+              <option value="전체">-- 동 선택 --</option>
+              {filteredDongs.map((dong) => (
+                <option key={dong} value={dong}>
+                  {dong}
+                </option>
+              ))}
+            </select>
           )}
           <h3>카테고리</h3>
           {Object.entries(CATEGORY_ID).map(([key, category]) => (
@@ -303,7 +305,7 @@ const ProductListPage = ({ onSelectProduct }) => {
                   " 원"}
               </p>
               <p className="Listseller">판매자: {post.seller}</p>
-              <p className="Listregion">{post.region}</p>
+              <p className="ListregionDong">{post.regionDong}</p>
               <p className="Listcategory">
                 {categories[Number(post.category)]}
               </p>

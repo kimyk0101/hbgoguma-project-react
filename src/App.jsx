@@ -15,7 +15,7 @@ import MainPage from "./pages/mainPage";
 import ProductDetailPage from "./pages/productDetailPage";
 import ProductListPage from "./pages/productListPage";
 import SellerReviewPage from "./pages/sellerReviewPage";
-import Sales from "./pages/sales";
+import SellProductPage from "./pages/sales";
 
 import "./css/productDetailPage.css";
 // import "./css/productListPage.css";
@@ -34,7 +34,6 @@ function App() {
         <Route path="/list" element={<ProductListPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/seller" element={<SellerReviewPage />} />
-        <Route path="/sales" element={<Sales />} />
       </Routes>
     </Router>
   );
