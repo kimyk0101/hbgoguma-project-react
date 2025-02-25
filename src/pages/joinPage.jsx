@@ -5,44 +5,44 @@ import dummyUsers from "./dummyUsers";
 
 const allDongs = {
   1: [
-    "개포1동",
-    "개포2동",
-    "개포3동",
-    "개포4동",
-    "논현1동",
-    "논현2동",
-    "대치1동",
-    "대치2동",
-    "대치4동",
-    "삼성1동",
-    "삼성2동",
-    "도곡1동",
-    "도곡2동",
-    "세곡동",
-    "수서동",
-    "신사동",
-    "압구정동",
-    "역삼1동",
-    "역삼2동",
-    "일원동",
-    "일원본동",
-    "청담동",
+    [1, "개포1동"],
+    [2, "개포2동"],
+    [3, "개포3동"],
+    [4, "개포4동"],
+    [5, "논현1동"],
+    [6, "논현2동"],
+    [7, "대치1동"],
+    [8, "대치2동"],
+    [9, "대치4동"],
+    [9, "삼성1동"],
+    [10, "삼성2동"],
+    [11, "도곡1동"],
+    [12, "도곡2동"],
+    [13, "세곡동"],
+    [14, "수서동"],
+    [15, "신사동"],
+    [16, "압구정동"],
+    [17, "역삼1동"],
+    [18, "역삼2동"],
+    [19, "일원동"],
+    [20, "일원본동"],
+    [21, "청담동"],
   ],
   2: [
-    "내곡동",
-    "방배1동",
-    "방배2동",
-    "방배3동",
-    "방배4동",
-    "방배본동",
-    "서초1동",
-    "서초2동",
-    "서초3동",
-    "서초4동",
-    "반포동",
-    "양재1동",
-    "양재2동",
-    "잠원동",
+    [22, "내곡동"],
+    [23, "방배1동"],
+    [24, "방배2동"],
+    [25, "방배3동"],
+    [26, "방배4동"],
+    [27, "방배본동"],
+    [28, "서초1동"],
+    [29, "서초2동"],
+    [30, "서초3동"],
+    [31, "서초4동"],
+    [32, "반포동"],
+    [33, "양재1동"],
+    [34, "양재2동"],
+    [35, "잠원동"],
   ],
 };
 
@@ -54,10 +54,11 @@ const JoinPage = () => {
     name: "",
     nickname: "",
     password: "",
+    confirmPassword: "",
     tel_number: "",
     email: "",
     loca_gu: 1,
-    loca_dong: "",
+    loca_dong: 0,
     thumbnail: "",
     recommend_uid: "", // 추천인 ID (기본값 0)
     pumpkin_point: 1000, // 기본 포인트 값
@@ -68,11 +69,20 @@ const JoinPage = () => {
     upd_date: new Date().toISOString(), // 기본 업데이트 시간
   });
 
+  const [allUserData, setAllUserData] = useState([]);
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 회원 정보 불러오기
+    fetch(API_USER_URL)
+      .then((response) => response.json())
+      .then((data) => setAllUserData(data))
+      .catch((error) => console.error("회원 정보 불러오기 오류", error));
+  }, []);
 
   const checkUsernameAvailability = () => {
     const usernameRegex = /^[a-zA-Z0-9]{6,}$/;
@@ -117,7 +127,7 @@ const JoinPage = () => {
       alert("닉네임에는 특수문자를 사용할 수 없습니다.");
       return;
     }
-    if (!formData.telNumber.match(phoneRegex)) {
+    if (!formData.tel_number.match(phoneRegex)) {
       alert("전화번호는 11자리 숫자만 입력해야 합니다.");
       return;
     }
@@ -138,13 +148,62 @@ const JoinPage = () => {
       return;
     }
 
+    const { confirmPassword, ...formDataToSend } = formData;
+
+    console.log(
+      "name : " +
+        formData.name +
+        ", " +
+        "nickname : " +
+        formData.nickname +
+        ", " +
+        "password : " +
+        formData.password +
+        ", " +
+        "tel_number : " +
+        formData.tel_number +
+        ", " +
+        "email : " +
+        formData.email +
+        ", " +
+        "loca_gu : " +
+        formData.loca_gu +
+        ", " +
+        "loca_dong : " +
+        formData.loca_dong +
+        ", " +
+        "thumbnail : " +
+        formData.thumbnail +
+        ", " +
+        "recommend_uid : " +
+        formData.recommend_uid +
+        ", " +
+        "pumpkin_point : " +
+        formData.pumpkin_point +
+        ", " +
+        "user_rate : " +
+        formData.user_rate +
+        ", " +
+        "register_date : " +
+        formData.register_date +
+        ", " +
+        "is_deleted : " +
+        formData.is_deleted +
+        ", " +
+        "is_admin : " +
+        formData.is_admin +
+        ", " +
+        "upd_date : " +
+        formData.upd_date
+    );
+
     // 회원가입 처리
     fetch(API_USER_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(formDataToSend),
     });
 
     alert("회원가입 성공! 로그인 페이지로 이동합니다.");
@@ -207,9 +266,9 @@ const JoinPage = () => {
         <input
           type="text"
           placeholder="- 없이 숫자만 입력"
-          value={formData.telNumber}
+          value={formData.tel_number}
           onChange={(e) =>
-            setFormData({ ...formData, telNumber: e.target.value })
+            setFormData({ ...formData, tel_number: e.target.value })
           }
         />
         <label>이메일:</label>
@@ -241,8 +300,8 @@ const JoinPage = () => {
           }
         >
           {allDongs[formData.loca_gu].map((dong, index) => (
-            <option key={index} value={dong}>
-              {dong}
+            <option key={index} value={dong[0]}>
+              {dong[1]}
             </option>
           ))}
         </select>
