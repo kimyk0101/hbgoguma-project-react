@@ -58,7 +58,7 @@ const JoinPage = () => {
     tel_number: "",
     email: "",
     loca_gu: 1,
-    loca_dong: 0,
+    loca_dong: 1,
     thumbnail: "",
     recommend_uid: "", // 추천인 ID (기본값 0)
     pumpkin_point: 1000, // 기본 포인트 값
