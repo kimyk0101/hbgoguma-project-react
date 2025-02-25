@@ -324,10 +324,10 @@ const ProductListPage = () => {
                     " 원"}
                 </p>
                 <p className="Listseller">판매자: {post.seller}</p>
-                <p className="ListregionDong">{post.regionDong}</p>
+                {/* <p className="ListregionDong">{post.regionDong}</p>
                 <p className="Listcategory">
                   {categories[Number(post.category)]}
-                </p>
+                </p> */}
               </div>
             ))}
           </section>

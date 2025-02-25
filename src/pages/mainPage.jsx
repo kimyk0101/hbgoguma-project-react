@@ -15,10 +15,10 @@ import ProductListPage from "./productListPage";
 const MainPage = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <Advertise />
       <ProductListPage />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

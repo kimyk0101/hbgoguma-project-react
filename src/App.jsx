@@ -11,7 +11,7 @@ import "./css/joinPage.css";
 import LoginPage from "./pages/loginPage";
 import "./css/loginPage.css";
 
-import MainPage from "./pages/mainPage";
+// import MainPage from "./pages/mainPage";
 import ProductDetailPage from "./pages/productDetailPage";
 import ProductListPage from "./pages/productListPage";
 import SellerReviewPage from "./pages/sellerReviewPage";
@@ -31,8 +31,9 @@ function App() {
         <Route path="/loginPage" element={<LoginPage />} />
         <Route path="/userInfo" element={<UserInfoPage />} />
         <Route path="/:postId" element={<ProductDetailPage />} />
+        <Route path="/" element={<ProductListPage />} />
         <Route path="/list" element={<ProductListPage />} />
-        <Route path="/" element={<MainPage />} />
+        {/* <Route path="/" element={<MainPage />} /> */}
         <Route path="/seller" element={<SellerReviewPage />} />
       </Routes>
     </Router>

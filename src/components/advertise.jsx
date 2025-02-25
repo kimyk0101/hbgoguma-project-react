@@ -21,7 +21,7 @@ const adData = [
   {
     type: "image",
     src: "src/resources/images/lggram.png",
-    link: "https://www.lge.co.kr/lgekor/product/pc/notebook/lg-gram",
+    link: "https://www.lge.co.kr/care-solutions/notebook",
   },
 ];
 
