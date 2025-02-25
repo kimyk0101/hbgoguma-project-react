@@ -14,11 +14,13 @@ import "./css/loginPage.css";
 import MainPage from "./pages/mainPage";
 import ProductDetailPage from "./pages/productDetailPage";
 import ProductListPage from "./pages/productListPage";
-// import ReviewPage from "./pages/reviewPage";
+import SellerReviewPage from "./pages/sellerReviewPage";
+import Sales from "./pages/sales";
 
 import "./css/productDetailPage.css";
-import "./css/productListPage.css";
+// import "./css/productListPage.css";
 import "./css/footer.css";
+import "./css/sellerReviewPage.css";
 
 function App() {
   return (
@@ -30,8 +32,9 @@ function App() {
 
         <Route path="/detail" element={<ProductDetailPage />} />
         <Route path="/list" element={<ProductListPage />} />
-        {/* <Route path="/review" element={<ReviewPage />} /> */}
         <Route path="/" element={<MainPage />} />
+        <Route path="/seller" element={<SellerReviewPage />} />
+        <Route path="/sales" element={<Sales />} />
       </Routes>
     </Router>
   );
