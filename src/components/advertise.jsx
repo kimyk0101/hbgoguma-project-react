@@ -6,15 +6,22 @@ const adData = [
   {
     type: "image",
     src: "src/resources/images/nike.png",
+    link: "https://www.nike.com",
   },
   {
     type: "image",
     src: "src/resources/images/iphone16.png",
+    link: "https://www.apple.com/iphone-16",
   },
-  { type: "video", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
+  {
+    type: "video",
+    src: "https://www.w3schools.com/html/mov_bbb.mp4",
+    link: "https://www.w3schools.com",
+  },
   {
     type: "image",
     src: "src/resources/images/lggram.png",
+    link: "https://www.lge.co.kr/lgekor/product/pc/notebook/lg-gram",
   },
 ];
 
@@ -28,87 +35,76 @@ const Advertise = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // const prevSlide = () => {
-  //   setCurrentIndex(
-  //     (prevIndex) => (prevIndex - 1 + adData.length) % adData.length
-  //   );
-  // };
-
-  // const nextSlide = () => {
-  //   setCurrentIndex((prevIndex) => (prevIndex + 1) % adData.length);
-  // };
-
   return (
     <div className="ad-slider-container">
-      {/* <button className="prev-button" onClick={prevSlide}>
-        &#10094;
-      </button> */}
       <div className="ad-content">
-        {adData[currentIndex].type === "image" ? (
-          <img
-            src={adData[currentIndex].src}
-            alt="광고 이미지"
-            className="ad-image"
-          />
-        ) : (
-          <video
-            src={adData[currentIndex].src}
-            autoPlay
-            loop
-            muted
-            className="ad-video"
-          ></video>
-        )}
-         {adData[currentIndex].type === "image" ? (
-          <img
-            src={adData[currentIndex].src}
-            alt="광고 이미지"
-            className="ad-image"
-          />
-        ) : (
-          
-          <video
-            src={adData[currentIndex].src}
-            autoPlay
-            loop
-            muted
-            className="ad-video"
-          ></video>
-        )}
-         {adData[currentIndex].type === "image" ? (
-          <img
-            src={adData[currentIndex].src}
-            alt="광고 이미지"
-            className="ad-image"
-          />
-        ) : (
-          <video
-            src={adData[currentIndex].src}
-            autoPlay
-            loop
-            muted
-            className="ad-video"
-          ></video>
-        )}
-        {adData[currentIndex].type === "image" ? (
-          <img
-            src={adData[currentIndex].src}
-            alt="광고 이미지"
-            className="ad-image"
-          />
-        ) : (
-          <video
-            src={adData[currentIndex].src}
-            autoPlay
-            loop
-            muted
-            className="ad-video"
-          ></video>
-        )}
+        <a
+          href={adData[currentIndex].link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {adData[currentIndex].type === "image" ? (
+            <img
+              src={adData[currentIndex].src}
+              alt="광고 이미지"
+              className="ad-image"
+            />
+          ) : (
+            <video
+              src={adData[currentIndex].src}
+              autoPlay
+              loop
+              muted
+              className="ad-video"
+            ></video>
+          )}
+          {adData[currentIndex].type === "image" ? (
+            <img
+              src={adData[currentIndex].src}
+              alt="광고 이미지"
+              className="ad-image"
+            />
+          ) : (
+            <video
+              src={adData[currentIndex].src}
+              autoPlay
+              loop
+              muted
+              className="ad-video"
+            ></video>
+          )}
+          {adData[currentIndex].type === "image" ? (
+            <img
+              src={adData[currentIndex].src}
+              alt="광고 이미지"
+              className="ad-image"
+            />
+          ) : (
+            <video
+              src={adData[currentIndex].src}
+              autoPlay
+              loop
+              muted
+              className="ad-video"
+            ></video>
+          )}
+          {adData[currentIndex].type === "image" ? (
+            <img
+              src={adData[currentIndex].src}
+              alt="광고 이미지"
+              className="ad-image"
+            />
+          ) : (
+            <video
+              src={adData[currentIndex].src}
+              autoPlay
+              loop
+              muted
+              className="ad-video"
+            ></video>
+          )}
+        </a>
       </div>
-      {/* <button className="next-button" onClick={nextSlide}>
-        &#10095;
-      </button> */}
     </div>
   );
 };

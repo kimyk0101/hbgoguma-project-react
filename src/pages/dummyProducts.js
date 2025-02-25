@@ -1,0 +1,55 @@
+const dummyProducts = [
+    {
+      id: 1,
+      title: "아이폰 13 프로",
+      price: "900,000원",
+      category: "디지털기기",
+      region: "강남구",
+      dong: "역삼동",
+      image: "https://via.placeholder.com/150",
+      seller: "사용자1",
+    },
+    {
+      id: 2,
+      title: "게이밍 노트북",
+      price: "1,200,000원",
+      category: "디지털기기",
+      region: "서초구",
+      dong: "반포동",
+      image: "https://via.placeholder.com/150",
+      seller: "사용자2",
+    },
+    {
+      id: 3,
+      title: "셀린느 가방",
+      price: "2,500,000원",
+      category: "의류",
+      region: "강남구",
+      dong: "논현동",
+      image: "https://via.placeholder.com/150",
+      seller: "사용자3",
+    },
+    {
+      id: 4,
+      title: "자전거 MTB",
+      price: "350,000원",
+      category: "스포츠/레저",
+      region: "서초구",
+      dong: "서초동",
+      image: "https://via.placeholder.com/150",
+      seller: "사용자4",
+    },
+    {
+      id: 5,
+      title: "에어컨 18평형",
+      price: "450,000원",
+      category: "생활가전",
+      region: "강남구",
+      dong: "삼성동",
+      image: "https://via.placeholder.com/150",
+      seller: "사용자5",
+    },
+  ];
+  
+  export default dummyProducts;
+  
