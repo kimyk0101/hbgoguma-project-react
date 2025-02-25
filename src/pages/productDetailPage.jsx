@@ -15,85 +15,35 @@ const ProductDetailPage = () => {
   const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
   const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
 
-  // const [user, setUser] = useState([]);  //  login 부분
+  const [user, setUser] = useState([]); //  login 부분
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
 
-  /*
-  useEffect(() => {
-    const API_USER_URL = `http://localhost:18090/api/gogumauser`;
-
-    fetch(API_USER_URL + "/login", {
-      credentials: "include", // 쿠키 기반 세션 로그인 유지
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("로그인이 필요합니다.");
+  // 로그인 상태 확인 함수
+  const checkLoginStatus = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:18090/api/gogumauser/session",
+        {
+          method: "GET",
+          credentials: "include", // 쿠키를 포함하여 요청
         }
-        return response.json();
-      })
-      .then((currentUser) => {
-        if (!currentUser || typeof currentUser !== "object") {
-          throw new Error("유효한 유저 정보가 없습니다.");
-        }
+      );
 
-        const currentUserData = {
-          id: currentUser.uid,
-          name: currentUser.name,
-          nickname: currentUser.nickname,
-          tel_number: currentUser.tel_number,
-          email: currentUser.email,
-          loca_gu: currentUser.loca_gu,
-          loca_dong: currentUser.loca_dong,
-          thumbnail: currentUser.thumbnail,
-          recommend_uid: currentUser.recommend_uid,
-          pumpkin_point: currentUser.pumpkin_point,
-          user_rate: currentUser.user_rate,
-          register_date: currentUser.register_date, // 현재 날짜로 기본값 설정
-          is_deleted: currentUser.is_deleted, // 탈퇴 여부
-          is_admin: currentUser.is_admin, // 관리자 여부
-          upd_date: currentUser.upd_date, // 기본 업데이트 시간
-        };
-
-        setUser(currentUserData);
-      })
-      .catch((error) => {
-        console.error("유저 정보 불러오기 실패:", error);
-        alert("로그인이 필요합니다.");
-        navigate("/loginpage"); // 로그인 페이지로 이동
-      });
-  }, []);
-  */
+      if (response.ok) {
+        const data = await response.json();
+        setIsLoggedIn(true);
+        setUser(data); // 로그인된 사용자 정보 저장
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error("로그인 상태 확인 중 오류 발생:", error);
+      setIsLoggedIn(false);
+    }
+  };
 
   useEffect(() => {
-    const API_POST_URL = `http://localhost:18090/api/gogumapost/${postId}`;
-
-    fetch(API_POST_URL) // 여기에 실제 API 입력
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("🔍 응답 데이터 확인:", data); // 응답 데이터 로그 확인
-        const postData = {
-          id: data.pid, // 서버에서 받은 상품 ID
-          sellerUid: data.uid, // 판매자 UID
-          selectedUser: data.selected_user, // 선택된 유저
-          regionGu: data.loca_gu, // 지역 (구 정보만 사용)
-          regionDong: data.loca_dong, // 지역 (동 정보만 사용)
-          title: data.post_title, // 제목
-          image: data.post_photo, // 상품 이미지
-          content: data.post_content, // 상품 설명
-          category: data.post_category, // 카테고리
-          price: data.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
-          userList: data.user_list, // 구매 희망하는 유저 리스트
-          reportCnt: data.report_cnt, // 신고 횟수
-          updateTime: data.upd_date, // 마지막 업데이트 시간
-          seller: data.nickname, // 판매자 닉네임
-          thumbnail: data.thumbnail, // 판매자 썸네일(이미지)
-          userRate: data.user_rate, // 판매자 평점
-        };
-        setNewPost(postData);
-        console.log("🔍 newPost 데이터 확인:", formattedData); // 콘솔 로그 추가
-      })
-      .catch((error) => {
-        console.error("데이터 불러오기 실패:", error);
-      });
+    checkLoginStatus(); // 컴포넌트가 마운트될 때 로그인 상태 확인
   }, []);
 
   // 신고 사유 목록
@@ -304,7 +254,7 @@ const ProductDetailPage = () => {
             </p>
 
             <p className="detail-product-description">{newPost.content}</p>
-            {/* <UserNegoChat user_id={{ id: 123 }} post={newPost} /> */}
+            <UserNegoChat user_id={user.uid} post={newPost} />
           </div>
         </div>
       </div>

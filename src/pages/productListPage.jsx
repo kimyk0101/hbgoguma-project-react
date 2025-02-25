@@ -168,7 +168,10 @@ const ProductListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [selectedDong, setSelectedDong] = useState("전체");
-  // const [user, setUser] = useState([]);  //  login 부분
+
+  const [user, setUser] = useState([]); //  login 부분
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
+
   const filteredDongs =
     selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
   const filteredPosts = posts.filter(
@@ -184,40 +187,33 @@ const ProductListPage = () => {
   };
   const [currentPage, setCurrentPage] = useState(1);
 
-  // useEffect(() => {
-  //   fetch(API_USER_URL + "/login", {
-  //     credentials: "include",
-  //     method: "POST",
-  //   })
-  //     .then((response) => response.json())
-  //     .then((currentUser) => {
-  //       const currentUserData = currentUser.map((user) => ({
-  //         id: user.uid,
-  //         name: user.name,
-  //         nickname: user.nickname,
-  //         password: user.password,
-  //         tel_number: user.tel_number,
-  //         email: user.email,
-  //         loca_gu: user.loca_gu,
-  //         loca_dong: user.loca_dong,
-  //         thumbnail: user.thumbnail,
-  //         recommend_uid: user.recommend_uid,
-  //         pumpkin_point: user.pumpkin_point,
-  //         user_rate: user.user_rate,
-  //         register_date: user.register_date, // 현재 날짜로 기본값 설정
-  //         is_deleted: user.is_deleted, // 탈퇴 여부
-  //         is_admin: user.is_admin, // 관리자 여부
-  //         upd_date: user.upd_date, // 기본 업데이트 시간
-  //       }));
+  // 로그인 상태 확인 함수
+  const checkLoginStatus = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:18090/api/gogumauser/session",
+        {
+          method: "GET",
+          credentials: "include", // 쿠키를 포함하여 요청
+        }
+      );
 
-  //       setUser(currentUserData);
-  //     })
-  //     .catch((error) => {
-  //       console.error("유저 정보 불러오기 실패:", error);
-  //       alert("로그인이 필요합니다.");
-  //       navigate("/loginpage"); // 로그인 페이지로 이동
-  //     });
-  // });
+      if (response.ok) {
+        const data = await response.json();
+        setIsLoggedIn(true);
+        setUser(data); // 로그인된 사용자 정보 저장
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error("로그인 상태 확인 중 오류 발생:", error);
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    checkLoginStatus(); // 컴포넌트가 마운트될 때 로그인 상태 확인
+  }, []);
 
   //서버에서 데이터 가져오기
   useEffect(() => {
