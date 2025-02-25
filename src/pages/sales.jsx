@@ -68,65 +68,65 @@ const categories = [
 ];
 
 const dongs = [
-  ["1", "개포1동"],
-  ["2", "개포2동"],
-  ["3", "개포3동"],
-  ["4", "개포4동"],
-  ["5", "논현1동"],
-  ["6", "논현2동"],
-  ["7", "대치1동"],
-  ["8", "대치2동"],
-  ["9", "대치4동"],
-  ["10", "도곡1동"],
-  ["11", "도곡2동"],
-  ["12", "삼성1동"],
-  ["13", "삼성2동"],
-  ["14", "세곡동"],
-  ["15", "수서동"],
-  ["16", "신사동"],
-  ["17", "압구정동"],
-  ["18", "역삼1동"],
-  ["19", "역삼2동"],
-  ["20", "일원1동"],
-  ["21", "일원본동"],
-  ["22", "청담동"],
-  ["23", "내곡동"],
-  ["24", "반포1동"],
-  ["25", "반포2동"],
-  ["26", "반포3동"],
-  ["27", "반포4동"],
-  ["28", "반포본동"],
-  ["29", "방배1동"],
-  ["30", "방배2동"],
-  ["31", "방배3동"],
-  ["32", "방배4동"],
-  ["33", "방배본동"],
-  ["34", "서초1동"],
-  ["35", "서초2동"],
-  ["36", "서초3동"],
-  ["37", "서초4동"],
-  ["38", "양재1동"],
-  ["39", "양재2동"],
-  ["40", "잠원동"],
+  [1, "개포1동"],
+  [2, "개포2동"],
+  [3, "개포3동"],
+  [4, "개포4동"],
+  [5, "논현1동"],
+  [6, "논현2동"],
+  [7, "대치1동"],
+  [8, "대치2동"],
+  [9, "대치4동"],
+  [10, "도곡1동"],
+  [11, "도곡2동"],
+  [12, "삼성1동"],
+  [13, "삼성2동"],
+  [14, "세곡동"],
+  [15, "수서동"],
+  [16, "신사동"],
+  [17, "압구정동"],
+  [18, "역삼1동"],
+  [19, "역삼2동"],
+  [20, "일원1동"],
+  [21, "일원본동"],
+  [22, "청담동"],
+  [23, "내곡동"],
+  [24, "반포1동"],
+  [25, "반포2동"],
+  [26, "반포3동"],
+  [27, "반포4동"],
+  [28, "반포본동"],
+  [29, "방배1동"],
+  [30, "방배2동"],
+  [31, "방배3동"],
+  [32, "방배4동"],
+  [33, "방배본동"],
+  [34, "서초1동"],
+  [35, "서초2동"],
+  [36, "서초3동"],
+  [37, "서초4동"],
+  [38, "양재1동"],
+  [39, "양재2동"],
+  [40, "잠원동"],
 ];
 
 const CATEGORY_ID = [
-  ["1", "디지털기기"],
-  ["2", "가구/인테리어"],
-  ["3", "유아동"],
-  ["4", "의류"],
-  ["5", "잡화"],
-  ["6", "생활가전"],
-  ["7", "생활/주방"],
-  ["8", "스포츠/레저"],
-  ["9", "취미/게임/음반"],
-  ["10", "뷰티/미용"],
-  ["11", "식물"],
-  ["12", "식품"],
-  ["13", "반려동물"],
-  ["14", "티켓/교환권"],
-  ["15", "도서"],
-  ["16", "기타"],
+  [1, "디지털기기"],
+  [2, "가구/인테리어"],
+  [3, "유아동"],
+  [4, "의류"],
+  [5, "잡화"],
+  [6, "생활가전"],
+  [7, "생활/주방"],
+  [8, "스포츠/레저"],
+  [9, "취미/게임/음반"],
+  [10, "뷰티/미용"],
+  [11, "식물"],
+  [12, "식품"],
+  [13, "반려동물"],
+  [14, "티켓/교환권"],
+  [15, "도서"],
+  [16, "기타"],
 ];
 
 const regions = ["강남구", "서초구"];
@@ -134,44 +134,82 @@ const regions = ["강남구", "서초구"];
 const SellProductPage = ({ onSubmitSuccess }) => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("0");
+  const [category, setCategory] = useState("디지털기기");
   const [regionGu, setRegionGu] = useState("강남구");
-  const [regionDong, setRegionDong] = useState("1");
+  const [regionDong, setRegionDong] = useState("개포1동");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [preview, setPreview] = useState(null);
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const uploadResponse = await fetch(`http://localhost:18090/api/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (uploadResponse.ok) {
+        const uploadResult = await uploadResponse.json();
+        setImageUrl(uploadResult.url); // 업로드된 이미지 URL 저장
+        setPreview(uploadResult.url); // 미리보기 업데이트
+      } else {
+        alert("이미지 업로드 실패. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("이미지 업로드 중 오류 발생:", error);
+      alert("이미지 업로드 중 오류가 발생했습니다.");
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // 선택된 카테고리를 ID 값으로 변환
     const categoryId =
       CATEGORY_ID.find(([id, name]) => name === category)?.[0] || "1";
     const locaGuId = regions.indexOf(regionGu) + 1;
     const locaDongId =
       dongs.find(([id, name]) => name === regionDong)?.[0] || "1";
 
-    const formData = new FormData();
-    formData.append("post_title", title);
-    formData.append("post_price", price);
-    formData.append("post_category", categoryId); // 카테고리 ID 전송
-    formData.append("loca_gu", locaGuId); // 구 ID 전송
-    formData.append("loca_dong", locaDongId); // 동 ID 전송
-    formData.append("post_content", description);
-    if (image) formData.append("post_photo", image);
+    //가상이미지
+    const imageUrl =
+      "https://search.pstatic.net/sunny?src=https%3A%2F%2Flh3.googleusercontent.com%2F9tDiCw0o_t35aUjMEd-Khc-Uu_MWe0T-8p5zz_cD_dSacDxiIKt2LpXT_uIdpmhOm9l31D3QJjjz6NL7YBYPUdUWteOhkycaTMylD5azeJnhjYGnBw%3Dw1200-h630-n-nu&type=fff208_208";
+    const pid = 1001; // 가상의 상품 ID
+    const uid = 123; // 가상의 사용자 ID
+    const nickname = "판매자123"; // 가상의 닉네임
+    const postUpdate = new Date().toISOString(); // 현재 시간
+    const selected_uid = 0;
+    const report_cnt = 100;
 
+    const priceNumber = Number(price);
+    const postData = {
+      selected_uid,
+      report_cnt,
+      pid,
+      uid,
+      nickname,
+      post_title: title,
+      post_price: priceNumber,
+      post_category: categoryId,
+      loca_gu: locaGuId,
+      loca_dong: locaDongId,
+      post_content: description,
+      post_update: postUpdate,
+      post_photo: imageUrl, // URL로 저장
+    };
+    console.log(postData);
     try {
       const response = await fetch(`http://localhost:18090/api/gogumapost`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
       });
 
       if (response.ok) {

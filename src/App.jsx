@@ -18,7 +18,7 @@ import SellerReviewPage from "./pages/sellerReviewPage";
 import SellProductPage from "./pages/sales";
 
 import "./css/productDetailPage.css";
-// import "./css/productListPage.css";
+import "./css/productListPage.css";
 import "./css/footer.css";
 import "./css/sellerReviewPage.css";
 
@@ -26,11 +26,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/salesPage" element={<SellProductPage />} /> */}
+        <Route path="/salesPage" element={<SellProductPage />} />
         <Route path="/joinPage" element={<JoinPage />} />
         <Route path="/loginPage" element={<LoginPage />} />
         <Route path="/userInfo" element={<UserInfoPage />} />
-        <Route path="/product/:postId" element={<ProductDetailPage />} />
+        <Route path="/:postId" element={<ProductDetailPage />} />
         <Route path="/list" element={<ProductListPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/seller" element={<SellerReviewPage />} />

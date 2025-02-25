@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "../css/productDetailPage.css";
 import UserNegoChat from "../components/userNegoChat.jsx"; // 채팅 컴포넌트 임포트
+import Footer from "../components/footer";
+import Header from "../components/header";
+import Advertise from "../components/advertise";
 import { MdOutlineBackspace } from "react-icons/md"; // 뒤로가기
-import { useParams } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom"; // useNavigate 임포트
+import { useLocation } from "react-router-dom";
 
-const ProductDetailPage = ({ onBack, post }) => {
+const ProductDetailPage = () => {
+  const location = useLocation(); // location을 통해 state에서 post 데이터 받기
+  const post = location.state?.post; // state가 있을 때 post 데이터 가져오기
+
   const [newPost, setNewPost] = useState(null); // 변경된 상품 데이터 저장
   const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
   const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
 
   useEffect(() => {
-  //   const { postId } = useParams(); 
-
-  //   if (!postId) {
-  //     console.log("postId가 없습니다.");
-  //     return;
-  //   }
-
-    const API_POST_URL = `http://localhost:18090/api/gogumapost/${post.pid}`;
+    const API_POST_URL = `http://localhost:18090/api/gogumapost/${post.id}`;
 
     fetch(API_POST_URL) // 여기에 실제 API 입력
       .then((response) => response.json())
@@ -46,7 +46,6 @@ const ProductDetailPage = ({ onBack, post }) => {
         console.error("데이터 불러오기 실패:", error);
       });
   }, []);
-
 
   // 신고 사유 목록
   const reportReasons = [
@@ -85,6 +84,12 @@ const ProductDetailPage = ({ onBack, post }) => {
 
     alert("신고가 접수되었습니다.");
     handleCloseReportPopup();
+  };
+
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  const onBack = () => {
+    navigate("/list"); // 리스트 페이지로 이동
   };
 
   // 카테고리와 지역 처리
@@ -156,10 +161,13 @@ const ProductDetailPage = ({ onBack, post }) => {
   };
 
   // 현재 로그인한 사용자 (더미 데이터)
-  const user = { id: "buyer123" };
+  const user = { id: 123 };
 
   return (
-    <div>
+    <>
+      <Header />
+      <Advertise />
+
       <div className="detail-product-detail">
         {/* 뒤로가기 버튼을 상단에 위치시킴 */}
         <button onClick={onBack} className="detail-back-button">
@@ -237,22 +245,21 @@ const ProductDetailPage = ({ onBack, post }) => {
 
             {/* 카테고리와 날짜 추가 */}
             <p className="detail-product-category">
-              {PostCategory[post.category]} | {post.updateTime}
+              {PostCategory[post.category]} | {/* post.updateTime */}
             </p>
 
             {/* 가격 추가 */}
             <p className="detail-product-price">
-              {typeof post.price === "number"
-                ? post.price.toLocaleString() + "원"
-                : post.price}
+              {post.price.toLocaleString() + "원"}
             </p>
 
             <p className="detail-product-description">{post.content}</p>
-            <UserNegoChat onBack={onBack} user={{ id: "buyer123" }} />
+            {/* <UserNegoChat user_id={{ id: 123 }} post={newPost} /> */}
           </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

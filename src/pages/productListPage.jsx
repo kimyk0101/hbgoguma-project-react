@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../css/productListPage.css";
-import ProductDetailPage from "./productDetailPage";
+import Footer from "../components/footer";
+import Header from "../components/header";
+import Advertise from "../components/advertise";
+import { useNavigate } from "react-router-dom";
 
 const regions = ["전체", "강남구", "서초구"];
 
@@ -151,11 +154,12 @@ const popularKeywords = [
 
 const ITEMS_PER_PAGE = 12;
 
-const ProductListPage = ({ onSelectProduct }) => {
+const ProductListPage = () => {
   //@note - 서버 위치
   const API_POST_URL = `http://localhost:18090/api/gogumapost`;
 
   const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글 상태 추가
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedRegion, setSelectedRegion] = useState("전체");
@@ -183,7 +187,7 @@ const ProductListPage = ({ onSelectProduct }) => {
         const postData = data.map((item) => ({
           id: item.pid, // 서버에서 받은 상품 ID
           sellerUid: item.uid, // 판매자 UID
-          selectedUser: item.selected_user, // 선택된 유저
+          selectedUser: item.selected_uid, // 선택된 유저
           regionGu: regionMap[item.loca_gu] || "알 수 없음", // 숫자를 지역명으로 변환
           regionDong: dongMap[item.loca_dong] || "알 수 없음", // 숫자를 동명으로 변환
           title: item.post_title, // 제목
@@ -193,9 +197,12 @@ const ProductListPage = ({ onSelectProduct }) => {
           price: item.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
           userList: item.user_list, // 구매 희망하는 유저 리스트
           reportCnt: item.report_cnt, // 신고 횟수
-          updateTime: item.upd_date, // 마지막 업데이트 시간
+          // updateTime: item.upd_date, // 마지막 업데이트 시간
           seller: item.nickname, // 판매자 닉네임
         }));
+
+        console.log("리스트 쪽 업뎃 타임:" + postData.updateTime);
+
         setPosts(postData);
       })
       .catch((error) => console.error("데이터 불러오기 실패:", error));
@@ -214,133 +221,146 @@ const ProductListPage = ({ onSelectProduct }) => {
     setSearchTerm(keyword);
   };
 
+  //  상세 페이지로 이동
+  const navigate = useNavigate();
+
+  const handleProductClick = (post) => {
+    // 상세 페이지로 이동하면서 post 전체 데이터를 state로 전달
+    navigate(`/${post.id}`, { state: { post } });
+  };
+
   return (
-    <div className="Listcontainer">
-      {/* 검색창 */}
-      <input
-        type="text"
-        placeholder="검색어를 입력하세요..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="Listsearch-input"
-      />
-      {/* 인기검색어 */}
-      <div className="Listpopular-keywords">
-        <p>인기 검색어</p>
-        {popularKeywords.map((keyword) => (
+    <>
+      <Header />
+      <Advertise />
+      <div className="Listcontainer">
+        {/* 검색창 */}
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="Listsearch-input"
+        />
+        {/* 인기검색어 */}
+        <div className="Listpopular-keywords">
+          <p>인기 검색어</p>
+          {popularKeywords.map((keyword) => (
+            <button
+              key={keyword}
+              className="Listkeyword-btn"
+              onClick={() => handlePopularKeywordClick(keyword)}
+            >
+              {keyword}
+            </button>
+          ))}
+        </div>
+
+        <div className="Listcontent">
+          {/* 카테고리 필터 */}
+          <aside className="Listsidebar">
+            <h3>지역 선택</h3>
+            {regions.map((region) => (
+              <label key={region}>
+                <input
+                  type="radio"
+                  name="region"
+                  value={region}
+                  checked={selectedRegion === region}
+                  onChange={() => {
+                    setSelectedRegion(region);
+                    setSelectedDong("전체"); // 지역 변경 시 동 초기화
+                  }}
+                />
+                {region}
+              </label>
+            ))}
+
+            {/* 동 선택 (지역이 전체가 아닐 때만 노출) */}
+            {selectedRegion !== "전체" && (
+              <select
+                value={selectedDong}
+                onChange={(e) => setSelectedDong(e.target.value)}
+              >
+                <option value="전체">-- 동 선택 --</option>
+                {filteredDongs.map((dong) => (
+                  <option key={dong} value={dong}>
+                    {dong}
+                  </option>
+                ))}
+              </select>
+            )}
+            <h3>카테고리</h3>
+            {Object.entries(CATEGORY_ID).map(([key, category]) => (
+              <label key={key}>
+                <input
+                  type="radio"
+                  name="category"
+                  value={key}
+                  checked={selectedCategory === Number(key)}
+                  onChange={() => {
+                    setSelectedCategory(Number(key));
+                    setCurrentPage(1);
+                  }}
+                />
+                {categories[key]}
+              </label>
+            ))}
+          </aside>
+
+          {/* 상품 리스트 */}
+          <section className="Listproduct-list">
+            {displayedPosts.map((post) => (
+              <div
+                key={post.id}
+                className="product-card"
+                onClick={() => handleProductClick(post)}
+                style={{ cursor: "pointer" }}
+              >
+                <img src={post.image} alt={post.title} />
+                <h4>{post.title}</h4>
+                <p className="Listprice">
+                  {post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                    " 원"}
+                </p>
+                <p className="Listseller">판매자: {post.seller}</p>
+                <p className="ListregionDong">{post.regionDong}</p>
+                <p className="Listcategory">
+                  {categories[Number(post.category)]}
+                </p>
+              </div>
+            ))}
+          </section>
+        </div>
+
+        {/* 페이지네이션 버튼 */}
+        <div className="Listpagination">
           <button
-            key={keyword}
-            className="Listkeyword-btn"
-            onClick={() => handlePopularKeywordClick(keyword)}
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
           >
-            {keyword}
+            이전
           </button>
-        ))}
+          <span>
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            다음
+          </button>
+
+          <button
+            className="Listcreate"
+            onClick={() => handleNavigation("/salesPage")}
+          >
+            게시물 작성
+          </button>
+        </div>
       </div>
-
-      <div className="Listcontent">
-        {/* 카테고리 필터 */}
-        <aside className="Listsidebar">
-          <h3>지역 선택</h3>
-          {regions.map((region) => (
-            <label key={region}>
-              <input
-                type="radio"
-                name="region"
-                value={region}
-                checked={selectedRegion === region}
-                onChange={() => {
-                  setSelectedRegion(region);
-                  setSelectedDong("전체"); // 지역 변경 시 동 초기화
-                }}
-              />
-              {region}
-            </label>
-          ))}
-
-          {/* 동 선택 (지역이 전체가 아닐 때만 노출) */}
-          {selectedRegion !== "전체" && (
-            <select
-              value={selectedDong}
-              onChange={(e) => setSelectedDong(e.target.value)}
-            >
-              <option value="전체">-- 동 선택 --</option>
-              {filteredDongs.map((dong) => (
-                <option key={dong} value={dong}>
-                  {dong}
-                </option>
-              ))}
-            </select>
-          )}
-          <h3>카테고리</h3>
-          {Object.entries(CATEGORY_ID).map(([key, category]) => (
-            <label key={key}>
-              <input
-                type="radio"
-                name="category"
-                value={key}
-                checked={selectedCategory === Number(key)}
-                onChange={() => {
-                  setSelectedCategory(Number(key));
-                  setCurrentPage(1);
-                }}
-              />
-              {categories[key]}
-            </label>
-          ))}
-        </aside>
-
-        {/* 상품 리스트 */}
-        <section className="Listproduct-list">
-          {displayedPosts.map((post) => (
-            <div
-              key={post.id}
-              className="product-card"
-              onClick={() => ProductDetailPage(post)}
-              style={{ cursor: "pointer" }}
-            >
-              <img src={post.image} alt={post.title} />
-              <h4>{post.title}</h4>
-              <p className="Listprice">
-                {post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-                  " 원"}
-              </p>
-              <p className="Listseller">판매자: {post.seller}</p>
-              <p className="ListregionDong">{post.regionDong}</p>
-              <p className="Listcategory">
-                {categories[Number(post.category)]}
-              </p>
-            </div>
-          ))}
-        </section>
-      </div>
-
-      {/* 페이지네이션 버튼 */}
-      <div className="Listpagination">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          이전
-        </button>
-        <span>
-          {currentPage} / {totalPages}
-        </span>
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          다음
-        </button>
-
-        <button
-          className="Listcreate"
-          onClick={() => handleNavigation("/salesPage")}
-        >
-          게시물 작성
-        </button>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

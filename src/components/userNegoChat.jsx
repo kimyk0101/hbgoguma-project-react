@@ -13,7 +13,7 @@ import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 �
 // string chatContent	- 메세지
 // Date updateTime	- 메세지 시간
 
-const UserNegoChat = ({ user, GogumaPost }) => {
+const UserNegoChat = ({ user_id, post }) => {
   const [interestedBuyers, setInterestedBuyers] = useState([]); // 구매 희망 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
   const [messages, setMessages] = useState([]); // 메시지 리스트
@@ -23,6 +23,37 @@ const UserNegoChat = ({ user, GogumaPost }) => {
   const [isBuyerConfirmed, setIsBuyerConfirmed] = useState(false); // 구매 확정 버튼 활성화 여부
 
   const [showSReviewPopup, setShowSReviewPopup] = useState(false); //  판매자 작성 리뷰
+
+  useEffect(() => {
+      const API_POST_URL = `http://localhost:18090/api/gogumapost/${post.pid}`;
+  
+      fetch(API_POST_URL) // 여기에 실제 API 입력
+        .then((response) => response.json())
+        .then((data) => {
+          const postData = {
+            id: data.pid, // 서버에서 받은 상품 ID
+            sellerUid: data.uid, // 판매자 UID
+            selectedUser: data.selected_user, // 선택된 유저
+            regionGu: data.loca_gu, // 지역 (구 정보만 사용)
+            regionDong: data.loca_dong, // 지역 (동 정보만 사용)
+            title: data.post_title, // 제목
+            image: data.post_photo, // 상품 이미지
+            content: data.post_content, // 상품 설명
+            category: data.post_category, // 카테고리
+            price: data.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
+            userList: data.user_list, // 구매 희망하는 유저 리스트
+            reportCnt: data.report_cnt, // 신고 횟수
+            updateTime: data.upd_date, // 마지막 업데이트 시간
+            seller: data.nickname, // 판매자 닉네임
+            thumbnail: data.thumbnail, // 판매자 썸네일(이미지)
+            userRate: data.user_rate, // 판매자 평점
+          };
+          setNewPost(postData);
+        })
+        .catch((error) => {
+          console.error("데이터 불러오기 실패:", error);
+        });
+    }, []);
 
   // 구매 희망 버튼 클릭 시
   const handleInterest = () => {
@@ -98,7 +129,7 @@ const UserNegoChat = ({ user, GogumaPost }) => {
       {/* 상품 설명 끝난 후, 구매 희망자 리스트를 하단에 위치 */}
       <div className="nego-product-footer">
         {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
-        {user.id !== GogumaPost.uid && (
+        {user_id !== sellerUid && (
           <button
             className="nego-interest-button"
             onClick={handleInterest}
@@ -107,7 +138,7 @@ const UserNegoChat = ({ user, GogumaPost }) => {
             구매 희망
           </button>
         )}
-        {user.id !== GogumaPost.uid && (
+        {user_id !== sellerUid && (
           <div className="nego-interested-buyers">
             <h3>구매 희망자</h3>
             <ul>
