@@ -10,22 +10,14 @@ import Footer from "../components/footer";
 import Header from "../components/header";
 import SellProductPage from "./sales";
 import Advertise from "../components/advertise";
+import ProductListPage from "./productListPage";
 
 const MainPage = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
   return (
     <div>
       <Header />
       <Advertise />
-      {selectedProduct ? (
-        <ProductDetailPage
-          product={selectedProduct}
-          onBack={() => setSelectedProduct(null)}
-        />
-      ) : (
-        <ProductList onSelectProduct={setSelectedProduct} />
-      )}
-      {/* <SellProductPage /> */}
+      <ProductListPage />
       <Footer />
     </div>
   );

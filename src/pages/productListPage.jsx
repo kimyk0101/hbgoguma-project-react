@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../css/productListPage.css";
+import dummyProducts from "./dummyProducts"; // 더미 데이터 가져오기
+import ProductDetailPage from "./productDetailPage";
 
 const regions = ["전체", "강남구", "서초구"];
 
@@ -295,7 +297,7 @@ const ProductListPage = ({ onSelectProduct }) => {
             <div
               key={post.id}
               className="product-card"
-              onClick={() => onSelectProduct(post)}
+              onClick={() => ProductDetailPage(post)}
               style={{ cursor: "pointer" }}
             >
               <img src={post.image} alt={post.title} />
@@ -344,6 +346,9 @@ const ProductListPage = ({ onSelectProduct }) => {
 };
 
 export default ProductListPage;
+
+
+
 
 // import React, { useState } from "react";
 // import "../css/productListPage.css";
