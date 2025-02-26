@@ -104,5 +104,4 @@ const ReportUser = ({ postId, userId }) => {
     </>
   );
 };
-
 export default ReportUser;

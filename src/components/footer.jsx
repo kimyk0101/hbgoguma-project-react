@@ -13,7 +13,7 @@ const Footer = () => {
           <p>교환/반품 관련 사항은 판매자와 협의 필요</p>
           <h4>앱 다운로드</h4>
           <div className="footer-qr">
-          <QRCodeGenerator url="http://l72.29.80.1/" />
+          <QRCodeGenerator url= "http://192.168.0.61/" />
             {/* <img src="src/resources/images/fake_qr.png" /> */}
           </div>
         </div>

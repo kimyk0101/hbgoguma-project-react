@@ -113,9 +113,42 @@
 }
 
 .detail-product-description {
+  min-height: 300px;
   font-size: 18px;
   margin-bottom: 20px;
 }
+
+/* 판매자 평점: 매너 사이다 */
+.detail-cider-container {
+  width: 40px; /* 병 너비 */
+  height: 130px; /* 병 높이 */
+  border-radius: 30px; 
+  background-color: #f5f5f5;
+  position: relative;
+  border: 2px solid #ccc; /* 병 외곽선 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 5px;
+
+}
+
+.detail-cider-liquid {
+  width: 90%; /* 병의 내용물 너비 */
+  border-radius: 20px; /* 내용물의 둥근 부분 */
+  }
+
+.detail-cider-label {
+  position: absolute;
+  left: 51%; /* 레이블의 좌측 위치 */
+  bottom: 10px; /* 병 하단에 위치 */
+  font-size: 13px; /* 글자 크기 */
+  font-weight: bold;
+  color: #333;
+  transform: translateX(-50%); /* 가운데 정렬 */
+}
+
+
 
 /* 신고버튼 */
 .detail-report-button {

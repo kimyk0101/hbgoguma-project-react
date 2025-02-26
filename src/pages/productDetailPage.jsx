@@ -11,116 +11,11 @@ import ReportUser from "../components/reportUser.jsx";
 
 const ProductDetailPage = () => {
   const { postId } = useParams(); // URL에서 ID 가져오기
-
   const [newPost, setNewPost] = useState([]); // 변경된 상품 데이터 저장
   // const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
   // const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
-
   const [user, setUser] = useState([]); //  login 부분
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
-
-  // 로그인 상태 확인 함수
-  const checkLoginStatus = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:18090/api/gogumauser/session",
-        {
-          method: "GET",
-          credentials: "include", // 쿠키를 포함하여 요청
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setIsLoggedIn(true);
-        setUser(data); // 로그인된 사용자 정보 저장
-      } else {
-        setIsLoggedIn(false);
-      }
-    } catch (error) {
-      console.error("로그인 상태 확인 중 오류 발생:", error);
-      setIsLoggedIn(false);
-    }
-  };
-
-  useEffect(() => {
-    checkLoginStatus(); // 컴포넌트가 마운트될 때 로그인 상태 확인
-  }, []);
-
-  useEffect(() => {
-    const API_POST_URL = `http://localhost:18090/api/gogumapost/${postId}`;
-    fetch(API_POST_URL) // 여기에 실제 API 입력
-      .then((response) => response.json())
-      .then((data) => {
-        const postData = {
-          id: data.pid, // 서버에서 받은 상품 ID
-          sellerUid: data.uid, // 판매자 UID
-          selectedUser: data.selected_user, // 선택된 유저
-          regionGu: data.loca_gu, // 지역 (구 정보만 사용)
-          regionDong: data.loca_dong, // 지역 (동 정보만 사용)
-          title: data.post_title, // 제목
-          image: data.post_photo, // 상품 이미지
-          content: data.post_content, // 상품 설명
-          category: data.post_category, // 카테고리
-          price: data.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
-          userList: data.user_list, // 구매 희망하는 유저 리스트
-          reportCnt: data.report_cnt, // 신고 횟수
-          updateTime: data.upd_date, // 마지막 업데이트 시간
-          seller: data.nickname, // 판매자 닉네임
-          thumbnail: data.thumbnail, // 판매자 썸네일(이미지)
-          userRate: data.user_rate, // 판매자 평점
-        };
-        setNewPost(postData);
-      })
-      .catch((error) => {
-        console.error("데이터 불러오기 실패:", error);
-      });
-  }, []);
-
-  // // 신고 사유 목록
-  // const reportReasons = [
-  //   "허위 매물",
-  //   "부적절한 게시글",
-  //   "사기 의심",
-  //   "기타 사유",
-  // ];
-
-  // // 신고 버튼 클릭 시 팝업 열기
-  // const handleOpenReportPopup = () => {
-  //   setShowReportPopup(true);
-  // };
-
-  // // 신고 팝업 닫기
-  // const handleCloseReportPopup = () => {
-  //   setShowReportPopup(false);
-  //   setReportReason("");
-  // };
-
-  // // 신고 제출
-  // const handleReportSubmit = () => {
-  //   if (!reportReason) {
-  //     alert("신고 사유를 선택해주세요.");
-  //     return;
-  //   }
-
-  //   const reportData = {
-  //     rid: Date.now(), // 신고 번호 (임시)
-  //     uid: 1, // 신고한 사용자 ID
-  //     pid: post.id, // 신고당한 게시글 ID
-  //     reportId: reportReasons.indexOf(reportReason) + 1, // 신고 사유 ID
-  //     isConfirm: false, // 신고 처리 여부 (초기값 false)
-  //     reportDate: new Date().toISOString(), // 신고 일시
-  //   };
-
-  //   alert("신고가 접수되었습니다.");
-  //   handleCloseReportPopup();
-  // };
-
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
-  const onBack = () => {
-    navigate("/list"); // 리스트 페이지로 이동
-  };
 
   // 카테고리와 지역 처리
   const PostCategory = {
@@ -190,6 +85,140 @@ const ProductDetailPage = () => {
     39: "잠원동",
   };
 
+  // 로그인 상태 확인 함수
+  const checkLoginStatus = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:18090/api/gogumauser/session",
+        {
+          method: "GET",
+          credentials: "include", // 쿠키를 포함하여 요청
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsLoggedIn(true);
+        setUser(data); // 로그인된 사용자 정보 저장
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error("로그인 상태 확인 중 오류 발생:", error);
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    checkLoginStatus(); // 컴포넌트가 마운트될 때 로그인 상태 확인
+  }, []);
+
+  //  상세페이지 정보 받아오기
+  useEffect(() => {
+    const API_POST_URL = `http://localhost:18090/api/gogumapost/${postId}`;
+
+    fetch(API_POST_URL) // 여기에 실제 API 입력
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("🔍 응답 데이터 확인:", data); // 응답 데이터 로그 확인
+
+        // 날짜 + 시간 변환 (YYYY-MM-DD HH:MM:SS 형식)
+        const formattedDateTime = data.upd_date
+          ? new Date(data.upd_date)
+              .toISOString()
+              .replace("T", " ")
+              .substring(0, 19)
+          : "날짜 없음";
+
+        // 5점 만점으로 평점 변환 (소수점 1자리까지 표시)
+        // const convertedUserRate = data.user_rate
+        //   ? ((data.user_rate / 10000) * 5).toFixed(1)
+        //   : "평점 없음";
+
+        // 100점 만점 환산 (소수점 1자리까지)
+        const convertedUserRate100 = data.user_rate
+          ? ((data.user_rate / 10000) * 100).toFixed(1)
+          : "평점 없음";
+
+        const postData = {
+          id: data.pid, // 서버에서 받은 상품 ID
+          sellerUid: data.uid, // 판매자 UID
+          selectedUser: data.selected_user, // 선택된 유저
+          regionGu: data.loca_gu, // 지역 (구 정보만 사용)
+          regionDong: data.loca_dong, // 지역 (동 정보만 사용)
+          title: data.post_title, // 제목
+          image: data.post_photo, // 상품 이미지
+          content: data.post_content, // 상품 설명
+          category: data.post_category, // 카테고리
+          price: data.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
+          userList: data.user_list, // 구매 희망하는 유저 리스트
+          reportCnt: data.report_cnt, // 신고 횟수
+          updateTime: formattedDateTime, // 마지막 업데이트 시간
+          seller: data.nickname, // 판매자 닉네임
+          thumbnail: data.thumbnail, // 판매자 썸네일(이미지)
+          userRate: convertedUserRate100, // 판매자 평점
+        };
+        setNewPost(postData);
+      })
+      .catch((error) => {
+        console.error("데이터 불러오기 실패:", error);
+      });
+  }, []);
+
+  // 뒤로가기 버튼
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  const onBack = () => {
+    navigate("/list"); // 리스트 페이지로 이동
+  };
+
+  // 판매자 평점 -> 매너 사이다
+  const getCiderColor = (score) => {
+    if (score < 30) return "#F97316"; // 주황
+    if (score < 60) return "#A3E635"; // 라임 그린
+    if (score < 90) return "#4BC0C8"; // 청록
+    return "#0350e0"; //  블루
+  };
+
+  // // 신고 사유 목록
+  // const reportReasons = [
+  //   "허위 매물",
+  //   "부적절한 게시글",
+  //   "사기 의심",
+  //   "기타 사유",
+  // ];
+
+  // // 신고 버튼 클릭 시 팝업 열기
+  // const handleOpenReportPopup = () => {
+  //   setShowReportPopup(true);
+  // };
+
+  // // 신고 팝업 닫기
+  // const handleCloseReportPopup = () => {
+  //   setShowReportPopup(false);
+  //   setReportReason("");
+  // };
+
+  // // 신고 제출
+  // const handleReportSubmit = () => {
+  //   if (!reportReason) {
+  //     alert("신고 사유를 선택해주세요.");
+  //     return;
+  //   }
+
+  //   const reportData = {
+  //     rid: Date.now(), // 신고 번호 (임시)
+  //     uid: 1, // 신고한 사용자 ID
+  //     pid: post.id, // 신고당한 게시글 ID
+  //     reportId: reportReasons.indexOf(reportReason) + 1, // 신고 사유 ID
+  //     isConfirm: false, // 신고 처리 여부 (초기값 false)
+  //     reportDate: new Date().toISOString(), // 신고 일시
+  //   };
+
+  //   alert("신고가 접수되었습니다.");
+  //   handleCloseReportPopup();
+  // };
+
   return (
     <>
       <Header />
@@ -221,7 +250,17 @@ const ProductDetailPage = () => {
                 </div>
               </div>
               <div className="detail-seller-right">
-                <p>{newPost.userRate} / 5</p>
+                <div className="detail-cider-container">
+                  <div
+                    className="detail-cider-liquid"
+                    style={{
+                      height: `${newPost.userRate}%`, // 100점 만점 기준으로 점수 적용
+                      backgroundColor: getCiderColor(newPost.userRate), // 색상 변경
+                    }}
+                  />
+                  <div className="detail-cider-label">{newPost.userRate}L</div>{" "}
+                </div>
+                {/* <p>{newPost.userRate}</p> */}
               </div>
             </div>
             <ReportUser postId={postId} userId={user}>
