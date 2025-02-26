@@ -319,11 +319,13 @@ useEffect(() => {
             </p>
 
             <p className="detail-product-description">{newPost.content}</p>
-            <UserNegoChat
-              sellerUid={newPost.sellerUid}
-              user_id={user.uid}
-              post={newPost}
-            />
+            {isLoggedIn && user.uid !== newPost.sellerUid && (
+              <UserNegoChat
+                sellerUid={newPost.sellerUid}
+                user_id={user.uid}
+                post={newPost}
+              />
+            )}
           </div>
         </div>
       </div>
