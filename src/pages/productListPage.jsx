@@ -215,6 +215,7 @@ const ProductListPage = () => {
         const data = await response.json();
         setIsLoggedIn(true);
         setUser(data); // 로그인된 사용자 정보 저장
+        console.log(data);
       } else {
         setIsLoggedIn(false);
       }
@@ -364,27 +365,51 @@ const ProductListPage = () => {
           </aside>
 
           {/* 상품 리스트 */}
+          {user.is_Admin && (
+            <p className="admin-alert">관리자 모드 활성화됨 ✅</p>
+          )}
+
           <section className="Listproduct-list">
-            {displayedPosts.map((post) => (
-              <div
-                key={post.id}
-                className="product-card"
-                onClick={() => goToDetail(post.id)}
-                style={{ cursor: "pointer" }}
-              >
-                <img src={post.image} alt={post.title} />
-                <h4>{post.title}</h4>
-                <p className="Listprice">
-                  {post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-                    " 원"}
-                </p>
-                <p className="Listseller">판매자: {post.seller}</p>
-                <p className="ListregionDong">{post.regionDong}</p>
-                <p className="Listcategory">
-                  {categories[Number(post.category)]}
-                </p>
-              </div>
-            ))}
+            {displayedPosts.map((post) => {
+              // 🔹 관리자일 때만 신고 횟수에 따라 배경색 변경
+              const opacity = user.is_admin
+                ? Math.min(post.reportCnt / 20, 1)
+                : 0; // 일반 사용자는 투명
+              const backgroundColor = `rgba(255, 0, 0, ${opacity})`; // 신고 횟수가 많을수록 붉어짐
+
+              return (
+                <div
+                  key={post.id}
+                  className="product-card"
+                  onClick={() => goToDetail(post.id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {/* 🚨 신고 배경 박스 */}
+                  <div
+                    className="report-overlay"
+                    style={{ backgroundColor }}
+                  ></div>
+
+                  <img src={post.image} alt={post.title} />
+                  <h4>{post.title}</h4>
+                  <p className="Listprice">
+                    {post.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원"}
+                  </p>
+                  <p className="Listseller">판매자: {post.seller}</p>
+                  <p className="ListregionDong">{post.regionDong}</p>
+                  <p className="Listcategory">
+                    {categories[Number(post.category)]}
+                  </p>
+
+                  {/* 🔥 관리자 전용 신고 횟수 표시 */}
+                  {user.is_admin && (
+                    <p className="report-count">신고: {post.reportCnt}회</p>
+                  )}
+                </div>
+              );
+            })}
           </section>
         </div>
 
