@@ -2,8 +2,7 @@ import React, { useState } from "react";
 
 const ReportUser = ({ postId, userId }) => {
   const [showReportPopup, setShowReportPopup] = useState(false);
-  const [reportReason, setReportReason] = useState("허위 매물");
-
+  const [reportReason, setReportReason] = useState(1);
   // 신고 사유 목록
   const reportReasons = [
     [1, "허위 매물"],
@@ -20,7 +19,7 @@ const ReportUser = ({ postId, userId }) => {
   // 신고 팝업 닫기
   const handleCloseReportPopup = () => {
     setShowReportPopup(false);
-    setReportReason("");
+    setReportReason(1);
   };
 
   // 신고 제출
@@ -29,17 +28,16 @@ const ReportUser = ({ postId, userId }) => {
       alert("신고 사유를 선택해주세요.");
       return;
     }
-    const pidNumber = Number(postId);
-    // const reportDate = new Date().toISOString();
+
     const reportData = {
-      // rid: null,
       uid: userId,
-      pid: pidNumber,
-      reportId: reportReason,
+      pid: Number(postId),
+      report_id: reportReason,
       isConfirm: false,
-      // reportDate: reportDate,
     };
-    console.log(reportData);
+
+    console.log("신고 데이터:", reportData);
+
     try {
       const response = await fetch("http://localhost:18090/api/gogumareport", {
         method: "POST",
@@ -56,7 +54,7 @@ const ReportUser = ({ postId, userId }) => {
       alert("신고가 접수되었습니다.");
       handleCloseReportPopup();
     } catch (error) {
-      console.error("신고 오류:", error);
+      console.error("🚨 신고 오류:", error);
       alert("신고 처리 중 오류가 발생했습니다.");
     }
   };
@@ -67,6 +65,7 @@ const ReportUser = ({ postId, userId }) => {
       <button className="detail-report-button" onClick={handleOpenReportPopup}>
         🚨 신고하기
       </button>
+
       {/* 신고 팝업 */}
       {showReportPopup && (
         <div className="detail-report-popup">
@@ -75,7 +74,7 @@ const ReportUser = ({ postId, userId }) => {
             <p>신고 사유를 선택해주세요.</p>
             <select
               value={reportReason}
-              onChange={(e) => setReportReason(Number(e.target.value))} // value를 숫자로 저장
+              onChange={(e) => setReportReason(Number(e.target.value))}
             >
               <option value="">-- 신고 사유 선택 --</option>
               {reportReasons.map(([id, reason]) => (
@@ -104,4 +103,5 @@ const ReportUser = ({ postId, userId }) => {
     </>
   );
 };
+
 export default ReportUser;

@@ -178,14 +178,13 @@ const SellProductPage = ({ onSubmitSuccess }) => {
 
     //가상이미지
     const imageUrl =
-      "https://search.pstatic.net/sunny?src=https%3A%2F%2Flh3.googleusercontent.com%2F9tDiCw0o_t35aUjMEd-Khc-Uu_MWe0T-8p5zz_cD_dSacDxiIKt2LpXT_uIdpmhOm9l31D3QJjjz6NL7YBYPUdUWteOhkycaTMylD5azeJnhjYGnBw%3Dw1200-h630-n-nu&type=fff208_208";
+      "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20130403_48%2Fsakuralllll_1364973975884Xvyp1_JPEG%2F1364881929188.jpg&type=a340";
     const pid = 1001; // 가상의 상품 ID
     const uid = 123; // 가상의 사용자 ID
     const nickname = "판매자123"; // 가상의 닉네임
     const postUpdate = new Date().toISOString(); // 현재 시간
     const selected_uid = 0;
     const report_cnt = 100;
-
     const priceNumber = Number(price);
     const postData = {
       selected_uid,
@@ -201,6 +200,7 @@ const SellProductPage = ({ onSubmitSuccess }) => {
       post_content: description,
       post_update: postUpdate,
       post_photo: imageUrl, // URL로 저장
+      user_list: [],
     };
     console.log(postData);
     try {
