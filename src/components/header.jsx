@@ -4,7 +4,16 @@ import "../css/header.css";
 import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 있는 고구마
 import Notification from "./notification";
 import AuthStatus from "./AuthStatus";
+
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // AuthStatus에서 로그인 상태 변경 시 호출될 함수
+  const handleAuthChange = (status, userData) => {
+    setIsLoggedIn(status);
+    setUser(userData);
+  };
   const handleNavigation = (path) => {
     window.location.href = path;
   };
@@ -23,8 +32,10 @@ const Header = () => {
 
         {/* 오른쪽: 알림 & 로그인 버튼 */}
         <div className="header-buttons">
-          <Notification />
-          <AuthStatus />
+          {isLoggedIn && user && (
+            <Notification isLoggedIn={isLoggedIn} userId={user.user_id} />
+          )}
+          <AuthStatus onAuthChange={handleAuthChange} />
         </div>
       </div>
     </header>
