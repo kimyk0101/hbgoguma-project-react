@@ -33,7 +33,7 @@ const ReportUser = ({ postId, userId }) => {
     // const reportDate = new Date().toISOString();
     const reportData = {
       rid: null,
-      uid: userId,
+      uid: userId.uid,
       pid: pidNumber,
       reportId: reportReason,
       isConfirm: false,
