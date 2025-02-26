@@ -250,9 +250,6 @@ const ProductListPage = () => {
           // updateTime: item.upd_date, // 마지막 업데이트 시간
           seller: item.nickname, // 판매자 닉네임
         }));
-
-        console.log("리스트 쪽 업뎃 타임:" + postData.updateTime);
-
         setPosts(postData);
       })
       .catch((error) => console.error("데이터 불러오기 실패:", error));

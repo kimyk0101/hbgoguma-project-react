@@ -12,10 +12,9 @@ import ReportUser from "../components/reportUser.jsx";
 const ProductDetailPage = () => {
   const { postId } = useParams(); // URL에서 ID 가져오기
   const [newPost, setNewPost] = useState([]); // 변경된 상품 데이터 저장
-  // const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
-  // const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
   const [user, setUser] = useState([]); //  login 부분
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
+  const [relatedPostList, SetRelatedPostList] = useState([]);
 
   // 카테고리와 지역 처리
   const PostCategory = {
@@ -130,11 +129,6 @@ const ProductDetailPage = () => {
               .substring(0, 19)
           : "날짜 없음";
 
-        // 5점 만점으로 평점 변환 (소수점 1자리까지 표시)
-        // const convertedUserRate = data.user_rate
-        //   ? ((data.user_rate / 10000) * 5).toFixed(1)
-        //   : "평점 없음";
-
         // 100점 만점 환산 (소수점 1자리까지)
         const convertedUserRate100 = data.user_rate
           ? ((data.user_rate / 10000) * 100).toFixed(1)
@@ -163,6 +157,90 @@ const ProductDetailPage = () => {
       .catch((error) => {
         console.error("데이터 불러오기 실패:", error);
       });
+  }, []);
+
+  // 추천 상품 리스트 (post)
+  /*
+  const relatedProduct = async () => {
+  try {
+    const response = await fetch("http://localhost:18090/api/gogumapost/related", {
+      method: "POST", // POST 요청
+      headers: {
+        "Content-Type": "application/json", // JSON 형식으로 요청 본문을 보냄
+      },
+      credentials: "include", // 쿠키 포함 요청
+      body: JSON.stringify({
+        post_category: category, // 카테고리 아이디
+        loca_dong: regionDong,   // 지역 동 아이디
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("받아온 추천 리스트:", data);
+
+      SetRelatedPostList(data.map(item => ({
+        regionDong: item.loca_dong, // 지역 (동 정보만 사용)
+        title: item.post_title, 
+        image: item.post_photo,
+        price: item.post_price || "가격 미정",
+      })));
+    } else {
+      console.error("추천 리스트를 받아오지 못했습니다.");
+    }
+  } catch (error) {
+    console.error("추천 리스트 받아오던 중 오류 발생:", error);
+  }
+};
+
+useEffect(() => {
+  relatedProduct(); // 추천 리스트 가져오기
+}, [category, regionDong]); // category나 regionDong이 바뀌면 다시 요청
+*/
+
+ 
+  useEffect(() => {
+    // 더미 데이터 설정
+    const dummyData = [
+      {
+        id: 1,
+        image: "src/resources/images/iphone14.png",
+        price: 15000,
+        title: "아이폰 14 팔아요",
+        regionDong: "개포1동",
+      },
+      {
+        id: 2,
+        image: "src/resources/images/iphone14.png",
+        price: 12000,
+        title: "아이폰 14 팔아요",
+        regionDong: "대치1동",
+      },
+      {
+        id: 3,
+        image: "src/resources/images/iphone14.png",
+        price: 20000,
+        title: "아이폰 14 팔아요",
+        regionDong: "삼성1동",
+      },
+      {
+        id: 4,
+        image: "src/resources/images/iphone16.png",
+        price: 20000,
+        title: "아이폰 16 팔아요",
+        regionDong: "압구정동",
+      },
+      {
+        id: 5,
+        image: "src/resources/images/iphone16.png",
+        price: 20000,
+        title: "아이폰 16 팔아요",
+        regionDong: "역삼1동",
+      },
+    ];
+
+    // 더미 데이터를 상태에 저장
+    SetRelatedPostList(dummyData);
   }, []);
 
   // 뒤로가기 버튼
@@ -246,7 +324,29 @@ const ProductDetailPage = () => {
           </div>
         </div>
       </div>
-      <div className="detail-tempbox" />
+      <div className="detail-related-products">
+        <h3>이런 상품은 어떠세요?</h3>
+        <div className="detail-related-list">
+          {relatedPostList.length > 0 ? (
+            relatedPostList.map((item) => (
+              <div key={item.id} className="detail-related-item">
+                <img
+                  src={item.image}
+                  alt="상품 이미지"
+                  className="detail-related-image"
+                />
+                <p className="detail-related-title">{item.title}</p>
+                <p className="detail-related-price">
+                  {item.price.toLocaleString()}원
+                </p>
+                <p className="detail-related-location">{item.regionDong}</p>
+              </div>
+            ))
+          ) : (
+            <p>추천 상품이 없습니다.</p>
+          )}
+        </div>
+      </div>
       <Footer />
     </>
   );

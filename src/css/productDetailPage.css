@@ -1,4 +1,5 @@
 .detail-product-detail {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
 }
@@ -234,9 +235,64 @@
   background-color: darkgray;
 }
 
-.detail-tempbox {
-  width: 100%;
-  height: 500px;
-  background-color: white;
-  /* border: 1px solid black; */
+
+/* 추천 상품 리스트 */
+.detail-related-products {
+  margin-top: 300px;
+  margin-bottom: 150px;
 }
+
+.detail-related-products h3 {
+  font-size: 20px;
+text-align: left;
+}
+
+.detail-related-list {
+  display: flex;
+  gap: 40px; 
+  justify-content: space-between;
+}
+
+.detail-related-item {
+  width: calc(20% - 16px); 
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 5px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.detail-related-item:hover {
+  transform: translateY(-5px); 
+}
+
+.detail-related-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+}
+
+.detail-related-title {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+}
+.detail-related-price {
+  margin: 0;
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.detail-related-location {
+  margin: 0;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #777;
+  text-align: center;
+}
+
+
+
+
