@@ -263,7 +263,7 @@ const ProductDetailPage = () => {
                 {/* <p>{newPost.userRate}</p> */}
               </div>
             </div>
-            <ReportUser postId={postId} userId={user}>
+            <ReportUser postId={postId} userId={user.uid}>
               {/* 신고하기 버튼 */}
               {/* <button
               className="detail-report-button"

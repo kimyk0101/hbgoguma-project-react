@@ -32,8 +32,8 @@ const ReportUser = ({ postId, userId }) => {
     const pidNumber = Number(postId);
     // const reportDate = new Date().toISOString();
     const reportData = {
-      rid: null,
-      uid: userId.uid,
+      // rid: null,
+      uid: userId,
       pid: pidNumber,
       reportId: reportReason,
       isConfirm: false,
