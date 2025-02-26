@@ -4,6 +4,8 @@ import Footer from "../components/footer";
 import Header from "../components/header";
 import Advertise from "../components/advertise";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../components/searchBar";
+import PopularKeywords from "../components/PopularKeywords";
 
 const regions = ["전체", "강남구", "서초구"];
 
@@ -142,18 +144,18 @@ const CATEGORY_ID = [
   ["16", "기타"],
 ];
 
-const popularKeywords = [
-  "아이폰",
-  "노트북",
-  "삼성",
-  "에어팟",
-  "갤럭시",
-  "닌텐도",
-  "다이소",
-  "레고",
-  "패딩",
-  "자전거",
-];
+// const popularKeywords = [
+//   "아이폰",
+//   "노트북",
+//   "삼성",
+//   "에어팟",
+//   "갤럭시",
+//   "닌텐도",
+//   "다이소",
+//   "레고",
+//   "패딩",
+//   "자전거",
+// ];
 
 const ITEMS_PER_PAGE = 12;
 
@@ -164,14 +166,25 @@ const ProductListPage = () => {
 
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글 상태 추가
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedRegion, setSelectedRegion] = useState("전체");
   const [selectedDong, setSelectedDong] = useState("전체");
-
+  const [tempSearchTerm, setTempSearchTerm] = useState(""); // 입력값 저장
+  const [searchTerm, setSearchTerm] = useState(""); // 실제 검색 적용 값
   const [user, setUser] = useState([]); //  login 부분
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
 
+  // 검색 실행 함수
+  const handleSearch = () => {
+    setSearchTerm(tempSearchTerm); // 검색 버튼 클릭 시 적용
+  };
+
+  // Enter 키 이벤트 핸들러
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(); // Enter 입력 시 검색 실행
+    }
+  };
   const filteredDongs =
     selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
   const filteredPosts = posts.filter(
@@ -267,18 +280,25 @@ const ProductListPage = () => {
   return (
     <>
       <Header />
+      <SearchBar
+        searchTerm={tempSearchTerm}
+        setSearchTerm={setTempSearchTerm} // 즉시 반영되지 않도록 변경
+        onSearch={handleSearch}
+        onKeyPress={handleKeyPress}
+      />
+      <PopularKeywords onKeywordClick={handlePopularKeywordClick} />
       <Advertise />
       <div className="Listcontainer">
         {/* 검색창 */}
-        <input
+        {/* <input
           type="text"
           placeholder="검색어를 입력하세요..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="Listsearch-input"
-        />
+        /> */}
         {/* 인기검색어 */}
-        <div className="Listpopular-keywords">
+        {/* <div className="Listpopular-keywords">
           <p>인기 검색어</p>
           {popularKeywords.map((keyword) => (
             <button
@@ -289,7 +309,7 @@ const ProductListPage = () => {
               {keyword}
             </button>
           ))}
-        </div>
+        </div> */}
 
         <div className="Listcontent">
           {/* 카테고리 필터 */}
