@@ -112,15 +112,16 @@ const ProductDetailPage = () => {
     checkLoginStatus(); // 컴포넌트가 마운트될 때 로그인 상태 확인
   }, []);
 
-  //  상세페이지 정보 받아오기
+
+  //  상세 페이지, 추천 리스트 받아오기
   useEffect(() => {
     const API_POST_URL = `http://localhost:18090/api/gogumapost/${postId}`;
-
-    fetch(API_POST_URL) // 여기에 실제 API 입력
+  
+    fetch(API_POST_URL)
       .then((response) => response.json())
       .then((data) => {
-        console.log("🔍 응답 데이터 확인:", data); // 응답 데이터 로그 확인
-
+        console.log("🔍 응답 데이터 확인:", data);
+  
         // 날짜 + 시간 변환 (YYYY-MM-DD HH:MM:SS 형식)
         const formattedDateTime = data.upd_date
           ? new Date(data.upd_date)
@@ -128,195 +129,160 @@ const ProductDetailPage = () => {
               .replace("T", " ")
               .substring(0, 19)
           : "날짜 없음";
-
+  
         // 100점 만점 환산 (소수점 1자리까지)
         const convertedUserRate100 = data.user_rate
           ? ((data.user_rate / 10000) * 100).toFixed(1)
           : "평점 없음";
-
+  
         const postData = {
-          id: data.pid, // 서버에서 받은 상품 ID
-          sellerUid: data.uid, // 판매자 UID
-          selectedUser: data.selected_user, // 선택된 유저
-          regionGu: data.loca_gu, // 지역 (구 정보만 사용)
-          regionDong: data.loca_dong, // 지역 (동 정보만 사용)
-          title: data.post_title, // 제목
-          image: data.post_photo, // 상품 이미지
-          content: data.post_content, // 상품 설명
-          category: data.post_category, // 카테고리
-          price: data.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
-          userList: data.user_list, // 구매 희망하는 유저 리스트
-          reportCnt: data.report_cnt, // 신고 횟수
-          updateTime: formattedDateTime, // 마지막 업데이트 시간
-          seller: data.nickname, // 판매자 닉네임
-          thumbnail: data.thumbnail, // 판매자 썸네일(이미지)
-          userRate: convertedUserRate100, // 판매자 평점
+          id: data.pid,
+          sellerUid: data.uid,
+          selectedUser: data.selected_user,
+          regionGu: data.loca_gu,
+          regionDong: data.loca_dong,
+          title: data.post_title,
+          image: data.post_photo,
+          content: data.post_content,
+          category: data.post_category,
+          price: data.post_price || "가격 미정",
+          userList: data.user_list,
+          reportCnt: data.report_cnt,
+          updateTime: formattedDateTime,
+          seller: data.nickname,
+          thumbnail: data.thumbnail,
+          userRate: convertedUserRate100,
         };
         setNewPost(postData);
+  
+        // postId가 존재하는지 확인
+        if (data.pid) {
+          console.log("추천 상품 리스트를 요청하는 pid:", data.pid);
+          relatedProduct(data.pid); // 정상적으로 pid 값을 넘겨주기
+          console.log("정상적으로 넘겨준 pid:", data.pid);
+        } else {
+          console.error("추천 상품 리스트를 요청할 수 없습니다. pid가 없습니다.");
+        }
       })
       .catch((error) => {
         console.error("데이터 불러오기 실패:", error);
       });
-  }, []);
-
-  // 추천 상품 리스트 (post)
-  /*
-  const relatedProduct = async () => {
-  try {
-    const response = await fetch("http://localhost:18090/api/gogumapost/related", {
-      method: "POST", // POST 요청
-      headers: {
-        "Content-Type": "application/json", // JSON 형식으로 요청 본문을 보냄
-      },
-      credentials: "include", // 쿠키 포함 요청
-      body: JSON.stringify({
-        post_category: category, // 카테고리 아이디
-        loca_dong: regionDong,   // 지역 동 아이디
-      }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log("받아온 추천 리스트:", data);
-
-      SetRelatedPostList(data.map(item => ({
-        regionDong: item.loca_dong, // 지역 (동 정보만 사용)
-        title: item.post_title, 
-        image: item.post_photo,
-        price: item.post_price || "가격 미정",
-      })));
-    } else {
-      console.error("추천 리스트를 받아오지 못했습니다.");
+  }, []); 
+  
+  const relatedProduct = async (pid) => {
+    try {
+      if (!pid) {
+        console.error("추천 상품을 불러올 수 없습니다. 유효한 pid가 아닙니다.");
+        return;
+      }
+  
+      const apiUrl = `http://localhost:18090/api/gogumapost/${pid}/related`;
+      console.log("추천 상품 요청 URL:", apiUrl); // URL 확인
+  
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("받아온 추천 리스트:", data);
+        SetRelatedPostList(
+          data.map((item) => ({
+            id: item.pid,
+            regionDong: item.loca_dong,
+            title: item.post_title,
+            image: item.post_photo,
+            price: item.post_price || "가격 미정",
+          }))
+        );
+      } else {
+        console.error("추천 리스트를 받아오지 못했습니다.");
+        const errorText = await response.text();
+        console.error("서버 응답 내용:", errorText); // 서버에서 반환한 오류 메시지
+      }
+    } catch (error) {
+      console.error("추천 리스트 받아오던 중 오류 발생:", error);
     }
-  } catch (error) {
-    console.error("추천 리스트 받아오던 중 오류 발생:", error);
-  }
-};
-
-useEffect(() => {
-  relatedProduct(); // 추천 리스트 가져오기
-}, [category, regionDong]); // category나 regionDong이 바뀌면 다시 요청
-*/
-
-  useEffect(() => {
-    // 더미 데이터 설정
-    const dummyData = [
-      {
-        id: 1,
-        image: "src/resources/images/iphone14.png",
-        price: 15000,
-        title: "아이폰 14 팔아요",
-        regionDong: "개포1동",
-      },
-      {
-        id: 2,
-        image: "src/resources/images/iphone14.png",
-        price: 12000,
-        title: "아이폰 14 팔아요",
-        regionDong: "대치1동",
-      },
-      {
-        id: 3,
-        image: "src/resources/images/iphone14.png",
-        price: 20000,
-        title: "아이폰 14 팔아요",
-        regionDong: "삼성1동",
-      },
-      {
-        id: 4,
-        image: "src/resources/images/iphone16.png",
-        price: 20000,
-        title: "아이폰 16 팔아요",
-        regionDong: "압구정동",
-      },
-      {
-        id: 5,
-        image: "src/resources/images/iphone16.png",
-        price: 20000,
-        title: "아이폰 16 팔아요",
-        regionDong: "역삼1동",
-      },
-    ];
-
-    // 더미 데이터를 상태에 저장
-    SetRelatedPostList(dummyData);
-  }, []);
-
-  // 뒤로가기 버튼
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
-  const onBack = () => {
-    navigate("/list"); // 리스트 페이지로 이동
   };
 
-  // 판매자 평점 -> 매너 사이다
-  const getCiderColor = (score) => {
-    if (score < 30) return "#F97316"; // 주황
-    if (score < 60) return "#A3E635"; // 라임 그린
-    if (score < 90) return "#4BC0C8"; // 청록
-    return "#0350e0"; //  블루
-  };
+    // 뒤로가기 버튼
+    const navigate = useNavigate(); // useNavigate 훅 사용
 
-  return (
-    <>
-      <Header />
-      <Advertise />
+    const onBack = () => {
+      navigate("/list"); // 리스트 페이지로 이동
+    };
 
-      <div className="detail-product-detail">
-        {/* 뒤로가기 버튼을 상단에 위치시킴 */}
-        <button onClick={onBack} className="detail-back-button">
-          <MdOutlineBackspace />
-        </button>
+    // 판매자 평점 -> 매너 사이다
+    const getCiderColor = (score) => {
+      if (score < 30) return "#F97316"; // 주황
+      if (score < 60) return "#A3E635"; // 라임 그린
+      if (score < 90) return "#4BC0C8"; // 청록
+      return "#0350e0"; //  블루
+    };
 
-        {/* 상품 이미지와 내용 (왼쪽, 오른쪽 분리된 부분) */}
-        <div className="detail-product-body">
-          <div className="detail-product-left">
-            <img
-              src={newPost.image}
-              alt={newPost.title}
-              className="detail-product-image"
-            />
+    return (
+      <>
+        <Header />
+        <Advertise />
 
-            <div className="detail-seller-info">
-              <div className="detail-seller-left">
-                <img src={newPost.thumbnail} alt="판매자 이미지" />
-                <div>
-                  <p className="detail-nickname">{newPost.seller}</p>
-                  <p className="detail-location">
-                    {Gu[newPost.regionGu]}, {Dong[newPost.regionDong]}
-                  </p>
+        <div className="detail-product-detail">
+          {/* 뒤로가기 버튼을 상단에 위치시킴 */}
+          <button onClick={onBack} className="detail-back-button">
+            <MdOutlineBackspace />
+          </button>
+
+          {/* 상품 이미지와 내용 (왼쪽, 오른쪽 분리된 부분) */}
+          <div className="detail-product-body">
+            <div className="detail-product-left">
+              <img
+                src={newPost.image}
+                alt={newPost.title}
+                className="detail-product-image"
+              />
+
+              <div className="detail-seller-info">
+                <div className="detail-seller-left">
+                  <img src={newPost.thumbnail} alt="판매자 이미지" />
+                  <div>
+                    <p className="detail-nickname">{newPost.seller}</p>
+                    <p className="detail-location">
+                      {Gu[newPost.regionGu]}, {Dong[newPost.regionDong]}
+                    </p>
+                  </div>
+                  <ReportUser postId={postId} userId={user.uid} />
                 </div>
-                <ReportUser postId={postId} userId={user.uid} />
-              </div>
-              <div className="detail-seller-right">
-                <div className="detail-cider-container">
-                  <div
-                    className="detail-cider-liquid"
-                    style={{
-                      height: `${newPost.userRate}%`, // 100점 만점 기준으로 점수 적용
-                      backgroundColor: getCiderColor(newPost.userRate), // 색상 변경
-                    }}
-                  />
-                  <div className="detail-cider-label">{newPost.userRate}L</div>{" "}
+                <div className="detail-seller-right">
+                  <div className="detail-cider-container">
+                    <div
+                      className="detail-cider-liquid"
+                      style={{
+                        height: `${newPost.userRate}%`, // 100점 만점 기준으로 점수 적용
+                        backgroundColor: getCiderColor(newPost.userRate), // 색상 변경
+                      }}
+                    />
+                    <div className="detail-cider-label">
+                      {newPost.userRate}L
+                    </div>{" "}
+                  </div>
+                  {/* <p>{newPost.userRate}</p> */}
                 </div>
-                {/* <p>{newPost.userRate}</p> */}
               </div>
             </div>
-          </div>
 
-          <div className="detail-product-right">
-            <h2 className="detail-product-title">{newPost.title}</h2>
+            <div className="detail-product-right">
+              <h2 className="detail-product-title">{newPost.title}</h2>
 
-            {/* 카테고리와 날짜 추가 */}
-            <p className="detail-product-category">
-              {PostCategory[newPost.category]} | {newPost.updateTime}
-            </p>
+              {/* 카테고리와 날짜 추가 */}
+              <p className="detail-product-category">
+                {PostCategory[newPost.category]} | {newPost.updateTime}
+              </p>
 
-            <p className="detail-product-price">
-              {newPost && newPost.price
-                ? newPost.price.toLocaleString() + "원"
-                : "가격 미정"}
-            </p>
+              <p className="detail-product-price">
+                {newPost && newPost.price
+                  ? newPost.price.toLocaleString() + "원"
+                  : "가격 미정"}
+              </p>
 
             <p className="detail-product-description">{newPost.content}</p>
             {isLoggedIn && user.uid !== newPost.sellerUid && (
@@ -328,33 +294,34 @@ useEffect(() => {
             )}
           </div>
         </div>
-      </div>
-      <div className="detail-related-products">
-        <h3>이런 상품은 어떠세요?</h3>
-        <div className="detail-related-list">
-          {relatedPostList.length > 0 ? (
-            relatedPostList.map((item) => (
-              <div key={item.id} className="detail-related-item">
-                <img
-                  src={item.image}
-                  alt="상품 이미지"
-                  className="detail-related-image"
-                />
-                <p className="detail-related-title">{item.title}</p>
-                <p className="detail-related-price">
-                  {item.price.toLocaleString()}원
-                </p>
-                <p className="detail-related-location">{item.regionDong}</p>
-              </div>
-            ))
-          ) : (
-            <p>추천 상품이 없습니다.</p>
-          )}
+        <div className="detail-related-products">
+          <h3>이런 상품은 어떠세요?</h3>
+          <div className="detail-related-list">
+            {relatedPostList.length > 0 ? (
+              relatedPostList.map((item) => (
+                <div key={item.id} className="detail-related-item">
+                  <img
+                    src={item.image}
+                    alt="상품 이미지"
+                    className="detail-related-image"
+                  />
+                  <p className="detail-related-title">{item.title}</p>
+                  <p className="detail-related-price">
+                    {item.price.toLocaleString()}원
+                  </p>
+                  <p className="detail-related-location">{Dong[item.regionDong]}</p>
+                </div>
+              ))
+            ) : (
+              <p>추천 상품이 없습니다.</p>
+            )}
+          </div>
         </div>
-      </div>
-      <Footer />
-    </>
-  );
-};
+        </div>
+        <Footer />
+      </>
+    );
+  };
+
 
 export default ProductDetailPage;

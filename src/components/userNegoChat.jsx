@@ -23,6 +23,7 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
   const [isBuyerConfirmed, setIsBuyerConfirmed] = useState(false); // 구매 확정 버튼 활성화 여부
   const [newPost, setNewPost] = useState(null); // 판매자 정보
   const [showSReviewPopup, setShowSReviewPopup] = useState(false); //  판매자 작성 리뷰
+  const [isInterested, setIsInterested] = useState(false); //  구매 희망 버튼 활성화 여부
 
   useEffect(() => {
     const API_POST_URL = `http://localhost:18090/api/gogumapost/${post.pid}`;
@@ -54,6 +55,13 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
         console.error("데이터 불러오기 실패:", error);
       });
   }, []);
+
+  //  구매 희망 버튼 토글
+  const handleInterestToggle = () => {
+    if (user_id !== sellerUid || user_id == "") {
+      setIsInterested(true);
+    }
+  };
 
   // 구매 희망 버튼 클릭 시
   const handleInterest = () => {
@@ -129,10 +137,19 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
       {/* 상품 설명 끝난 후, 구매 희망자 리스트를 하단에 위치 */}
       <div className="nego-product-footer">
         {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
+        {/* {user_id !== "" && user_id !== sellerUid && (
+          <button
+            className="nego-interest-button"
+            onClick={handleInterestToggle}
+            disabled={isBuyerConfirmed || isPurchased}
+          >
+            구매 희망
+          </button>
+        )} */}
         {user_id !== post.sellerUid && (
           <button
             className="nego-interest-button"
-            onClick={handleInterest}
+            onClick={handleInterestToggle}
             disabled={isBuyerConfirmed || isPurchased} // 거래 완료되거나 구매자가 확정되면 비활성화
           >
             구매 희망
