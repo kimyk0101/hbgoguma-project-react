@@ -198,7 +198,6 @@ useEffect(() => {
 }, [category, regionDong]); // category나 regionDong이 바뀌면 다시 요청
 */
 
- 
   useEffect(() => {
     // 더미 데이터 설정
     const dummyData = [
@@ -320,7 +319,11 @@ useEffect(() => {
             </p>
 
             <p className="detail-product-description">{newPost.content}</p>
-            <UserNegoChat user_id={user.uid} post={newPost} />
+            <UserNegoChat
+              sellerUid={newPost.sellerUid}
+              user_id={user.uid}
+              post={newPost}
+            />
           </div>
         </div>
       </div>

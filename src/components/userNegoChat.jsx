@@ -13,7 +13,7 @@ import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 �
 // string chatContent	- 메세지
 // Date updateTime	- 메세지 시간
 
-const UserNegoChat = ({ user_id, post }) => {
+const UserNegoChat = ({ user_id, post, sellerUid }) => {
   const [interestedBuyers, setInterestedBuyers] = useState([]); // 구매 희망 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
   const [messages, setMessages] = useState([]); // 메시지 리스트
@@ -254,6 +254,8 @@ const UserNegoChat = ({ user_id, post }) => {
       {/* 거래 완료 후 리뷰 팝업 자동 표시 */}
       {selectedBuyer && showSReviewPopup && (
         <SReviewPopup
+          sellerId={sellerUid} // 판매자 UID 전달
+          buyerId={user_id} // 구매자 UID 전달
           onClose={handleCloseReviewPopup}
           onSubmit={handleReviewSubmit}
         />

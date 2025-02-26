@@ -1,47 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { CgCloseR } from "react-icons/cg"; 
+import { CgCloseR } from "react-icons/cg";
 import "../css/sellerReviewPage.css";
-import spEmpty from "../resources/images/sweet-potato-Empty.png";  // 색이 없는 고구마
-import spFilled from "../resources/images/sweet-potato-Filled.png";  // 색이 있는 고구마
+import spEmpty from "../resources/images/sweet-potato-Empty.png"; // 색이 없는 고구마
+import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 있는 고구마
 
-const SReviewPopup = ({ onClose, onSubmit, reviewData }) => {
+const SReviewPopup = ({ onClose, reviewData, sellerId, buyerId }) => {
   const [rating, setRating] = useState(0); // 평점 상태
   const [newReview, setNewReview] = useState(""); // 리뷰 내용
   const [isReviewed, setIsReviewed] = useState(false); // 이미 리뷰 작성 여부 체크
-
-  // 리뷰 데이터를 서버에서 받아오는 형식에 맞게 초기화
+  // 기존 리뷰 데이터 불러오기
   useEffect(() => {
     if (reviewData) {
-      setRating(reviewData.reviewPoint || 0); // 서버에서 받은 평점을 설정
-      setNewReview(reviewData.reviewContent || ""); // 서버에서 받은 리뷰 내용을 설정
+      setRating(reviewData.review_point || 0);
+      setNewReview(reviewData.review_content || "");
     }
   }, [reviewData]);
 
   const handleClick = (index) => {
-    setRating(index);  // 클릭된 고구마에 해당하는 평점으로 상태 업데이트
+    setRating(index);
   };
 
-  // 리뷰 제출 함수
-  const handleReviewSubmit = () => {
+  // 🔹 리뷰 제출 함수 (서버로 전송)
+  const handleReviewSubmit = async () => {
     if (newReview.trim()) {
-      // 더미데이터
       const reviewDataToSubmit = {
-        hid: Date.now(), // 고유번호는 임시로 Date.now()로 설정 (서버에서 처리하도록)
-        sendUid: 1,
-        rexeiveUid: 1,
-        reviewContent: newReview,
-        reviewPoint: rating,
-        rewardPoint: 10, // 보상 포인트는 서버에서 제공하는 값으로 수정 필요
-        reviewUpdate: new Date().toLocaleDateString(), // 서버에서 요구하는 날짜 형식에 맞게 수정 필요
+        seller_uid: sellerId, // 판매자 UID
+        buyer_uid: buyerId, // 구매자 UID
+        review_content: newReview, // 리뷰 내용
+        review_point: rating, // 평점 (1~5)
+        reward_point: 10, // 보상 포인트 (서버에서 결정 가능)
+        upd_date: new Date().toISOString(), // 날짜 형식 ISO 8601
       };
 
-      onSubmit(reviewDataToSubmit); // 리뷰 데이터를 서버로 전송
-      localStorage.setItem("hasReviewed", "true"); // 리뷰 작성 여부 저장
-      onClose();
+      try {
+        const response = await fetch(
+          "http://localhost:18090/api/gogumareview",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(reviewDataToSubmit),
+          }
+        );
+        console.log(reviewDataToSubmit);
+        if (!response.ok) {
+          throw new Error("리뷰 전송 실패");
+        }
+
+        alert("리뷰가 성공적으로 등록되었습니다!");
+        setIsReviewed(true); // 리뷰 작성 완료 처리
+        onClose(); // 팝업 닫기
+      } catch (error) {
+        console.error("🚨 리뷰 전송 오류:", error);
+        alert("리뷰 등록 중 오류가 발생했습니다.");
+      }
     }
   };
 
-  if (isReviewed) return null; // 이미 리뷰를 작성한 경우 팝업을 띄우지 않음
+  if (isReviewed) return null; // 이미 리뷰 작성 시 팝업 숨김
 
   return (
     <div className="sreview-seller-review-container">
@@ -55,11 +72,11 @@ const SReviewPopup = ({ onClose, onSubmit, reviewData }) => {
         <div className="sreview-rating-input">
           {[1, 2, 3, 4, 5].map((index) => (
             <img
-              key={index}  // 각 평점에 고유 키를 부여
-              src={index <= rating ? spFilled : spEmpty}  // 평점에 맞는 아이콘 이미지 사용
-              alt={`sweetPotato-${index}`}  // 이미지 설명 텍스트
-              onClick={() => handleClick(index)}  // 클릭 시 평점 업데이트
-              style={{ width: "40px", height: "40px", cursor: "pointer" }}  // 아이콘 크기 및 클릭 시 커서
+              key={index}
+              src={index <= rating ? spFilled : spEmpty}
+              alt={`sweetPotato-${index}`}
+              onClick={() => handleClick(index)}
+              style={{ width: "40px", height: "40px", cursor: "pointer" }}
             />
           ))}
         </div>
@@ -72,13 +89,7 @@ const SReviewPopup = ({ onClose, onSubmit, reviewData }) => {
           className="sreview-review-input"
         />
 
-        <button
-          onClick={() => {
-            handleReviewSubmit();
-            onClose();
-          }}
-          className="sreview-confirm-button"
-        >
+        <button onClick={handleReviewSubmit} className="sreview-confirm-button">
           확인
         </button>
       </div>
