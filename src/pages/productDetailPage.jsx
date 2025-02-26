@@ -12,8 +12,8 @@ const ProductDetailPage = () => {
   const { postId } = useParams(); // URL에서 ID 가져오기
 
   const [newPost, setNewPost] = useState([]); // 변경된 상품 데이터 저장
-  const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
-  const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
+  // const [showReportPopup, setShowReportPopup] = useState(false); // 신고 팝업 표시 여부
+  // const [reportReason, setReportReason] = useState(""); // 선택된 신고 사유
 
   const [user, setUser] = useState([]); //  login 부분
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
@@ -46,44 +46,44 @@ const ProductDetailPage = () => {
     checkLoginStatus(); // 컴포넌트가 마운트될 때 로그인 상태 확인
   }, []);
 
-  // 신고 사유 목록
-  const reportReasons = [
-    "허위 매물",
-    "부적절한 게시글",
-    "사기 의심",
-    "기타 사유",
-  ];
+  // // 신고 사유 목록
+  // const reportReasons = [
+  //   "허위 매물",
+  //   "부적절한 게시글",
+  //   "사기 의심",
+  //   "기타 사유",
+  // ];
 
-  // 신고 버튼 클릭 시 팝업 열기
-  const handleOpenReportPopup = () => {
-    setShowReportPopup(true);
-  };
+  // // 신고 버튼 클릭 시 팝업 열기
+  // const handleOpenReportPopup = () => {
+  //   setShowReportPopup(true);
+  // };
 
-  // 신고 팝업 닫기
-  const handleCloseReportPopup = () => {
-    setShowReportPopup(false);
-    setReportReason("");
-  };
+  // // 신고 팝업 닫기
+  // const handleCloseReportPopup = () => {
+  //   setShowReportPopup(false);
+  //   setReportReason("");
+  // };
 
-  // 신고 제출
-  const handleReportSubmit = () => {
-    if (!reportReason) {
-      alert("신고 사유를 선택해주세요.");
-      return;
-    }
+  // // 신고 제출
+  // const handleReportSubmit = () => {
+  //   if (!reportReason) {
+  //     alert("신고 사유를 선택해주세요.");
+  //     return;
+  //   }
 
-    const reportData = {
-      rid: Date.now(), // 신고 번호 (임시)
-      uid: 1, // 신고한 사용자 ID
-      pid: post.id, // 신고당한 게시글 ID
-      reportId: reportReasons.indexOf(reportReason) + 1, // 신고 사유 ID
-      isConfirm: false, // 신고 처리 여부 (초기값 false)
-      reportDate: new Date().toISOString(), // 신고 일시
-    };
+  //   const reportData = {
+  //     rid: Date.now(), // 신고 번호 (임시)
+  //     uid: 1, // 신고한 사용자 ID
+  //     pid: post.id, // 신고당한 게시글 ID
+  //     reportId: reportReasons.indexOf(reportReason) + 1, // 신고 사유 ID
+  //     isConfirm: false, // 신고 처리 여부 (초기값 false)
+  //     reportDate: new Date().toISOString(), // 신고 일시
+  //   };
 
-    alert("신고가 접수되었습니다.");
-    handleCloseReportPopup();
-  };
+  //   alert("신고가 접수되었습니다.");
+  //   handleCloseReportPopup();
+  // };
 
   const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -159,9 +159,6 @@ const ProductDetailPage = () => {
     39: "잠원동",
   };
 
-  // 현재 로그인한 사용자 (더미 데이터)
-  // const user = { id: 123 };
-
   return (
     <>
       <Header />
@@ -197,14 +194,14 @@ const ProductDetailPage = () => {
               </div>
             </div>
             {/* 신고하기 버튼 */}
-            <button
+            {/* <button
               className="detail-report-button"
               onClick={handleOpenReportPopup}
-            >
-              🚨 신고하기
-            </button>
+            > */}
+              {/* 🚨 신고하기 */}
+            {/* </button> */}
             {/* 신고 팝업 */}
-            {showReportPopup && (
+            {/* {showReportPopup && (
               <div className="detail-report-popup">
                 <div className="detail-popup-content">
                   <h3>게시글 신고</h3>
@@ -233,10 +230,10 @@ const ProductDetailPage = () => {
                     >
                       취소
                     </button>
-                  </div>
-                </div>
-              </div>
-            )}
+                  </div> */}
+                {/* </div>
+              </div> */}
+            {/* )} */}
           </div>
 
           <div className="detail-product-right">
