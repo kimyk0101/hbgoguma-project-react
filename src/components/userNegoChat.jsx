@@ -94,7 +94,7 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
     const fetchChatData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:18090/api/gogumachat/${newPost.id}`
+          `http://localhost:18090/api/gogumachat/${newPost?.id}`
         );
         const data = await response.json();
         setMessages(
@@ -176,7 +176,7 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
 
     const newMessage = {
       cid: messages.length + 1, // 채팅 ID (새로운 메시지마다 증가)
-      pid: post.pid, // 게시글 ID (해당 게시글 ID 사용)
+      pid: newPost?.pid, // 게시글 ID (해당 게시글 ID 사용)
       buyer_uid: isUser1 ? user.id : selectedBuyer, // 구매자 ID 또는 판매자 ID
       send_uid: isUser1 ? user.id : selectedBuyer, // 보낸 메시지 ID
       receive_uid: isUser1 ? selectedBuyer : user.id, // 받는 메시지 ID
@@ -205,7 +205,7 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
             구매 희망
           </button>
         )} */}
-        {user_id !== post.sellerUid && (
+        {user_id !== newPost?.sellerUid && (
           <button
             className="nego-interest-button"
             onClick={handleInterest}
@@ -214,7 +214,7 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
             구매 희망
           </button>
         )}
-        {user_id !== post.sellerUid && (
+        {user_id !== newPost?.sellerUid && (
           <div className="nego-interested-buyers">
             <h3>구매 희망자</h3>
             <ul>
@@ -293,12 +293,19 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
                             value={inputMessage}
                             onChange={(e) => setInputMessage(e.target.value)}
                           />
-                          <button onClick={() => handleSendMessage(false)}>
-                            구매자 전송
-                          </button>
-                          <button onClick={() => handleSendMessage(true)}>
-                            판매자 전송
-                          </button>
+                          {/* 현재 사용자가 판매자인 경우 */}
+                          {user_id === newPost?.sellerUid && (
+                            <button onClick={() => handleSendMessage(true)}>
+                              판매자 전송
+                            </button>
+                          )}
+
+                          {/* 현재 사용자가 구매자인 경우 */}
+                          {user_id && (
+                            <button onClick={() => handleSendMessage(false)}>
+                              구매자 전송
+                            </button>
+                          )}
                         </div>
                       </div>
                     )}
