@@ -27,7 +27,7 @@ const SReviewPopup = ({ onClose, reviewData, sellerId, buyerId }) => {
         seller_uid: sellerId, // 판매자 UID
         buyer_uid: buyerId, // 구매자 UID
         review_content: newReview, // 리뷰 내용
-        review_point: rating, // 평점 (1~5)
+        review_point: rating * 2000, // 평점 (1~5)
         reward_point: 10, // 보상 포인트 (서버에서 결정 가능)
         upd_date: new Date().toISOString(), // 날짜 형식 ISO 8601
       };
