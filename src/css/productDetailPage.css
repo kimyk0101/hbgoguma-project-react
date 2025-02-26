@@ -250,7 +250,7 @@ text-align: left;
 .detail-related-list {
   display: flex;
   gap: 40px; 
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .detail-related-item {
