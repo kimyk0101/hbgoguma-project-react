@@ -145,10 +145,40 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
   };
 
   // 구매 확정 팝업 확인 버튼
-  const handlePurchaseConfirm = () => {
+  const handlePurchaseConfirm = async () => {
     setIsPurchased(true); // 거래가 완료되면 상태 변경
     setIsBuyerConfirmed(true); // 거래가 완료되면 구매 확정 버튼도 비활성화
     setShowSReviewPopup(true); // 거래 완료 후 리뷰 팝업 띄우기
+    const purchaseData = {
+      seller_uid: sellerUid, // 판매자 UID
+      buyer_uid: user_id, // 구매자 UID
+      pid: post.id, // 게시글 ID
+      price: post.price, // 상품 가격
+      upd_date: new Date().toISOString(), // 현재 날짜 및 시간
+    };
+    try {
+      const response = await fetch(
+        "http://localhost:18090/api/gogumapurchase",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(purchaseData),
+        }
+      );
+      console.log(purchaseData);
+      if (response.ok) {
+        alert("거래가 성공적으로 완료되었습니다!");
+        setIsPurchased(true);
+        setShowSReviewPopup(true);
+      } else {
+        throw new Error("거래 완료 요청 실패");
+      }
+    } catch (error) {
+      console.error("거래 완료 오류:", error);
+      alert("거래 완료 중 오류가 발생했습니다.");
+    }
   };
 
   // 리뷰 제출
