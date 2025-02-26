@@ -7,6 +7,7 @@ import Advertise from "../components/advertise";
 import { MdOutlineBackspace } from "react-icons/md"; // 뒤로가기
 import { useNavigate } from "react-router-dom"; // useNavigate 임포트
 import { useParams } from "react-router-dom";
+import ReportUser from "../components/reportUser.jsx";
 
 const ProductDetailPage = () => {
   const { postId } = useParams(); // URL에서 ID 가져오기
@@ -223,15 +224,16 @@ const ProductDetailPage = () => {
                 <p>{newPost.userRate} / 5</p>
               </div>
             </div>
-            {/* 신고하기 버튼 */}
-            {/* <button
+            <ReportUser postId={postId} userId={user}>
+              {/* 신고하기 버튼 */}
+              {/* <button
               className="detail-report-button"
               onClick={handleOpenReportPopup}
             > */}
-            {/* 🚨 신고하기 */}
-            {/* </button> */}
-            {/* 신고 팝업 */}
-            {/* {showReportPopup && (
+              {/* 🚨 신고하기 */}
+              {/* </button> */}
+              {/* 신고 팝업 */}
+              {/* {showReportPopup && (
               <div className="detail-report-popup">
                 <div className="detail-popup-content">
                   <h3>게시글 신고</h3>
@@ -261,9 +263,10 @@ const ProductDetailPage = () => {
                       취소
                     </button>
                   </div> */}
-            {/* </div>
+              {/* </div>
               </div> */}
-            {/* )} */}
+              {/* )} */}
+            </ReportUser>
           </div>
 
           <div className="detail-product-right">
