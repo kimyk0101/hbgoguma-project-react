@@ -54,6 +54,7 @@ const JoinPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     nickname: "",
+    user_id: "",
     password: "",
     confirmPassword: "",
     tel_number: "",
@@ -85,13 +86,15 @@ const JoinPage = () => {
       .catch((error) => console.error("회원 정보 불러오기 오류", error));
   }, []);
 
-  const checkUsernameAvailability = () => {
+  const checkUserIdAvailability = () => {
     const usernameRegex = /^[a-zA-Z0-9]{6,}$/;
-    if (!usernameRegex.test(formData.name)) {
+    if (!usernameRegex.test(formData.user_id)) {
       alert("아이디는 6자 이상 영문, 숫자 조합이어야 합니다.");
       return;
     }
-    const isTaken = dummyUsers.some((user) => user.name === formData.name);
+    const isTaken = dummyUsers.some(
+      (user) => user.user_id === formData.user_id
+    );
     setIsUsernameAvailable(!isTaken);
   };
 
@@ -157,6 +160,8 @@ const JoinPage = () => {
         ", " +
         "nickname : " +
         formData.nickname +
+        ", " +
+        "user_id : " +
         ", " +
         "password : " +
         formData.password +
@@ -225,19 +230,13 @@ const JoinPage = () => {
       </div>
       <h2 className="join-h2">회원가입</h2>
       <form className="join-form" onSubmit={handleSignup}>
-        <label>아이디:</label>
+        <label>이름:</label>
         <input
           type="text"
-          placeholder="6자 이상 영문, 숫자 조합"
+          placeholder="성함"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
-        <button type="button" onClick={checkUsernameAvailability}>
-          중복 확인
-        </button>
-        {isUsernameAvailable !== null && (
-          <span>{isUsernameAvailable ? "사용 가능" : "사용 불가"}</span>
-        )}
         <label>닉네임:</label>
         <input
           type="text"
@@ -247,6 +246,21 @@ const JoinPage = () => {
             setFormData({ ...formData, nickname: e.target.value })
           }
         />
+        <label>아이디:</label>
+        <input
+          type="text"
+          placeholder="2~10자 특수문자 제외"
+          value={formData.user_id}
+          onChange={(e) =>
+            setFormData({ ...formData, user_id: e.target.value })
+          }
+        />
+        <button type="button" onClick={checkUserIdAvailability}>
+          중복 확인
+        </button>
+        {isUsernameAvailable !== null && (
+          <span>{isUsernameAvailable ? "사용 가능" : "사용 불가"}</span>
+        )}
         <label>비밀번호:</label>
         <input
           type="password"
