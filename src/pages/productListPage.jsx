@@ -33,12 +33,17 @@ const allDongs = {
     "압구정동",
     "역삼1동",
     "역삼2동",
-    "일원동",
+    "일원1동",
     "일원본동",
     "청담동",
   ],
   서초구: [
     "내곡동",
+    "반포1동",
+    "반포2동",
+    "반포3동",
+    "반포4동",
+    "반포본동",
     "방배1동",
     "방배2동",
     "방배3동",
@@ -48,7 +53,6 @@ const allDongs = {
     "서초2동",
     "서초3동",
     "서초4동",
-    "반포동",
     "양재1동",
     "양재2동",
     "잠원동",
@@ -340,7 +344,7 @@ const ProductListPage = () => {
                 onChange={(e) => setSelectedDong(e.target.value)}
               >
                 <option value="전체">-- 동 선택 --</option>
-                {filteredDongs.map((dong) => (
+                {filteredDongs.map((dongs) => (
                   <option key={dong} value={dong}>
                     {dong}
                   </option>
