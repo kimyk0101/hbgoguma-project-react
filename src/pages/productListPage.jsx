@@ -204,8 +204,8 @@ const ProductListPage = () => {
     }
   };
 
-  // const filteredDongs =
-  //   selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
+  const filteredDongs =
+    selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
   // const filteredPosts = posts.filter(
   //   (post) =>
   //     (selectedRegion === "전체" || post.regionGu === selectedRegion) &&
