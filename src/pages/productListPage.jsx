@@ -3,9 +3,7 @@ import "../css/productListPage.css";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import Advertise from "../components/advertise";
-import { useNavigate } from "react-router-dom";
-import SearchBar from "../components/searchBar";
-import PopularKeywords from "../components/PopularKeywords";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const regions = ["전체", "강남구", "서초구"];
 
@@ -144,25 +142,20 @@ const CATEGORY_ID = [
   ["16", "기타"],
 ];
 
-// const popularKeywords = [
-//   "아이폰",
-//   "노트북",
-//   "삼성",
-//   "에어팟",
-//   "갤럭시",
-//   "닌텐도",
-//   "다이소",
-//   "레고",
-//   "패딩",
-//   "자전거",
-// ];
-
 const ITEMS_PER_PAGE = 12;
 
 const ProductListPage = () => {
   //@note - 서버 위치
   const API_POST_URL = `http://localhost:18090/api/gogumapost`;
   const API_USER_URL = `http://localhost:18090/api/gogumauser`;
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("query") || "";
+  useEffect(() => {
+    if (query) {
+      setTempSearchTerm(query); // Update the tempSearchTerm state with the query param
+    }
+  }, [query]);
 
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글 상태 추가
@@ -173,11 +166,32 @@ const ProductListPage = () => {
   const [searchTerm, setSearchTerm] = useState(""); // 실제 검색 적용 값
   const [user, setUser] = useState([]); //  login 부분
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
+  const [filteredPosts, setFilteredPosts] = useState([]); // 필터링된 상품 리스트
 
   // 검색 실행 함수
   const handleSearch = () => {
-    setSearchTerm(tempSearchTerm); // 검색 버튼 클릭 시 적용
+    setSearchParams({ query: tempSearchTerm });
+    setSearchTerm(tempSearchTerm);
+    const updatedFilteredPosts = posts.filter(
+      (post) =>
+        (selectedRegion === "전체" || post.regionGu === selectedRegion) &&
+        (selectedDong === "전체" || post.regionDong === selectedDong) &&
+        ((selectedCategory === handleSearch) == 0 ||
+          post.category === selectedCategory) &&
+        (searchTerm ? post.title.includes(searchTerm) : true)
+    );
+    setFilteredPosts(updatedFilteredPosts);
   };
+  useEffect(() => {
+    const updatedFilteredPosts = posts.filter(
+      (post) =>
+        (selectedRegion === "전체" || post.regionGu === selectedRegion) &&
+        (selectedDong === "전체" || post.regionDong === selectedDong) &&
+        (selectedCategory === 0 || post.category === selectedCategory) &&
+        (query ? post.title.includes(query) : true)
+    );
+    setFilteredPosts(updatedFilteredPosts);
+  }, [query, posts, selectedRegion, selectedDong, selectedCategory]);
 
   // Enter 키 이벤트 핸들러
   const handleKeyPress = (e) => {
@@ -185,15 +199,21 @@ const ProductListPage = () => {
       handleSearch(); // Enter 입력 시 검색 실행
     }
   };
-  const filteredDongs =
-    selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
-  const filteredPosts = posts.filter(
-    (post) =>
-      (selectedRegion === "전체" || post.regionGu === selectedRegion) &&
-      (selectedDong === "전체" || post.regionDong === selectedDong) &&
-      (selectedCategory === 0 || post.category === selectedCategory) &&
-      post.title.includes(searchTerm)
-  );
+
+  // const filteredDongs =
+  //   selectedRegion === "전체" ? [] : allDongs[selectedRegion] || [];
+  // const filteredPosts = posts.filter(
+  //   (post) =>
+  //     (selectedRegion === "전체" || post.regionGu === selectedRegion) &&
+  //     (selectedDong === "전체" || post.regionDong === selectedDong) &&
+  //     (selectedCategory === 0 || post.category === selectedCategory) &&
+  //     (searchTerm ? post.title.includes(searchTerm) : true) // searchTerm이 있을 때만 필터링
+  // post.title.includes(searchTerm)
+  // );
+  useEffect(() => {
+    console.log("현재 검색어:", searchTerm);
+    console.log("🔍 필터링된 상품 목록:", filteredPosts);
+  }, [searchTerm, filteredPosts]);
 
   const handleNavigation = (path) => {
     window.location.href = path;
@@ -231,6 +251,7 @@ const ProductListPage = () => {
 
   //서버에서 데이터 가져오기
   useEffect(() => {
+    // if () {
     fetch(API_POST_URL) // 여기에 실제 API 입력
       .then((response) => response.json())
       .then((data) => {
@@ -251,8 +272,10 @@ const ProductListPage = () => {
           seller: item.nickname, // 판매자 닉네임
         }));
         setPosts(postData);
+        setFilteredPosts(postData);
       })
       .catch((error) => console.error("데이터 불러오기 실패:", error));
+    // }
   }, []);
 
   // 페이지네이션 계산
@@ -277,38 +300,19 @@ const ProductListPage = () => {
 
   return (
     <>
-      <Header />
-      {/* <SearchBar
+      <Header
+        // searchTerm={searchTerm}
         searchTerm={tempSearchTerm}
-        setSearchTerm={setTempSearchTerm} // 즉시 반영되지 않도록 변경
+        // setSearchTerm={setSearchTerm}
+        setSearchTerm={setTempSearchTerm}
         onSearch={handleSearch}
-        onKeyPress={handleKeyPress}
+        // onSearch={() => {}}
+        // onKeyPress={handleKeyPress}
+        onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+        onKeywordClick={handlePopularKeywordClick}
       />
-      <PopularKeywords onKeywordClick={handlePopularKeywordClick} /> */}
       <Advertise />
       <div className="Listcontainer">
-        {/* 검색창 */}
-        {/* <input
-          type="text"
-          placeholder="검색어를 입력하세요..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="Listsearch-input"
-        /> */}
-        {/* 인기검색어 */}
-        {/* <div className="Listpopular-keywords">
-          <p>인기 검색어</p>
-          {popularKeywords.map((keyword) => (
-            <button
-              key={keyword}
-              className="Listkeyword-btn"
-              onClick={() => handlePopularKeywordClick(keyword)}
-            >
-              {keyword}
-            </button>
-          ))}
-        </div> */}
-
         <div className="Listcontent">
           {/* 카테고리 필터 */}
           <aside className="Listsidebar">
@@ -361,7 +365,6 @@ const ProductListPage = () => {
             ))}
           </aside>
 
-          {/* 상품 리스트 */}
           {user.is_Admin && (
             <p className="admin-alert">관리자 모드 활성화됨 ✅</p>
           )}

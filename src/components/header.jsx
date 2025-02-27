@@ -7,10 +7,11 @@ import AuthStatus from "./AuthStatus";
 import PopularKeywords from "./PopularKeywords";
 import SearchBar from "./searchBar";
 
-const Header = () => {
+const Header = ({ searchTerm, setSearchTerm, onSearch }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // searchTerm 상태 추가
+  const navigate = useNavigate();
+  // const [searchTerm, setSearchTerm] = useState(""); // searchTerm 상태 추가
 
   // AuthStatus에서 로그인 상태 변경 시 호출될 함수
   const handleAuthChange = (status, userData) => {
@@ -20,9 +21,13 @@ const Header = () => {
   const handleNavigation = (path) => {
     window.location.href = path;
   };
-  const onSearch = () => {
-    console.log("검색어:", searchTerm); // 실제 검색 실행 코드 추가
+  const handleSearch = () => {
+    navigate(`/?query=${searchTerm}`);
+    onSearch();
   };
+  // const onSearch = () => {
+  //   console.log("검색어:", searchTerm); // 실제 검색 실행 코드 추가
+  // };
 
   return (
     <>
@@ -55,6 +60,7 @@ const Header = () => {
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             onSearch={onSearch}
+            // onKeyPress={onKeyPress}
           />
         </div>
       </header>

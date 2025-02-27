@@ -6,7 +6,7 @@ import Header from "../components/header";
 import Advertise from "../components/advertise";
 import { MdOutlineBackspace } from "react-icons/md"; // 뒤로가기
 import { useNavigate } from "react-router-dom"; // useNavigate 임포트
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import ReportUser from "../components/reportUser.jsx";
 
 const ProductDetailPage = () => {
@@ -15,6 +15,33 @@ const ProductDetailPage = () => {
   const [user, setUser] = useState([]); //  login 부분
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
   const [relatedPostList, SetRelatedPostList] = useState([]);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  // const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("query") || ""; // 기본값 빈 문자열
+  const [searchTerm, setSearchTerm] = useState(query || ""); // 초기 검색어 설정
+  useEffect(() => {
+    if (query) {
+      setSearchTerm(query); // URL에서 검색어 변경 시, 상태 업데이트
+    }
+  }, [query]);
+
+  // // 검색 이벤트 핸들러
+  // const handleSearch = (query) => {
+  //   // navigate(`/?query=${encodeURIComponent(query)}`); // 검색어 포함하여 ProductListPage로 이동
+
+  //   if (query.trim()) {
+  //     // query가 비어있지 않다면
+  //     navigate(`/?query=${encodeURIComponent(query)}`); // 검색어 포함하여 ProductListPage로 이동
+  //   } else {
+  //     navigate("/"); // query가 없으면 기본 페이지로 이동
+  //   }
+  // };
+  useEffect(() => {
+    checkLoginStatus();
+    // fetchProductDetails();
+  }, [postId]);
 
   // 카테고리와 지역 처리
   const PostCategory = {
@@ -82,8 +109,7 @@ const ProductDetailPage = () => {
     38: "양재1동",
     39: "양재2동",
     40: "잠원동",
-};
-
+  };
 
   // 로그인 상태 확인 함수
   const checkLoginStatus = async () => {
@@ -169,7 +195,6 @@ const ProductDetailPage = () => {
       .catch((error) => {
         console.error("데이터 불러오기 실패:", error);
       });
-
   }, []);
 
   const relatedProduct = async (pid) => {
@@ -208,7 +233,7 @@ const ProductDetailPage = () => {
       console.error("추천 리스트 받아오던 중 오류 발생:", error);
     }
   };
-  
+
   useEffect(() => {
     console.log("상태로 설정된 relatedPostList:", relatedPostList);
   }, [relatedPostList]);
@@ -226,7 +251,6 @@ const ProductDetailPage = () => {
     navigate(`/${pid}`, { replace: true }); // ✅ URL 변경
     window.location.reload(); // 🚀 강제 새로고침 (필요할 경우)
   };
-  
 
   // 판매자 평점 -> 매너 사이다
   const getCiderColor = (score) => {
@@ -236,9 +260,41 @@ const ProductDetailPage = () => {
     return "#0350e0"; //  블루
   };
 
+  const handlePopularKeywordClick = (keyword) => {
+    setSearchTerm(keyword);
+  };
+  const [tempSearchTerm, setTempSearchTerm] = useState(""); // 입력값 저장
+  const [filteredPosts, setFilteredPosts] = useState([]); // 필터링된 상품 리스트
+  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [selectedRegion, setSelectedRegion] = useState("전체");
+  const [selectedDong, setSelectedDong] = useState("전체");
+  // 검색 실행 함수
+  const handleSearch = () => {
+    setSearchParams({ query: tempSearchTerm });
+    setSearchTerm(tempSearchTerm);
+    const updatedFilteredPosts = posts.filter(
+      (post) =>
+        (selectedRegion === "전체" || post.regionGu === selectedRegion) &&
+        (selectedDong === "전체" || post.regionDong === selectedDong) &&
+        ((selectedCategory === handleSearch) == 0 ||
+          post.category === selectedCategory) &&
+        (searchTerm ? post.title.includes(searchTerm) : true)
+    );
+    setFilteredPosts(updatedFilteredPosts);
+  };
   return (
     <>
-      <Header />
+      <Header
+        // searchTerm={searchTerm}
+        searchTerm={tempSearchTerm}
+        // setSearchTerm={setSearchTerm}
+        setSearchTerm={setTempSearchTerm}
+        onSearch={handleSearch}
+        // onSearch={() => {}}
+        // onKeyPress={handleKeyPress}
+        onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+        onKeywordClick={handlePopularKeywordClick}
+      />
       <Advertise />
 
       <div className="detail-product-detail">
@@ -278,7 +334,6 @@ const ProductDetailPage = () => {
                   />
                   <div className="detail-cider-label">{newPost.userRate}L</div>{" "}
                 </div>
-
               </div>
             </div>
           </div>
