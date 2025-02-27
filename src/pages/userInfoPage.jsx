@@ -18,6 +18,54 @@ export default function UserInfoPage() {
 
   const navigate = useNavigate();
 
+  const Gu = {
+    1: "강남구",
+    2: "서초구",
+  };
+
+  const Dong = {
+    1: "개포1동",
+    2: "개포2동",
+    3: "개포3동",
+    4: "개포4동",
+    5: "논현1동",
+    6: "논현2동",
+    7: "대치1동",
+    8: "대치2동",
+    9: "대치4동",
+    10: "도곡1동",
+    11: "도곡2동",
+    12: "삼성1동",
+    13: "삼성2동",
+    14: "세곡동",
+    15: "수서동",
+    16: "신사동",
+    17: "압구정동",
+    18: "역삼1동",
+    19: "역삼2동",
+    20: "일원1동",
+    21: "일원본동",
+    22: "청담동",
+    23: "내곡동",
+    24: "반포1동",
+    25: "반포2동",
+    26: "반포3동",
+    27: "반포4동",
+    28: "반포본동",
+    29: "방배1동",
+    30: "방배2동",
+    31: "방배3동",
+    32: "방배4동",
+    33: "방배본동",
+    34: "서초1동",
+    35: "서초2동",
+    36: "서초3동",
+    37: "서초4동",
+    38: "양재1동",
+    39: "양재2동",
+    40: "잠원동",
+  };
+
   // 파일 업로드 핸들러(썸네일 저장)
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -43,7 +91,7 @@ export default function UserInfoPage() {
     }
   };
 
-  //  로그인 유저 정보 받아오기
+  // 로그인 유저 정보 받아오기
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -100,7 +148,7 @@ export default function UserInfoPage() {
     }
   }, [selectedTab, currentUser]);
 
-  //  판매중인 상품 게시물 리스트
+  // 판매중인 상품 게시물 리스트
   useEffect(() => {
     if (selectedTab === "판매 중인 상품" && currentUser?.uid) {
       const fetchPostData = async () => {
@@ -133,18 +181,18 @@ export default function UserInfoPage() {
     }
   }, [selectedTab, currentUser?.uid]);
 
-  //  판매 중인 게시글 -> 페이지 이동
+  // 판매 중인 게시글 -> 페이지 이동
   const handleSellPost = (pid) => {
     navigate(`/${pid}`);
   };
 
-  // ⭐ review_point를 별 개수로 변환하는 함수 (2000점당 1개, 최대 5개)
-  const getStars = (reviewPoint) => {
-    const starCount = Math.min(reviewPoint / 2000, 5);
-    return "⭐".repeat(starCount);
+  // 판매자 평점 -> 매너 사이다
+  const getCiderColor = (score) => {
+    if (score < 30) return "#F97316"; // 주황
+    if (score < 60) return "#A3E635"; // 라임 그린
+    if (score < 90) return "#4BC0C8"; // 청록
+    return "#0350e0"; // 블루
   };
-  // 🔹 게이지 바의 너비를 계산하여 백분위(%) 값에 맞게 조정 (최대 100%)
-  const gaugeWidth = `${Math.min(currentUser?.userRate / 100, 100)}%`;
 
   return (
     <div className="user-info-container">
@@ -171,19 +219,27 @@ export default function UserInfoPage() {
 
         {/* 사용자 정보 */}
         <div className="user-info-details">
-          <span className="nickname">{currentUser?.nickname}</span>
-          <span className="user-info-location">
-            {currentUser?.locaGu}
-            &nbsp;
-            {currentUser?.locaDong}
-          </span>
-          <div className="user-info-cider-bar-container">
-            <span>{(currentUser?.userRate / 100).toFixed(2)}%</span>
-            <div className="user-info-cider-bar">
-              <div
-                className="user-info-cider-fill"
-                style={{ width: gaugeWidth }}
-              ></div>
+          {/* 왼쪽: 닉네임 + 지역 */}
+          <div className="user-info-text">
+            <span className="nickname">{currentUser?.nickname}</span>
+            <span className="user-info-location">
+              {Gu[currentUser?.loca_gu]}, {Dong[currentUser?.loca_dong]}
+            </span>
+          </div>
+
+          {/* 오른쪽: 사이다 매너지수 */}
+          <div className="user-info-cider-container">
+            <div
+              className="user-info-cider-liquid"
+              style={{
+                height: `${(currentUser?.user_rate ?? 0) / 100}%`, // 100점 만점 변환
+                backgroundColor: getCiderColor(
+                  (currentUser?.user_rate ?? 0) / 100
+                ), // 색상 변경
+              }}
+            />
+            <div className="user-info-cider-label">
+              {(currentUser?.user_rate ?? 0) / 100}L
             </div>
           </div>
         </div>
@@ -192,15 +248,16 @@ export default function UserInfoPage() {
         <div className="user-stats">
           <p className="user-info-verified">✅ 본인인증 완료</p>
           <div className="user-info-stats">
-            <p>📦 판매: {currentUser?.sales || 0}회</p>
+            <p>📦 판매: {sellPostList.length || 0}회</p>
             <p>🛒 구매: {currentUser?.purchases || 0}회</p>
-            <p>💰 포인트: {(currentUser?.point || 0).toLocaleString()}P</p>
+            <p>
+              🎃 포인트: {(currentUser?.pumpkin_point || 0).toLocaleString()}P
+            </p>
             <p>📧 이메일: {currentUser?.email}</p>
-            <p>📞 연락처: {currentUser?.telNumber}</p>
+            <p>📞 연락처: {currentUser?.tel_number}</p>
           </div>
         </div>
       </div>
-      {/* 제품 사진 */}
 
       {/* 버튼식 전환 */}
       <div className="user-info-tabs">
@@ -279,6 +336,8 @@ export default function UserInfoPage() {
             )}
           </div>
         )}
+
+        {selectedTab === "구매 중인 상품" && <p>구매 중인 상품이 없습니다.</p>}
       </div>
       <Footer />
     </div>
