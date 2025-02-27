@@ -278,13 +278,13 @@ const ProductListPage = () => {
   return (
     <>
       <Header />
-      <SearchBar
+      {/* <SearchBar
         searchTerm={tempSearchTerm}
         setSearchTerm={setTempSearchTerm} // 즉시 반영되지 않도록 변경
         onSearch={handleSearch}
         onKeyPress={handleKeyPress}
       />
-      <PopularKeywords onKeywordClick={handlePopularKeywordClick} />
+      <PopularKeywords onKeywordClick={handlePopularKeywordClick} /> */}
       <Advertise />
       <div className="Listcontainer">
         {/* 검색창 */}

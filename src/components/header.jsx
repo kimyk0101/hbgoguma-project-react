@@ -31,14 +31,7 @@ const Header = () => {
           {/* 왼쪽: 로고 */}
           <div className="header-logo" onClick={() => handleNavigation("/")}>
             <img src={spFilled} alt="호박고구마 로고" className="logo-image" />
-            <h1>
-              호박고구마{" "}
-              <img
-                src={spFilled}
-                alt="호박고구마 로고"
-                className="Elogo-image"
-              />
-            </h1>
+            <h1>호박고구마 </h1>
           </div>
 
           {/* 오른쪽: 알림 & 로그인 버튼 */}

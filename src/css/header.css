@@ -6,19 +6,19 @@
 }
 
 body {
-  margin-top: 160px; /* 💡 헤더 + 검색바 높이에 맞게 조정 */
+  margin-top: 180px; 
 }
+
 .header {
-  background-color: #ff8c00;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
   width: 100%;
-  position: fixed; /* 💡 헤더 전체 고정 */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1100;
   display: flex;
-  flex-direction: column; /* 💡 내부 요소들이 세로로 정렬되도록 설정 */
+  flex-direction: column;
   min-height: auto;
 }
 
@@ -26,266 +26,209 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 15px 20px;
+  margin: 0 300px;
+  padding: 15px 20px 0px 20px;
 }
-  .header-logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-    display: flex;
-    /* flex: 1; */
-    text-align: center;
-  }
-  .header-buttons {
-    display: flex;
-    gap: 10px;
-  }
-  /* SearchBar와 PopularKeywords를 헤더 아래에 고정 */
-  .search-bar-container {
-    width: 100%;
-    padding: 10px 20px;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border-bottom: 2px solid #ddd; /* 검색창 구분선 추가 */
-    position: relative; /* 💡 헤더 내부에서 정렬 */
-  }
-  .content {
-    padding-top: 160px;
-  }
-  .search-container {
-    display: flex;
-    align-items: center;
-    max-width: 600px;
-    width: 100%;
-    border: 2px solid #ff8c00;
-    border-radius: 30px;
-    overflow: hidden;
-    background-color: white;
-  }
-  .search-input {
-    flex: 1;
-    padding: 10px 15px;
-    border: none;
-    outline: none;
-    font-size: 16px;
-  }
-  .search-button {
-    background-color: #ff8c00;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    color: white;
-    font-size: 18px;
-    border-left: 2px solid #ff8c00;
-  }
-  
-  .search-button:hover {
-    background-color: #e67800;
-  }
-  .popular-keywords {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    padding: 10px;
-    flex-wrap: wrap;
-    background-color: #fff;
-    border-bottom: 2px solid #ddd;
-    position: relative; /* 💡 헤더 내부에서 정렬 */
-  }
-  
-  .keyword-btn {
-    background-color: #ff8c00;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .keyword-btn:hover {
-    background-color: #e67800;
-  }
 
-  
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-   
-  }
-  
-  .header-logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-    flex: 1;
-    text-align: center;
-    display: flex;
-    img {
-      width: 90px;
-      height: 90px;
-      margin-right: 10px; 
-    }
+.header-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  display: flex;  /* 가로로 배치 */
+  align-items: center;  /* 세로 중앙 정렬 */
+  position: relative;
+}
 
-    h1 {
-      font-family: 'Ownglyph_ParkDaHyun';
-      color: white;
-      position: absolute;
-      top: -10%;
-      left: 60%;
-      transform: translate(-50%, -50%);
-      font-size: 80px;
-      letter-spacing:8px;
-      img {
-        width: 30px;
-        height: 30px;
-        margin-left: -30px;
-      }
-    }
-  }
-  
-  .header-btn {
-    background-color: white;
-    border: 2px solid #ff8c00;
-    color: #ff8c00;
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .header-btn:hover {
-    background-color: #ff8c00;
-    color: white;
-  }
-  
-  .header-container {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    width: 100%;
-    position: relative;
-   
-  }
-  .header-container h1 {
-    margin-bottom: 10px;
-  }
-  
-  .header-container > * {
-    margin-bottom: 10px;
-  }
-  
-  .header-logo {
-    font-size: 30px;
-    font-weight: bold;
-    color: #ff8c00;
-    cursor: pointer;
-    text-align: left;
-    display: flex; 
-    align-items: center;
-    position: relative; 
-    border-bottom: 2px solid transparent; 
-    transition: all 0.2s ease;
-  }
-  
-  
-  .header-logo:hover {
-    color: #ff8c00;
-    border-color: #ff8c00; 
-  }
+.header-logo img {
+  width: 90px;
+  height: 90px;
+  margin-right: 10px;  /* 아이콘과 글자 사이 간격 */
+}
 
-  /* 알림 */
-  .notification-container {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .notification-button {
-    background-color: #ff8c00;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    position: relative;
-  }
+.header-logo h1 {
+  font-family: 'Ownglyph_ParkDaHyun';
+  color: #ff8c00;
+  font-size: 80px;
+  letter-spacing: 8px;
+  margin: 0;  /* h1 요소의 기본 margin을 제거 */
+}
 
-  /* 🔔 알림 버튼을 감싸는 컨테이너 */
+
+.header-btn {
+  border: none;
+  background-color: white;
+  color: #ff8c00;
+  padding: 8px 15px;
+  font-size: 13px;
+  cursor: pointer;
+  border-bottom: 0.3px solid transparent; /* 기본 상태에서는 보이지 않음 */
+  transition: all 0.2s ease;
+  padding-bottom: 2px; /* 밑줄과 글자 간격 조정 */
+}
+
+.header-btn:hover {
+  color: #ff8c00;
+  border-bottom: 1px solid #ff8c00; /* hover 시 밑줄 색상 및 두께 */
+}
+
+
 .header-buttons {
-  position: relative; /* 알림 목록을 상대적으로 배치할 기준 */
   display: flex;
-  align-items: center;
   gap: 10px;
 }
-  
-  .notification-dropdown {
-    position: absolute;
-    /* position: fixed; */
-    top: 40px;
-    right: 0;
-    width: 250px;
-    background: white;
-    border: 1px solid #ddd;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 1000;
-    display: none;
-    margin-top: 5px;
-    z-index: 1200;
-  }
-  /* 📌 알림 드롭다운이 활성화될 때 */
+
+.search-bar-container {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+  border: 2px solid #ff8c00;
+  border-radius: 30px;
+  background-color: white;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.search-button {
+  background-color: #ff8c00;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: white;
+  font-size: 18px;
+  border-left: 2px solid #ff8c00;
+}
+
+.search-button:hover {
+  background-color: #e67800;
+}
+
+/* 🔹 인기 검색어 스타일 */
+.popular-keywords {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.popular-keywords button {
+  border: none;
+  background-color: white;
+  color: #ff8c00;
+  padding: 0 15px;
+  font-size: 13px;
+  cursor: pointer;
+  position: relative; /* ::after 요소를 배치하기 위해 추가 */
+  transition: color 0.2s ease; /* 색상 전환에 대한 트랜지션 */
+}
+
+/* 밑줄을 ::after로 처리 */
+.popular-keywords button::after {
+  content: "";
+  position: absolute;
+  bottom: 10px; /* 버튼 하단에 위치 */
+  left: 0;
+  width: 100%; /* 버튼 너비만큼 밑줄을 확장 */
+  height: 2px; /* 밑줄 두께 */
+  background-color: transparent; /* 기본 상태에서는 보이지 않음 */
+  transition: background-color 0.2s ease, height 0.2s ease; /* 밑줄 색상과 두께 변화 */
+}
+
+.popular-keywords button:hover {
+  color: #ff8c00; /* hover 시 글자 색상 */
+}
+
+.popular-keywords button:hover::after {
+  background-color: #ff8c00; /* hover 시 밑줄 색상 */
+  height: 2px; /* hover 시 밑줄 두께 */
+}
+
+
+
+/* 알림 */
+.notification-container {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-button {
+  background-color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: all 0.3s ease; /* 부드러운 트랜지션 효과 추가 */
+}
+
+.notification-button:hover {
+  transform: translateY(-4px); /* hover 시 위로 살짝 이동 */
+  background-color: #f2f2f2; /* 아주 옅은 회색 배경 */
+}
+
+
+.notification-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 250px;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 10px;
+  display: none;
+}
+
 .notification-dropdown.active {
   display: block;
 }
-  
-  .notification-dropdown ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .notification-dropdown li {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-    color: #333;
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
-  }
-  
-  .notification-dropdown li:last-child {
-    border-bottom: none;
-  }
-  /* 🖱️ 알림 항목에 마우스를 올렸을 때 배경색 변경 */
+
+.notification-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-dropdown li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #333;
+}
+
+.notification-dropdown li:last-child {
+  border-bottom: none;
+}
+
 .notification-dropdown li:hover {
   background-color: #ff8c00;
   color: white;
   cursor: pointer;
 }
-  
-  .mark-read {
-    background: #ddd;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    border-radius: 3px;
-  }
-  
+
+.mark-read {
+  background: #ddd;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 3px;
+}
