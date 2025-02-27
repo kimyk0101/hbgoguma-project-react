@@ -217,12 +217,17 @@
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   white-space: nowrap; /* 줄바꿈 방지 */
+  cursor: pointer;
 }
 
 .user-info-sell-post-item img {
   width: 80px;
   height: 80px;
   object-fit: cover;
+}
+
+.user-info-sell-post-item:hover {
+  border: 2px solid #ff8c00;
 }
 
 .user-info-sell-post-info {

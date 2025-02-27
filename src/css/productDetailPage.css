@@ -6,7 +6,7 @@
 
 /* 뒤로가기 버튼 */
 .detail-back-button {
-  align-self: flex-end; 
+  align-self: flex-end;
   width: 80px;
   height: 60px;
   margin-top: 10px;
@@ -27,7 +27,7 @@
 /* 상품 상세 */
 .detail-product-body {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 /* 상품 상세 왼쪽 */
@@ -46,49 +46,49 @@
 }
 
 .detail-seller-info {
-  font-size: 20px; 
+  font-size: 20px;
   text-align: left;
   position: relative;
   padding-bottom: 5px;
-  letter-spacing: 2px; 
-  line-height: 5px; 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
+  letter-spacing: 2px;
+  line-height: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .detail-seller-left {
   position: absolute;
-  top:0;
+  top: 0;
   display: flex;
   align-items: center;
 }
 
 .detail-seller-left img {
-  width: 50px; 
-  height: 50px; 
-  border-radius: 50%; 
-  margin-right: 10px; 
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .detail-seller-left p {
-  line-height: 25px; 
-  margin: 0; 
+  line-height: 25px;
+  margin: 0;
 }
 
 .detail-seller-left .detail-nickname {
-  font-weight: bold; 
+  font-weight: bold;
 }
 
 .detail-seller-left .detail-location {
-  font-size: 14px; 
+  font-size: 14px;
 }
 
 .detail-seller-right {
   position: absolute;
   top: 0;
   right: 0;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
 /* 상품 상세 오른쪽 */
@@ -107,7 +107,7 @@
 
 .detail-product-category {
   font-size: 14px;
-  color: #4A4A4A; 
+  color: #4a4a4a;
   margin-bottom: 10px;
   margin-top: -3px;
 }
@@ -128,7 +128,7 @@
 .detail-cider-container {
   width: 30px; /* 병 너비 */
   height: 100px; /* 병 높이 */
-  border-radius: 30px; 
+  border-radius: 30px;
   background-color: #f5f5f5;
   position: relative;
   border: 2px solid #ccc; /* 병 외곽선 */
@@ -136,13 +136,12 @@
   justify-content: center;
   align-items: flex-end;
   padding: 5px;
-
 }
 
 .detail-cider-liquid {
   width: 90%; /* 병의 내용물 너비 */
   border-radius: 20px; /* 내용물의 둥근 부분 */
-  }
+}
 
 .detail-cider-label {
   position: absolute;
@@ -153,8 +152,6 @@
   color: #333;
   transform: translateX(-50%); /* 가운데 정렬 */
 }
-
-
 
 /* 신고버튼 */
 .detail-report-button {
@@ -171,7 +168,7 @@
   cursor: pointer;
   margin-top: 50px;
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -207,7 +204,7 @@
 
 .detail-submit-button {
   width: auto;
-  background-color: #ff4d4d; 
+  background-color: #ff4d4d;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -235,7 +232,6 @@
   background-color: darkgray;
 }
 
-
 /* 추천 상품 리스트 */
 .detail-related-products {
   margin-top: 300px;
@@ -244,17 +240,17 @@
 
 .detail-related-products h3 {
   font-size: 20px;
-text-align: left;
+  text-align: left;
 }
 
 .detail-related-list {
   display: flex;
-  gap: 40px; 
+  gap: 40px;
   justify-content: flex-start;
 }
 
 .detail-related-item {
-  width: calc(20% - 16px); 
+  width: calc(20% - 16px);
   background-color: #fff;
   border-radius: 8px;
   padding: 5px;
@@ -263,7 +259,7 @@ text-align: left;
 }
 
 .detail-related-item:hover {
-  transform: translateY(-5px); 
+  transform: translateY(-5px);
 }
 
 .detail-related-image {
@@ -292,7 +288,3 @@ text-align: left;
   color: #777;
   text-align: center;
 }
-
-
-
-
