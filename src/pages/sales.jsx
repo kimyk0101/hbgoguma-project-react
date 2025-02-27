@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // axios 추가
 import "../css/sellProductPage.css";
 import Header from "../components/header";
 import Advertise from "../components/advertise";
@@ -132,9 +133,10 @@ const CATEGORY_ID = [
 const regions = ["강남구", "서초구"];
 
 const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
+  const [user, setUser] = useState(null);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("디지털기기");
+  const [category, setCategory] = useState(1);
   const [regionGu, setRegionGu] = useState("강남구");
   const [regionDong, setRegionDong] = useState("개포1동");
   const [description, setDescription] = useState("");
@@ -166,38 +168,48 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
       alert("이미지 업로드 중 오류가 발생했습니다.");
     }
   };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:18090/api/gogumauser/session",
+          { withCredentials: true }
+        );
+        if (response.data.uid) {
+          setUser(response.data);
+        } else {
+          console.error("🚨 로그인된 사용자가 없습니다.");
+        }
+      } catch (error) {
+        console.error("🔴 사용자 정보를 불러오는 중 오류 발생:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const categoryId = Number(category); // ⬅️ category를 숫자로 변환
-    const locaGuId = regions.indexOf(regionGu) + 1;
-    const locaDongId = Number(regionDong); // ⬅️ locaDong도 숫자로 변환
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
 
     //가상이미지
     const imageUrl =
-      "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20130403_48%2Fsakuralllll_1364973975884Xvyp1_JPEG%2F1364881929188.jpg&type=a340";
-    const pid = 1001; // 가상의 상품 ID
-    const uid = 123; // 가상의 사용자 ID
-    const nickname = "판매자123"; // 가상의 닉네임
-    const postUpdate = new Date().toISOString(); // 현재 시간
-    const selected_uid = 0;
-    const report_cnt = 0;
-    const priceNumber = Number(price);
+      "https://img.kr.gcp-karroter.net/origin/article/202502/17398140800761f822263c14d4377e24c88f77e43810be729773148a1778817394709dacc459e0.jpg?f=webp&q=95&s=720x720&t=inside";
+    console.log(category);
     const postData = {
-      selected_uid,
-      report_cnt,
-      pid,
-      uid,
-      nickname,
+      selected_uid: 0,
+      report_cnt: 0,
+      uid: user.uid,
       post_title: title,
-      post_price: priceNumber,
-      post_category: categoryId, // ⬅️ 숫자로 변환된 값 사용
-      loca_gu: locaGuId,
-      loca_dong: locaDongId, // ⬅️ 숫자로 변환된 값 사용
+      post_price: Number(price),
+      post_category: Number(category),
+      loca_gu: regions.indexOf(regionGu) + 1,
+      loca_dong: allDongs[regionGu].indexOf(regionDong) + 1,
       post_content: description,
-      post_update: postUpdate,
-      post_photo: imageUrl, // URL로 저장
+      post_update: new Date().toISOString(),
+      post_photo: imageUrl || "default-image-url",
       user_list: [],
     };
     console.log(postData);
