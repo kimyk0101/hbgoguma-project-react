@@ -29,6 +29,13 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
         );
         const data = await response.json();
         console.log("불러온 게시글 데이터:", data); // 디버깅용 로그 추가
+
+        // user_list를 interestedBuyers 형식으로 변환
+        const buyers = data.user_list.map(([id, name]) => ({
+          id,
+          name,
+        }));
+
         setNewPost({
           id: data.pid,
           sellerUid: data.uid,
@@ -40,13 +47,15 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
           content: data.post_content,
           category: data.post_category,
           price: data.post_price || "가격 미정",
-          userList: data.user_list,
+          user_list: buyers, // user_list를 interestedBuyers 형식으로 변환하여 저장
           reportCnt: data.report_cnt,
           updateTime: data.upd_date,
           seller: data.nickname,
           thumbnail: data.thumbnail,
           userRate: data.user_rate,
         });
+
+        setInterestedBuyers(buyers); // interestedBuyers 상태 업데이트
       } catch (error) {
         console.error("데이터 불러오기 실패:", error);
       }
@@ -89,11 +98,12 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       return;
     }
     if (
-      newPost?.userList.find((buyer) => {
-        return user?.uid === buyer;
+      newPost?.user_list.find((buyer) => {
+        return user?.uid === buyer.id;
       })
     ) {
-      setInterestedBuyers([
+      setInterestedBuyers((prevBuyers) => [
+        ...prevBuyers,
         {
           id: user.uid,
           name: user.nickname,
@@ -132,19 +142,25 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       return;
     }
 
-    newPost.userList = interestedBuyers.map((buyer) => buyer.id);
+    newPost.user_list = interestedBuyers.map((buyer) => [buyer.id, buyer.name]);
 
     try {
-      const response = await fetch("http://localhost:18090/api/gogumapost", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // 쿠키를 포함하여 요청
-        body: JSON.stringify(newPost),
-      });
+      console.log("Sending request to update interest buyers:", newPost);
+      const response = await fetch(
+        `http://localhost:18090/api/gogumapost/${newPost.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // 쿠키를 포함하여 요청
+          body: JSON.stringify(newPost),
+        }
+      );
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Response error data:", errorData);
         throw new Error("유저 리스트 갱신 실패");
       }
 
@@ -170,7 +186,6 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       return;
     }
 
-    // const newBuyerId = "buyer" + Math.floor(Math.random() * 10000); // 랜덤 ID 생성
     if (!interestedBuyers.some((buyer) => buyer.id === user.uid)) {
       const newBuyer = {
         id: user.uid,
