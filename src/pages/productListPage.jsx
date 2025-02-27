@@ -253,33 +253,33 @@ const ProductListPage = () => {
     checkLoginStatus(); // 컴포넌트가 마운트될 때 로그인 상태 확인
   }, []);
 
-  //서버에서 데이터 가져오기
   useEffect(() => {
-    // if () {
-    fetch(API_POST_URL) // 여기에 실제 API 입력
+    fetch(API_POST_URL)
       .then((response) => response.json())
       .then((data) => {
-        const postData = data.map((item) => ({
-          id: item.pid, // 서버에서 받은 상품 ID
-          sellerUid: item.uid, // 판매자 UID
-          selectedUser: item.selected_uid, // 선택된 유저
-          regionGu: regionMap[item.loca_gu] || "알 수 없음", // 숫자를 지역명으로 변환
-          regionDong: dongMap[item.loca_dong] || "알 수 없음", // 숫자를 동명으로 변환
-          title: item.post_title, // 제목
-          image: item.post_photo, // 상품 이미지
-          content: item.post_content, // 상품 설명
-          category: item.post_category, // 카테고리
-          price: item.post_price || "가격 미정", // 가격 (백엔드에 따라 수정)
-          userList: item.user_list, // 구매 희망하는 유저 리스트
-          reportCnt: item.report_cnt, // 신고 횟수
-          // updateTime: item.upd_date, // 마지막 업데이트 시간
-          seller: item.nickname, // 판매자 닉네임
+        console.log("서버 응답 데이터:", data);
+
+        const postData = Object.values(data).map((item) => ({
+          id: item.pid,
+          sellerUid: item.uid,
+          selectedUser: item.selected_uid,
+          regionGu: regionMap[item.loca_gu] || "알 수 없음",
+          regionDong: dongMap[item.loca_dong] || "알 수 없음",
+          title: item.post_title,
+          image: item.post_photo,
+          content: item.post_content,
+          category: item.post_category,
+          price: item.post_price || "가격 미정",
+          userList: item.user_list ? Object.entries(item.user_list) : [],
+          reportCnt: item.report_cnt,
+          seller: item.nickname,
         }));
+
+        // ✅ 한 번에 상태 업데이트
         setPosts(postData);
         setFilteredPosts(postData);
       })
       .catch((error) => console.error("데이터 불러오기 실패:", error));
-    // }
   }, []);
 
   // 페이지네이션 계산
