@@ -4,7 +4,7 @@ import "../css/searchBar.css";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const SearchBar = ({ searchTerm, setSearchTerm, onSearch, onKeyPress }) => {
+const SearchBar = ({ searchTerm, setSearchTerm, onSearch }) => {
   // const handleKeyDown = (e) => {
   //   if (e.key === "Enter") {
   //     console.log("검색 실행: ", searchTerm);
@@ -37,7 +37,7 @@ const SearchBar = ({ searchTerm, setSearchTerm, onSearch, onKeyPress }) => {
         onKeyDown={handleKeyPress}
         className="search-input"
       />
-      <button className="search-button" onClick={onSearch}>
+      <button className="search-button" onClick={handleSearch}>
         <FaSearch />
       </button>
       {/* 인기 검색어 표시 */}
