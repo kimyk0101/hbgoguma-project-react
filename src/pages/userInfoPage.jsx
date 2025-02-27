@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import dummyUsers from "./dummyUsers";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import "../css/header.css";
@@ -17,14 +16,16 @@ export default function UserInfoPage() {
   // const [contentImage, setContentImage] = useState(null);
   // const [description, setDescription] = useState("");
   // const [isEditing, setIsEditing] = useState(false);
+  const [sellPostList, setSellPostList] = useState([]);
+
   const navigate = useNavigate();
 
+  // 파일 업로드 핸들러(썸네일 저장)
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-
       try {
         const response = await axios.post(
           "http://localhost:18090/api/gogumauser/uploadThumbnail",
@@ -44,21 +45,32 @@ export default function UserInfoPage() {
     }
   };
 
+  //  로그인 유저 정보 받아오기
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // ✅ 로그인한 사용자 정보만 가져오기
         const response = await axios.get(
           "http://localhost:18090/api/gogumauser/session",
-          { withCredentials: true } // 쿠키 포함 요청
+          {
+            withCredentials: true, // 쿠키 포함 (세션 기반 인증 시 필요)
+          }
         );
 
-        console.log("🟢 현재 로그인한 사용자:", response.data);
+        console.log("서버 응답 데이터:", response.data);
+
+        if (!response.data.uid) {
+          console.error("🚨 유저 UID가 없습니다.");
+          return;
+        }
+
         setCurrentUser(response.data);
 
         if (response.data.thumbnail) {
           setThumbnail(response.data.thumbnail);
         }
+
+        // ✅ 로그인한 유저 UID를 기반으로 게시글 요청
+        fetchPostData(response.data.uid);
       } catch (error) {
         console.error(
           "🔴 로그인한 사용자 데이터를 불러오는 중 오류 발생:",
@@ -66,6 +78,7 @@ export default function UserInfoPage() {
         );
       }
     };
+
     fetchUserData();
   }, []);
 
@@ -85,7 +98,52 @@ export default function UserInfoPage() {
       fetchReviews();
     }
   }, [selectedTab, currentUser?.uid]);
-  // 여기까징
+
+  //  판매중인 상품 게시글 리스트
+  const fetchPostData = async (userUid) => {
+    if (!userUid) return; // uid 없으면 실행 안 함
+
+    const API_POST_URL = `http://localhost:18090/api/gogumapost`;
+
+    try {
+      const response = await fetch(API_POST_URL);
+      const data = await response.json();
+      console.log("🔍 응답 데이터 확인:", data);
+
+      let postList = Array.isArray(data) ? data : [data];
+
+      // 현재 유저의 uid와 일치하는 게시글만 필터링
+      const filteredPosts = postList.filter((post) => {
+        console.log("🔍 post.uid:", post.uid);
+        console.log("🔍 userUid:", userUid);
+        return post.uid === userUid;
+      });
+
+      console.log("🔍 필터링된 게시글:", filteredPosts);
+
+      if (filteredPosts.length === 0) {
+        console.log("🚨 해당 uid에 맞는 게시글이 없습니다.");
+      }
+
+      // 날짜 포맷 변경 후 리스트에 저장
+      const formattedPosts = filteredPosts.map((post) => ({
+        id: post.pid,
+        sellerUid: post.uid,
+        title: post.post_title,
+        image: post.post_photo,
+        reportCnt: post.report_cnt,
+        updateTime: post.upd_date
+          ? new Date(post.upd_date).toISOString().split("T")[0] // 날짜만 추출
+          : "날짜 없음",
+      }));
+
+      console.log("🔍 포맷팅된 게시글:", formattedPosts);
+      setSellPostList(formattedPosts);
+    } catch (error) {
+      console.error("🚨 데이터 불러오기 실패:", error);
+    }
+  };
+
   if (!currentUser) return <p>사용자 정보를 불러오는 중...</p>;
   // ⭐ review_point를 별 개수로 변환하는 함수 (2000점당 1개, 최대 5개)
   const getStars = (reviewPoint) => {
@@ -105,7 +163,6 @@ export default function UserInfoPage() {
         <label className="hidden-file-input">
           <input
             type="file"
-            // onChange={(e) => handleImageUpload(e, setThumbnail)}
             onChange={(e) =>
               handleImageUpload(e, setThumbnail, `thumbnail_${currentUser.uid}`)
             }
@@ -167,7 +224,7 @@ export default function UserInfoPage() {
 
       {/* 탭 내용 */}
       <div className="user-info-tab-content">
-        {selectedTab === "나의 평가" ? (
+        {selectedTab === "나의 평가" && (
           <div className="user-reviews">
             {reviews.length > 0 ? (
               reviews.map((review) => (
@@ -182,8 +239,30 @@ export default function UserInfoPage() {
               <p>아직 받은 평가가 없습니다.</p>
             )}
           </div>
-        ) : (
-          <p>{selectedTab} 내용 표시</p>
+        )}
+
+        {selectedTab === "판매 중인 상품" && (
+          <div className="sell-post-list">
+            {sellPostList.length > 0 ? (
+              sellPostList.map((post) => (
+                <div key={post.id} className="sell-post-item">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="sell-post-img"
+                  />
+                  <div className="sell-post-info">
+                    <h3>{post.title}</h3>
+                    <p>판매자 UID: {post.sellerUid}</p>
+                    <p>신고 수: {post.reportCnt}</p>
+                    <p>업데이트 날짜: {post.updateTime}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>판매 중인 상품이 없습니다.</p>
+            )}
+          </div>
         )}
       </div>
       <Footer />
