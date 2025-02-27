@@ -131,7 +131,7 @@ const CATEGORY_ID = [
 
 const regions = ["강남구", "서초구"];
 
-const SellProductPage = ({ onSubmitSuccess }) => {
+const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("디지털기기");
@@ -184,7 +184,7 @@ const SellProductPage = ({ onSubmitSuccess }) => {
     const nickname = "판매자123"; // 가상의 닉네임
     const postUpdate = new Date().toISOString(); // 현재 시간
     const selected_uid = 0;
-    const report_cnt = 100;
+    const report_cnt = 0;
     const priceNumber = Number(price);
     const postData = {
       selected_uid,
