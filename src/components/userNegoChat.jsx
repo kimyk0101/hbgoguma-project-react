@@ -304,18 +304,15 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
             구매 희망
           </button>
         )} */}
-        {user_id !== newPost?.sellerUid &&
-          interestedBuyers.find((buyer) => {
-            return buyer.id !== user_id;
-          }) && (
-            <button
-              className="nego-interest-button"
-              onClick={handleInterest}
-              disabled={isBuyerConfirmed || isPurchased} // 거래 완료되거나 구매자가 확정되면 비활성화
-            >
-              구매 희망
-            </button>
-          )}
+        {user_id !== newPost?.sellerUid && (
+          <button
+            className="nego-interest-button"
+            onClick={handleInterest}
+            disabled={isBuyerConfirmed || isPurchased} // 거래 완료되거나 구매자가 확정되면 비활성화
+          >
+            구매 희망
+          </button>
+        )}
         {user_id !== newPost?.sellerUid && (
           <div className="nego-interested-buyers">
             <h3>구매 희망자</h3>
