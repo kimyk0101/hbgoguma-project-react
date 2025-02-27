@@ -241,7 +241,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
     setActiveChat((prevActiveChat) =>
       prevActiveChat === buyerId ? null : buyerId
     );
-    setMessages([]); // 새로운 채팅 시작 시 메시지 초기화
+    // setMessages([]); // 새로운 채팅 시작 시 메시지 초기화 제거
   };
 
   const handleSendMessage = () => {
