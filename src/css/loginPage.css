@@ -36,6 +36,48 @@
 
 .login-container form {
   width: 100%;
+
+  /* 버튼 그룹을 가로 배치 */
+.login-button-group {
+  display: flex;
+  gap: 10px; /* 버튼 사이 간격 */
+  justify-content: center; /* 버튼을 가운데 정렬 */
+  margin-top: 10px;
+  flex-direction: row; /* 가로로 배치 */
+}
+
+/* 버튼 스타일 */
+.login-button-group button {
+  flex: 1; /* 버튼을 균등한 크기로 설정 */
+  padding: 12px;
+  width: 150px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+  
+
+.login-button-group button[type="submit"] {
+  background-color: #ff8c00;
+  color: white;
+}
+
+.login-button-group button[type="submit"]:hover {
+  background-color: #e67e00;
+}
+
+.login-button-group button[type="button"] {
+  background-color: #ff8c00;
+  color: white;
+}
+
+.login-button-group button[type="button"]:hover {
+  background: #e67e00;
+}
 }
 
 .login-container label {
@@ -46,7 +88,7 @@
 }
 
 .login-container input {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   margin-bottom: 20px;
   border: 2px solid #ddd;
@@ -60,36 +102,8 @@
   outline: none;
 }
 
-.login-button-group button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: background-color 0.3s ease;
-}
 
-.login-button-group button[type="submit"] {
-  background-color: #ff8c00;
-  color: white;
-}
 
-.login-button-group button[type="submit"]:hover {
-  background-color: #e67e00;
-}
-
-.login-button-group button[type="button"] {
-  background-color: #fff;
-  border: 2px solid #ff8c00;
-  color: #ff8c00;
-}
-
-.login-button-group button[type="button"]:hover {
-  background-color: #ff8c00;
-  color: white;
-}
 
 .error-message {
   color: red;

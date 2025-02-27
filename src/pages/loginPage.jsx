@@ -78,7 +78,7 @@ const LoginPage = () => {
         {/* 로그인 오류메시지 출력 */}
         {error && <p className="error-message">{error}</p>}
 
-        <div className="button-group">
+        <div className="login-button-group">
           <button type="button" onClick={() => handleLogin()}>
             로그인
           </button>
