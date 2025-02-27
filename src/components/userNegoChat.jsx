@@ -8,7 +8,6 @@ import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 �
 const UserNegoChat = ({ sellerUid, user_id, post }) => {
   const [interestedBuyers, setInterestedBuyers] = useState([]); // 구매 희망 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
-
   const [messages, setMessages] = useState([]); // 메시지 리스트
   const [message, setMessage] = useState(null); // 서버에 저장할 메세지
   const [inputMessage, setInputMessage] = useState(""); // 입력된 메시지
@@ -16,7 +15,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
   const [isPurchased, setIsPurchased] = useState(false); // 구매 확정 여부
   const [isBuyerConfirmed, setIsBuyerConfirmed] = useState(false); // 구매 확정 버튼 활성화 여부
   const [newPost, setNewPost] = useState(null); // 판매자 정보
-  const [showSReviewPopup, setShowSReviewPopup] = useState(false); //  판매자 작성 리뷰
+  const [showSReviewPopup, setShowSReviewPopup] = useState(false); // 판매자 작성 리뷰
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -30,11 +29,13 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
         const data = await response.json();
         console.log("불러온 게시글 데이터:", data); // 디버깅용 로그 추가
 
-        // user_list를 interestedBuyers 형식으로 변환
-        const buyers = data.user_list.map(([id, name]) => ({
-          id,
-          name,
-        }));
+        // user_list가 배열인 경우에만 map을 적용
+        const buyers = Array.isArray(data.user_list)
+          ? data.user_list.map(([id, name]) => ({
+              id,
+              name,
+            }))
+          : []; // 배열이 아니면 빈 배열로 처리
 
         setNewPost({
           id: data.pid,
@@ -142,19 +143,28 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       return;
     }
 
-    newPost.user_list = interestedBuyers.map((buyer) => [buyer.id, buyer.name]);
+    // user_list를 Map 형식으로 변환
+    const userListMap = {};
+    interestedBuyers.forEach((buyer) => {
+      userListMap[buyer.id] = buyer.name;
+    });
+
+    const updatedPost = {
+      ...newPost,
+      user_list: userListMap,
+    };
 
     try {
-      console.log("Sending request to update interest buyers:", newPost);
+      console.log("Sending request to update interest buyers:", updatedPost);
       const response = await fetch(
-        `http://localhost:18090/api/gogumapost/${newPost.id}`,
+        `http://localhost:18090/api/gogumapost/${updatedPost.id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           credentials: "include", // 쿠키를 포함하여 요청
-          body: JSON.stringify(newPost),
+          body: JSON.stringify(updatedPost),
         }
       );
 
