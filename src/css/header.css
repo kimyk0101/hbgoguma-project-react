@@ -19,7 +19,7 @@ body {
   z-index: 1100;
   display: flex;
   flex-direction: column; /* 💡 내부 요소들이 세로로 정렬되도록 설정 */
-  min-height: 120px; /* 💡 자동 조절 */
+  min-height: auto;
 }
 
 .header-container {
@@ -55,6 +55,9 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     border-bottom: 2px solid #ddd; /* 검색창 구분선 추가 */
     position: relative; /* 💡 헤더 내부에서 정렬 */
+  }
+  .content {
+    padding-top: 160px;
   }
   .search-container {
     display: flex;
@@ -231,10 +234,10 @@ body {
 }
   
   .notification-dropdown {
-    /* position: absolute; */
-    position: fixed;
-    top: 60px;
-    right: 20px;
+    position: absolute;
+    /* position: fixed; */
+    top: 40px;
+    right: 0;
     width: 250px;
     background: white;
     border: 1px solid #ddd;
@@ -244,6 +247,7 @@ body {
     z-index: 1000;
     display: none;
     margin-top: 5px;
+    z-index: 1200;
   }
   /* 📌 알림 드롭다운이 활성화될 때 */
 .notification-dropdown.active {

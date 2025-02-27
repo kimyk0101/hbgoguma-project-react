@@ -3,6 +3,8 @@
 
 .ad-slider-container {
     width: 100%;
+    padding-top: 65px;
+    /* height: 200px; */
     /* max-width: 1200px; */
     margin: 0 auto;
     overflow: hidden;
@@ -12,6 +14,7 @@
   }
   
   .ad-slider {
+    
     display: flex;
     transition: transform 0.5s ease-in-out;
   }
