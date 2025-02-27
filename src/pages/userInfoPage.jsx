@@ -82,17 +82,23 @@ export default function UserInfoPage() {
       const fetchReviews = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:18090/api/gogumareview?seller_uid=${currentUser.uid}`
+            "http://localhost:18090/api/gogumareview"
           );
-          console.log("🟢 리뷰 데이터:", response.data);
-          setReviews(response.data);
+          console.log("리뷰 데이터:", response.data);
+
+          // 로그인한 사용자(user.uid)와 seller_uid가 같은 리뷰만 필터링
+          const filteredReviews = response.data.filter(
+            (review) => review.seller_uid === currentUser.uid
+          );
+
+          setReviews(filteredReviews);
         } catch (error) {
-          console.error("🔴 리뷰 데이터를 불러오는 중 오류 발생:", error);
+          console.error("리뷰 데이터를 불러오는 중 오류 발생: ", error);
         }
       };
       fetchReviews();
     }
-  }, [selectedTab, currentUser?.uid]);
+  }, [selectedTab, currentUser]);
 
   //  판매중인 상품 게시물 리스트
   useEffect(() => {
