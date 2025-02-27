@@ -170,11 +170,9 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const categoryId =
-      CATEGORY_ID.find(([id, name]) => name === category)?.[0] || "1";
+    const categoryId = Number(category); // ⬅️ category를 숫자로 변환
     const locaGuId = regions.indexOf(regionGu) + 1;
-    const locaDongId =
-      dongs.find(([id, name]) => name === regionDong)?.[0] || "1";
+    const locaDongId = Number(regionDong); // ⬅️ locaDong도 숫자로 변환
 
     //가상이미지
     const imageUrl =
@@ -186,8 +184,6 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
     const selected_uid = 0;
     const report_cnt = 0;
     const priceNumber = Number(price);
-    const Numberdong = Number(locaDongId);
-    const NumberCategory = Number(categoryId);
     const postData = {
       selected_uid,
       report_cnt,
@@ -196,9 +192,9 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
       nickname,
       post_title: title,
       post_price: priceNumber,
-      post_category: NumberCategory,
+      post_category: categoryId, // ⬅️ 숫자로 변환된 값 사용
       loca_gu: locaGuId,
-      loca_dong: Numberdong,
+      loca_dong: locaDongId, // ⬅️ 숫자로 변환된 값 사용
       post_content: description,
       post_update: postUpdate,
       post_photo: imageUrl, // URL로 저장
