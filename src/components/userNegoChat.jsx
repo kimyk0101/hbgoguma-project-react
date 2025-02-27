@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import "../css/userNegoChat.css";
 import SReviewPopup from "../pages/sellerReviewPage.jsx";
 import { IoCheckboxOutline } from "react-icons/io5";
@@ -13,7 +14,7 @@ import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 �
 // string chatContent	- 메세지
 // Date updateTime	- 메세지 시간
 
-const UserNegoChat = ({ user_id, post, sellerUid }) => {
+const UserNegoChat = ({ sellerUid, user_id, post }) => {
   const [interestedBuyers, setInterestedBuyers] = useState([]); // 구매 희망 구매자 리스트
   const [activeChat, setActiveChat] = useState(null); // 현재 활성화된 채팅 ID
 
@@ -28,13 +29,17 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  console.log("없으면 안돼 : " + post?.id);
+
   useEffect(() => {
     const fetchPostData = async () => {
+      if (!post?.id) return; // post가 없으면 실행하지 않음
       try {
         const response = await fetch(
-          `http://localhost:18090/api/gogumapost/${post.pid}`
+          `http://localhost:18090/api/gogumapost/${post.id}`
         );
         const data = await response.json();
+        console.log("불러온 게시글 데이터:", data); // 디버깅용 로그 추가
         setNewPost({
           id: data.pid,
           sellerUid: data.uid,
@@ -58,7 +63,7 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
       }
     };
     fetchPostData();
-  }, [post.pid]);
+  }, [post?.id]);
 
   useEffect(() => {
     if (!newPost) return;
@@ -89,8 +94,34 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
     checkLoginStatus();
   }, [newPost]);
 
+  console.log("🧐 newPost 초기값:", newPost);
+  console.log("🧐 user 초기값:", user);
+
   useEffect(() => {
-    if (!newPost || !user) return;
+    console.log("🚀 useEffect 실행됨! newPost:", newPost, "user:", user);
+
+    if (!newPost || !user) {
+      console.log("⛔ newPost 또는 user가 존재하지 않음");
+      return;
+    }
+
+    console.log("✅ newPost와 user가 존재함!");
+
+    if (
+      newPost?.userList.find((buyer) => {
+        return user?.uid === buyer;
+      })
+    ) {
+      setInterestedBuyers([
+        {
+          id: user.uid,
+          name: user.nickname,
+        },
+      ]);
+    }
+
+    console.log("내가 받은 구매희망 리스트 : " + interestedBuyers);
+
     const fetchChatData = async () => {
       try {
         const response = await fetch(
@@ -115,20 +146,59 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
     fetchChatData();
   }, [newPost, user]);
 
+  const updateInterestBuyers = async () => {
+    if (!newPost) {
+      console.error("newPost가 아직 로드되지 않았습니다.");
+      return;
+    }
+
+    console.log("현재 구매희망 유저 리스트: ", interestedBuyers);
+
+    newPost.userList = interestedBuyers.map((buyer) => buyer.id);
+
+    try {
+      const response = await fetch("http://localhost:18090/api/gogumapost", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPost),
+      });
+
+      if (!response.ok) {
+        throw new Error("유저 리스트 갱신 실패");
+      }
+
+      alert("구매 희망 접수 완료 되었습니다.");
+    } catch (error) {
+      console.error("구매 희망 등록 오류:", error);
+      alert("구매 희망 등록 중 오류가 발생했습니다.");
+    }
+  };
 
   // 구매 희망 버튼 클릭 시
   const handleInterest = () => {
-    if (isBuyerConfirmed || isPurchased) {
-      return; // 거래가 완료되었거나 구매자가 확정된 경우 버튼 클릭을 막음
+    console.log(interestedBuyers);
+
+    // 거래가 완료되었거나 구매자가 확정된 경우, 유저가 이미 구매희망 버튼을 눌렀던 경우, 버튼 클릭을 막음
+    if (
+      isBuyerConfirmed ||
+      isPurchased ||
+      interestedBuyers.find((buyer) => {
+        return buyer.id === user.uid;
+      })
+    ) {
+      return;
     }
 
-    const newBuyerId = "buyer" + Math.floor(Math.random() * 10000); // 랜덤 ID 생성
-    if (!interestedBuyers.some((buyer) => buyer.id === newBuyerId)) {
+    // const newBuyerId = "buyer" + Math.floor(Math.random() * 10000); // 랜덤 ID 생성
+    if (!interestedBuyers.some((buyer) => buyer.id === user.uid)) {
       const newBuyer = {
-        id: newBuyerId,
-        name: `구매자 ${interestedBuyers.length + 1}`,
+        id: user.uid,
+        name: user.nickname,
       };
       setInterestedBuyers((prevBuyers) => [...prevBuyers, newBuyer]);
+      updateInterestBuyers();
     }
   };
 
@@ -195,16 +265,21 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
   };
 
   // 메시지 전송 함수
-  const handleSendMessage = (isUser1) => {
+  const handleSendMessage = (isSeller) => {
     if (inputMessage.trim() === "") return;
 
     const newMessage = {
       cid: messages.length + 1, // 채팅 ID (새로운 메시지마다 증가)
       pid: newPost?.pid, // 게시글 ID (해당 게시글 ID 사용)
-      buyer_uid: isUser1 ? user.id : selectedBuyer, // 구매자 ID 또는 판매자 ID
-      send_uid: isUser1 ? user.id : selectedBuyer, // 보낸 메시지 ID
-      receive_uid: isUser1 ? selectedBuyer : user.id, // 받는 메시지 ID
+      writer_uid: user.id,
+      buyer_uid: isSeller ? user.id : selectedBuyer, // 구매자 ID 또는 판매자 ID
+      send_uid: isSeller ? user.id : selectedBuyer, // 보낸 메시지 ID
+      receive_uid: isSeller ? selectedBuyer : user.id, // 받는 메시지 ID
       chatContent: inputMessage,
+      // updateTime: new Date().toLocaleTimeString([], {
+      //   hour: "2-digit",
+      //   minute: "2-digit",
+      // }), // 시간만 반환 (예: "14:32")
       updateTime: new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
@@ -220,6 +295,15 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
       {/* 상품 설명 끝난 후, 구매 희망자 리스트를 하단에 위치 */}
       <div className="nego-product-footer">
         {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
+        {/* {user_id !== "" && user_id !== sellerUid && (
+          <button
+            className="nego-interest-button"
+            onClick={handleInterestToggle}
+            disabled={isBuyerConfirmed || isPurchased}
+          >
+            구매 희망
+          </button>
+        )} */}
         {user_id !== newPost?.sellerUid && (
           <button
             className="nego-interest-button"
@@ -276,17 +360,19 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
                             <div
                               key={msg.cid} // cid로 메시지 고유식별
                               className={`nego-chat-message ${
-                                msg.send_uid === user.id ? "seller" : "buyer"
+                                msg.writer_uid === user.id ? "seller" : "buyer"
                               }`}
                             >
                               <img
                                 src={
-                                  msg.send_uid === user.id
+                                  msg.writer_uid === user.id
                                     ? "https://www.w3schools.com/w3images/avatar2.png"
                                     : "https://www.w3schools.com/howto/img_avatar.png"
                                 }
                                 alt={
-                                  msg.send_uid === user.id ? "판매자" : "구매자"
+                                  msg.writer_uid === user.id
+                                    ? "판매자"
+                                    : "구매자"
                                 }
                                 className="nego-profile-img"
                               />
@@ -367,6 +453,13 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
       )}
     </div>
   );
+};
+UserNegoChat.propTypes = {
+  sellerUid: PropTypes.string.isRequired,
+  user_id: PropTypes.number.isRequired,
+  post: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default UserNegoChat;
