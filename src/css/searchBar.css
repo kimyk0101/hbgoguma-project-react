@@ -1,29 +1,61 @@
-.search-bar-container {
-    display: flex;
-    align-items: center;
-    width: 500px; /* 원하는 너비로 조정 */
-    margin: 20px auto; /* 가운데 정렬 및 여백 추가 */
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    overflow: hidden; /* 둥근 테두리 유지 */
-  }
-  
-  .search-input {
-    flex-grow: 1;
-    padding: 10px 15px;
-    border: none;
-    font-size: 16px;
-    outline: none;
-  }
-  
-  .search-button {
-    background-color: #f0f0f0;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .search-button:hover {
-    background-color: #e0e0e0;
-  }
+/* 🔹 검색창 스타일 */
+.search-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 2px solid #ff8c00; /* 브랜드 컬러 강조 */
+  border-radius: 25px; /* 둥근 테두리 적용 */
+  overflow: hidden;
+}
+
+/* 🔹 입력 필드 스타일 */
+.search-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 🔹 검색 버튼 스타일 */
+.search-button {
+  background: #ff8c00;
+  border: none;
+  padding: 12px 15px;
+  cursor: pointer;
+  color: white;
+  font-size: 18px;
+  transition: background 0.3s ease-in-out;
+}
+
+.search-button:hover {
+  background: #e67800;
+}
+
+/* 🔹 인기 검색어 스타일 */
+.popular-keywords {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.popular-keywords button {
+  background-color: #ff8c00;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.popular-keywords button:hover {
+  background-color: #e67800;
+}

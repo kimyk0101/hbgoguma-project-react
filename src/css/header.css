@@ -5,15 +5,112 @@
   font-style: normal;
 }
 
-
+body {
+  margin-top: 160px; /* 💡 헤더 + 검색바 높이에 맞게 조정 */
+}
 .header {
-    background-color: #ff8c00;
-    padding: 15px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-  
-    height: 80px;
+  background-color: #ff8c00;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: fixed; /* 💡 헤더 전체 고정 */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column; /* 💡 내부 요소들이 세로로 정렬되도록 설정 */
+  min-height: 120px; /* 💡 자동 조절 */
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+}
+  .header-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    /* flex: 1; */
+    text-align: center;
   }
+  .header-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  /* SearchBar와 PopularKeywords를 헤더 아래에 고정 */
+  .search-bar-container {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #ddd; /* 검색창 구분선 추가 */
+    position: relative; /* 💡 헤더 내부에서 정렬 */
+  }
+  .search-container {
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
+    border: 2px solid #ff8c00;
+    border-radius: 30px;
+    overflow: hidden;
+    background-color: white;
+  }
+  .search-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+  .search-button {
+    background-color: #ff8c00;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+    border-left: 2px solid #ff8c00;
+  }
+  
+  .search-button:hover {
+    background-color: #e67800;
+  }
+  .popular-keywords {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border-bottom: 2px solid #ddd;
+    position: relative; /* 💡 헤더 내부에서 정렬 */
+  }
+  
+  .keyword-btn {
+    background-color: #ff8c00;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .keyword-btn:hover {
+    background-color: #e67800;
+  }
+
   
   .header-container {
     display: flex;
@@ -72,14 +169,6 @@
     background-color: #ff8c00;
     color: white;
   }
-   
-
-   .header {
-    position: relative;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-  }
   
   .header-container {
     display: flex;
@@ -87,6 +176,14 @@
     align-items: center; 
     width: 100%;
     position: relative;
+   
+  }
+  .header-container h1 {
+    margin-bottom: 10px;
+  }
+  
+  .header-container > * {
+    margin-bottom: 10px;
   }
   
   .header-logo {
