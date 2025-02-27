@@ -186,6 +186,8 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
     const selected_uid = 0;
     const report_cnt = 0;
     const priceNumber = Number(price);
+    const Numberdong = Number(locaDongId);
+    const NumberCategory = Number(categoryId);
     const postData = {
       selected_uid,
       report_cnt,
@@ -194,9 +196,9 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
       nickname,
       post_title: title,
       post_price: priceNumber,
-      post_category: categoryId,
+      post_category: NumberCategory,
       loca_gu: locaGuId,
-      loca_dong: locaDongId,
+      loca_dong: Numberdong,
       post_content: description,
       post_update: postUpdate,
       post_photo: imageUrl, // URL로 저장
