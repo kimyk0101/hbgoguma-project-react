@@ -344,7 +344,7 @@ const ProductListPage = () => {
                 onChange={(e) => setSelectedDong(e.target.value)}
               >
                 <option value="전체">-- 동 선택 --</option>
-                {filteredDongs.map((dongs) => (
+                {filteredDongs.map((dong) => (
                   <option key={dong} value={dong}>
                     {dong}
                   </option>
