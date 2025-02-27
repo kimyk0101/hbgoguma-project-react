@@ -115,12 +115,6 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
     fetchChatData();
   }, [newPost, user]);
 
-  //  구매 희망 버튼 토글
-  // const handleInterestToggle = () => {
-  //   if (user_id !== sellerUid || user_id == "") {
-  //     setIsInterested(true);
-  //   }
-  // };
 
   // 구매 희망 버튼 클릭 시
   const handleInterest = () => {
@@ -226,15 +220,6 @@ const UserNegoChat = ({ user_id, post, sellerUid }) => {
       {/* 상품 설명 끝난 후, 구매 희망자 리스트를 하단에 위치 */}
       <div className="nego-product-footer">
         {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
-        {/* {user_id !== "" && user_id !== sellerUid && (
-          <button
-            className="nego-interest-button"
-            onClick={handleInterestToggle}
-            disabled={isBuyerConfirmed || isPurchased}
-          >
-            구매 희망
-          </button>
-        )} */}
         {user_id !== newPost?.sellerUid && (
           <button
             className="nego-interest-button"

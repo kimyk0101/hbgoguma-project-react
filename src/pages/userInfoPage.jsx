@@ -11,13 +11,9 @@ import spEmpty from "../resources/images/sweet-potato-Empty.png"; // 색이 없�
 
 export default function UserInfoPage() {
   const [selectedTab, setSelectedTab] = useState("판매 중인 상품");
-  // const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [reviews, setReviews] = useState([]); // 리뷰 데이터 상태 추가
-  // const [contentImage, setContentImage] = useState(null);
-  // const [description, setDescription] = useState("");
-  // const [isEditing, setIsEditing] = useState(false);
   const [sellPostList, setSellPostList] = useState([]);
 
   const navigate = useNavigate();
@@ -58,13 +54,10 @@ export default function UserInfoPage() {
           }
         );
 
-        console.log("서버 응답 데이터:", response.data);
-
         if (!response.data.uid) {
           console.error("🚨 유저 UID가 없습니다.");
           return;
         }
-
         setCurrentUser(response.data);
 
         if (response.data.thumbnail) {
@@ -101,52 +94,44 @@ export default function UserInfoPage() {
     }
   }, [selectedTab, currentUser?.uid]);
 
-  //  판매중인 상품 게시글 리스트
-  const fetchPostData = async (userUid) => {
-    if (!userUid) return; // uid 없으면 실행 안 함
+  //  판매중인 상품 게시물 리스트
+  useEffect(() => {
+    if (selectedTab === "판매 중인 상품" && currentUser?.uid) {
+      const fetchPostData = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:18090/api/gogumapost/my/${currentUser.uid}`
+          );
 
-    const API_POST_URL = `http://localhost:18090/api/gogumapost`;
+          // 날짜 포맷 변경
+          const formattedPosts = response.data
+            .map((post) => ({
+              id: post.pid,
+              sellerUid: post.uid,
+              title: post.post_title,
+              image: post.post_photo,
+              reportCnt: post.report_cnt,
+              updateTime: post.upd_date
+                ? new Date(post.upd_date).toISOString().split("T")[0]
+                : "날짜 없음",
+            }))
+            .sort((a, b) => new Date(b.updateTime) - new Date(a.updateTime)); // 최신순 정렬
 
-    try {
-      const response = await fetch(API_POST_URL);
-      const data = await response.json();
-      console.log("🔍 응답 데이터 확인:", data);
+          setSellPostList(formattedPosts);
+        } catch (error) {
+          console.error("🔴 판매 게시글을 불러오는 중 오류 발생:", error);
+        }
+      };
 
-      let postList = Array.isArray(data) ? data : [data];
-
-      // 현재 유저의 uid와 일치하는 게시글만 필터링
-      const filteredPosts = postList.filter((post) => {
-        console.log("🔍 post.uid:", post.uid);
-        console.log("🔍 userUid:", userUid);
-        return post.uid === userUid;
-      });
-
-      console.log("🔍 필터링된 게시글:", filteredPosts);
-
-      if (filteredPosts.length === 0) {
-        console.log("🚨 해당 uid에 맞는 게시글이 없습니다.");
-      }
-
-      // 날짜 포맷 변경 후 리스트에 저장
-      const formattedPosts = filteredPosts.map((post) => ({
-        id: post.pid,
-        sellerUid: post.uid,
-        title: post.post_title,
-        image: post.post_photo,
-        reportCnt: post.report_cnt,
-        updateTime: post.upd_date
-          ? new Date(post.upd_date).toISOString().split("T")[0] // 날짜만 추출
-          : "날짜 없음",
-      }));
-
-      console.log("🔍 포맷팅된 게시글:", formattedPosts);
-      setSellPostList(formattedPosts);
-    } catch (error) {
-      console.error("🚨 데이터 불러오기 실패:", error);
+      fetchPostData();
     }
+  }, [selectedTab, currentUser?.uid]);
+
+  //  판매 중인 게시글 -> 페이지 이동
+  const handleSellPost = (pid) => {
+    navigate(`/${pid}`);
   };
 
-  if (!currentUser) return <p>사용자 정보를 불러오는 중...</p>;
   // ⭐ review_point를 별 개수로 변환하는 함수 (2000점당 1개, 최대 5개)
   const getStars = (reviewPoint) => {
     const starCount = Math.min(reviewPoint / 2000, 5);
@@ -258,18 +243,26 @@ export default function UserInfoPage() {
         )}
 
         {selectedTab === "판매 중인 상품" && (
-          <div className="sell-post-list">
+          <div className="user-info-sell-post-list">
             {sellPostList.length > 0 ? (
               sellPostList.map((post) => (
-                <div key={post.id} className="sell-post-item">
+                <div
+                  key={post.id}
+                  className="user-info-sell-post-item"
+                  onClick={() => {
+                    console.log("클릭된 상품 id:", post.id);
+                    handleSellPost(post.id);
+                  }}
+                >
                   <img
                     src={post.image}
                     alt={post.title}
-                    className="sell-post-img"
+                    className="user-info-sell-post-img"
                   />
-                  <div className="sell-post-info">
-                    <h3>{post.title}</h3>
-                    <p>판매자 UID: {post.sellerUid}</p>
+                  <div className="user-info-sell-post-info">
+                    <span className="user-info-sell-post-title">
+                      {post.title}
+                    </span>
                     <p>신고 수: {post.reportCnt}</p>
                     <p>업데이트 날짜: {post.updateTime}</p>
                   </div>

@@ -1,228 +1,209 @@
 .user-info-container {
-    width: 600px;
-    margin: 20px auto;
-    font-family: Arial, sans-serif;
-    color: #333;
-    padding-top: 60px;
-  }
-  
-  /* 사용자 정보 블록 (닉네임, 사이다 지수, 본인인증, 판매/구매/포인트 정보) */
-  .user-info-block {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-    gap: 20px;
-  }
-  
-  /* 썸네일 */
-  .hidden-file-input input {
-    display: none;
-  }
-  
-  .user-info-thumb-box {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 2px solid #ff8c00;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: #fff3e0;
-    cursor: pointer;
-  }
-  
-  .user-info-thumb-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  /* 사용자 정보 (닉네임 & 사이다 지수) */
-  .user-info-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-    /* min-width: 100px; */
-  }
-  
-  .nickname {
-    font-size: 16px;
-    font-weight: bold;
-    color: #ff8c00;
-  }
-  .user-info-location {
-    font-size: 14px;
-    color: #666; /* 색상 변경 */
-  }
-  
-  .user-info-cider-bar-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .user-info-cider-bar {
-    width: 100px;
-    height: 10px;
-    border: 1px solid #ff8c00;
-    border-radius: 5px;
-    background: #fff3e0;
-    overflow: hidden;
-  }
-  
-  .user-info-cider-fill {
-    height: 100%;
-    background: green;
-    transition: width 1.5s ease-in-out;
-  }
-  
-  /* 본인인증 & 판매/구매/포인트 정보 */
-  .user-stats {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    /* gap: 10px; */
-    min-width: 200px;
-  }
-  
-  .user-info-verified {
-    font-size: 14px;
-    font-weight: bold;
-    color: #ff8c00;
-  }
-  
-  .user-info-stats {
-    display: flex;
-    flex-direction: column; /* 세로정렬 */
-    align-items: flex-end; /* 오른쪽정렬 */
-    /* gap: 5px; */
-    font-size: 10px;
-    color: #333;
-  }
-  
-  /* 제품 사진 */
-  /* .image-upload {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .image-box {
-    width: 100%;
-    height: 150px;
-    border: none;  테두리 제거 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f5f5f5;
-  } 
-  
-  .image-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;  이미지가 잘리지 않도록 설정 
-  } */
-  
-  /* 제품 설명 */
-  /* .content {
-    padding: 10px;
-    border: 1px solid gray;
-    border-radius: 8px;
-    margin-top: 10px;
-  }
-  
-  .content textarea {
-    width: 100%;
-    height: 80px;
-    border: none;
-    font-size: 14px;
-    padding: 5px;
-    resize: none;
-  }
-  
-  .char-count {
-    text-align: right;
-    font-size: 12px;
-    color: gray;
-  }
-  
-  .content button {
-    margin-top: 5px;
-    padding: 5px 10px;
-    background: lightgray;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .content button:hover {
-    background: gray;
-    color: white;
-  } */
-  
-  /* 버튼 */
-  .user-info-tabs {
-    display: flex;
-    margin-top: 10px;
-  }
-  
-  .user-info-tabs button {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ff8c00;
-    background: #ff8c00;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .user-info-tabs button:hover {
-    background: #e67e22;
-  }
-  
-  .user-info-tab-content {
-    padding: 10px;
-    border: 1px solid #ff8c00;
-    border-radius: 8px;
-    margin-top: 10px;
-    background: #fff3e0;
-    /* 리뷰 리스트 컨테이너 */
-.user-reviews {
+  padding-top: 200px;
+  font-family: Arial, sans-serif;
+}
+
+/* 사용자 정보 블록 (닉네임, 사이다 지수, 본인인증, 판매/구매/포인트 정보) */
+.user-info-block {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+/* 썸네일 */
+.hidden-file-input input {
+  display: none;
+}
+
+.user-info-thumb-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #ff8c00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #fff3e0;
+  cursor: pointer;
+}
+
+.user-info-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 사용자 정보 (닉네임 & 사이다 지수) */
+.user-info-details {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* 각 리뷰 간 간격 */
+  align-items: flex-start;
+  gap: 5px;
+  /* min-width: 100px; */
+}
+
+.nickname {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff8c00;
+}
+.user-info-location {
+  font-size: 14px;
+  color: #666; /* 색상 변경 */
+}
+
+.user-info-cider-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.user-info-cider-bar {
+  width: 100px;
+  height: 10px;
+  border: 1px solid #ff8c00;
+  border-radius: 5px;
+  background: #fff3e0;
+  overflow: hidden;
+}
+
+.user-info-cider-fill {
+  height: 100%;
+  background: green;
+  transition: width 1.5s ease-in-out;
+}
+
+/* 본인인증 & 판매/구매/포인트 정보 */
+.user-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  /* gap: 10px; */
+  min-width: 200px;
+}
+
+.user-info-verified {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff8c00;
+}
+
+.user-info-stats {
+  display: flex;
+  flex-direction: column; /* 세로정렬 */
+  align-items: flex-end; /* 오른쪽정렬 */
+  /* gap: 5px; */
+  font-size: 10px;
+  color: #333;
+}
+
+/* 버튼 */
+.user-info-tabs {
+  display: flex;
+  margin-top: 10px;
+}
+
+.user-info-tabs button {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ff8c00;
+  background: #ff8c00;
+  color: white;
+  cursor: pointer;
+}
+
+.user-info-tabs button:hover {
+  background: #e67e22;
+}
+
+.user-info-tab-content {
+  padding: 10px;
+  border: 1px solid #ff8c00;
+  border-radius: 8px;
+  margin-top: 10px;
+  background: #fff3e0;
+  margin-bottom: 150px;
+
+  /* 리뷰 리스트 컨테이너 */
+  .user-reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 각 리뷰 간 간격 */
+    padding: 10px;
+  }
+
+  /* 리뷰 아이템 (한 줄) */
+  .review-item {
+    display: flex;
+    justify-content: space-between; /* 좌우 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9; /* 연한 배경색 */
+    border: 1px solid #ddd; /* 테두리 */
+  }
+
+  /* 리뷰 내용 (왼쪽) */
+  .review-content {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    flex: 1; /* 가변 크기 */
+    text-align: left;
+  }
+
+  /* 별점 (오른쪽) */
+  .review-stars {
+    font-size: 18px;
+    color: #ffcc00; /* 노란색 */
+    white-space: nowrap; /* 한 줄 유지 */
+    min-width: 80px; /* 최소 너비 설정 */
+    text-align: right;
+  }
+}
+
+/* 판매중인 상품 리스트 */
+.user-info-sell-post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding: 10px;
 }
 
-/* 리뷰 아이템 (한 줄) */
-.review-item {
-  display: flex;
-  justify-content: space-between; /* 좌우 정렬 */
-  align-items: center; /* 수직 가운데 정렬 */
+.user-info-sell-post-item {
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
   padding: 10px 15px;
   border-radius: 8px;
-  background-color: #f9f9f9; /* 연한 배경색 */
-  border: 1px solid #ddd; /* 테두리 */
+  background-color: #f9f9f9; 
+  border: 1px solid #ddd; 
+  white-space: nowrap; /* 줄바꿈 방지 */
 }
 
-/* 리뷰 내용 (왼쪽) */
-.review-content {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-  flex: 1; /* 가변 크기 */
-  text-align: left;
+.user-info-sell-post-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
 
-/* 별점 (오른쪽) */
-.review-stars {
-  font-size: 18px;
-  color: #ffcc00; /* 노란색 */
-  white-space: nowrap; /* 한 줄 유지 */
-  min-width: 80px; /* 최소 너비 설정 */
-  text-align: right;
+.user-info-sell-post-info {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
 }
 
-  }
-  
+.user-info-sell-post-title {
+  margin-left: -180px; 
+}
+
+.user-info-sell-post-info p {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+

@@ -207,6 +207,7 @@ const ProductDetailPage = () => {
       console.error("추천 리스트 받아오던 중 오류 발생:", error);
     }
   };
+  
   useEffect(() => {
     console.log("상태로 설정된 relatedPostList:", relatedPostList);
   }, [relatedPostList]);
