@@ -6,6 +6,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import "../css/header.css";
 import "../css/footer.css";
+import spFilled from "../resources/images/sweet-potato-Filled.png"; // 색이 있는 고구마
+import spEmpty from "../resources/images/sweet-potato-Empty.png"; // 색이 없는 고구마
 
 export default function UserInfoPage() {
   const [selectedTab, setSelectedTab] = useState("판매 중인 상품");
@@ -229,10 +231,24 @@ export default function UserInfoPage() {
             {reviews.length > 0 ? (
               reviews.map((review) => (
                 <div key={review.hid} className="review-item">
-                  <p className="review-stars">
-                    {getStars(review.review_point)}
-                  </p>
                   <p className="review-content">{review.review_content}</p>
+                  <div className="review-sweet-potato">
+                    {Array(5) // 5개 고구마 배치
+                      .fill()
+                      .map((_, index) => (
+                        <img
+                          style={{ width: "40px", height: "40px" }}
+                          key={index}
+                          src={
+                            index < review.review_point / 2000
+                              ? spFilled
+                              : spEmpty
+                          } // 2000점 = 1개
+                          alt="sweet potato"
+                          className="sweet-potato-icon"
+                        />
+                      ))}
+                  </div>
                 </div>
               ))
             ) : (
