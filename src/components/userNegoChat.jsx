@@ -14,7 +14,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
   const [selectedBuyer, setSelectedBuyer] = useState(null); // 구매 확정자 / 확정된 구매자 ID 저장
   const [isPurchased, setIsPurchased] = useState(false); // 구매 확정 여부
   const [isBuyerConfirmed, setIsBuyerConfirmed] = useState(false); // 구매 확정 버튼 활성화 여부
-  const [newPost, setNewPost] = useState(null); // 판매자 정보
+  const [newPost, setNewPost] = useState(post); // 판매자 정보
   const [showSReviewPopup, setShowSReviewPopup] = useState(false); // 판매자 작성 리뷰
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -99,7 +99,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       return;
     }
     if (
-      newPost?.user_list.find((buyer) => {
+      newPost?.user_list?.find((buyer) => {
         return user?.uid === buyer.id;
       })
     ) {
@@ -137,29 +137,13 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
     fetchChatData();
   }, [newPost, user]);
 
-  const updateInterestBuyers = async () => {
-    if (!newPost) {
-      console.error("newPost가 아직 로드되지 않았습니다.");
-      return;
-    }
-
-    // user_list를 Map 형식으로 변환
-    const userListMap = {};
-    interestedBuyers.forEach((buyer) => {
-      userListMap[buyer.id] = buyer.name;
-    });
-
-    const updatedPost = {
-      ...newPost,
-      user_list: userListMap,
-    };
-
+  const updateInterestBuyers = async (updatedPost) => {
     try {
       console.log("Sending request to update interest buyers:", updatedPost);
       const response = await fetch(
         `http://localhost:18090/api/gogumapost/${updatedPost.id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -201,8 +185,21 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
         id: user.uid,
         name: user.nickname,
       };
-      setInterestedBuyers((prevBuyers) => [...prevBuyers, newBuyer]);
-      updateInterestBuyers();
+      const updatedBuyers = [...interestedBuyers, newBuyer];
+      setInterestedBuyers(updatedBuyers);
+
+      // user_list를 Map 형식으로 변환
+      const userListMap = {};
+      updatedBuyers.forEach((buyer) => {
+        userListMap[buyer.id] = buyer.name;
+      });
+
+      const updatedPost = {
+        ...newPost,
+        user_list: userListMap,
+      };
+
+      updateInterestBuyers(updatedPost);
     }
   };
 
@@ -278,7 +275,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
     }
 
     // isSeller 상태 업데이트 후 createMessage 호출
-    const currentIsSeller = user.uid === newPost.uid;
+    const currentIsSeller = user.uid === newPost.sellerUid;
     createMessage(currentIsSeller);
 
     setInputMessage("");
@@ -289,8 +286,8 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       order_id: messages.length + 1,
       pid: newPost.id,
       writer_uid: user.uid,
-      seller_uid: currentIsSeller ? user.uid : newPost.uid,
-      buyer_uid: currentIsSeller ? newPost.uid : user.uid,
+      seller_uid: currentIsSeller ? user.uid : newPost.sellerUid,
+      buyer_uid: currentIsSeller ? newPost.sellerUid : user.uid,
       chat_content: inputMessage,
       updateTime: new Date().toLocaleTimeString([], {
         hour: "2-digit",
