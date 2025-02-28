@@ -173,7 +173,6 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       const newBuyer = {
         id: user.uid,
         name: user.nickname,
-        thumbnail: user.thumbnail,
       };
       const updatedBuyers = [...interestedBuyers, newBuyer];
       setInterestedBuyers(updatedBuyers);
