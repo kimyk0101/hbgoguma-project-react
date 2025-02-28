@@ -1,9 +1,8 @@
 // @TODO - 로그인 페이지 구현
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import dummyUsers from "./dummyUsers";
 import logoImage from "../resources/images/sweet-potato-Filled.png"; // 로고 이미지
+import { MdOutlineBackspace } from "react-icons/md"; // 뒤로가기
 
 const LoginPage = () => {
   const API_USER_URL = `http://localhost:18090/api/gogumauser`;
@@ -14,6 +13,11 @@ const LoginPage = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  // 뒤로가기 버튼
+  const onBack = () => {
+    navigate("/"); 
+  };
 
   // 로그인 처리
   const handleLogin = async () => {
@@ -42,13 +46,11 @@ const LoginPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   // 로그인 성공 시 메인 페이지로 이동
-  //   navigate("/");
-  // }, []);
-
   return (
     <div className="login-container">
+      <button onClick={onBack} className="login-back-button">
+          <MdOutlineBackspace />
+        </button>
       <h2>로그인</h2>
       <div className="login-logo-container">
         <img src={logoImage} alt="호박고구마 로고" className="login-logo" />

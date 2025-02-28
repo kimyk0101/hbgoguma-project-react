@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import dummyUsers from "./dummyUsers";
 import logoImage from "../resources/images/sweet-potato-Filled.png"; // 로고이미지
+import { MdOutlineBackspace } from "react-icons/md"; // 뒤로가기
+
 
 const allDongs = {
   1: [
@@ -52,6 +53,7 @@ const allDongs = {
 };
 
 
+
 const JoinPage = () => {
   //@note - 회원 정보 URL
   const API_USER_URL = `http://localhost:18090/api/gogumauser`;
@@ -83,6 +85,11 @@ const JoinPage = () => {
   const [passwordMatch, setPasswordMatch] = useState(null);
   const navigate = useNavigate();
 
+  // 뒤로가기 버튼
+const onBack = () => {
+  navigate("/");
+};
+
   useEffect(() => {
     // 회원 정보 불러오기
     fetch(API_USER_URL)
@@ -108,7 +115,6 @@ const JoinPage = () => {
     setFormData({ ...formData, password });
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    // setPasswordStrength(passwordRegex.test(password) ? "강함" : "약함");
     setPasswordStrength(
       passwordRegex.test(password)
         ? "보안성 : 강함"
@@ -229,6 +235,9 @@ const JoinPage = () => {
 
   return (
     <div className="join-container">
+      <button onClick={onBack} className="join-back-button">
+        <MdOutlineBackspace />
+      </button>
       <div className="join-logo-container">
         <img src={logoImage} alt="호박고구마 로고" className="join-logo" />
         <h1>호박고구마</h1>
