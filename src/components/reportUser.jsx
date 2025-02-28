@@ -53,6 +53,24 @@ const ReportUser = ({ postId, userId }) => {
 
       alert("신고가 접수되었습니다.");
       handleCloseReportPopup();
+
+      // 신고 완료 후 report_cnt 업데이트
+      const updateResponse = await fetch(
+        `http://localhost:18090/api/gogumapost/${postId}/reportCnt`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ report_cnt: 1 }), // report_cnt 값을 1로 설정
+        }
+      );
+
+      if (!updateResponse.ok) {
+        throw new Error("report_cnt 업데이트 실패");
+      }
+
+      // alert("report_cnt가 업데이트되었습니다.");
     } catch (error) {
       console.error("🚨 신고 오류:", error);
       alert("신고 처리 중 오류가 발생했습니다.");
