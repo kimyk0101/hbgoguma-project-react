@@ -7,7 +7,7 @@ import AuthStatus from "./AuthStatus";
 import PopularKeywords from "./PopularKeywords";
 import SearchBar from "./searchBar";
 
-const Header = ({ searchTerm, setSearchTerm, onSearch }) => {
+const Header = ({ searchTerm, setSearchTerm, onSearch, hideSearch }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -47,22 +47,26 @@ const Header = ({ searchTerm, setSearchTerm, onSearch }) => {
             <AuthStatus onAuthChange={handleAuthChange} />
           </div>
         </div>
-        <PopularKeywords
-          onKeywordClick={(keyword) => {
-            console.log("🔥 검색어 선택됨:", keyword);
-            setSearchTerm(keyword);
-            onSearch();
-          }}
-        />
-        {/* 💡 검색바를 헤더 내부로 이동 */}
-        <div className="search-bar-container">
-          <SearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            onSearch={onSearch}
-            // onKeyPress={onKeyPress}
+        {!hideSearch && (
+          <PopularKeywords
+            onKeywordClick={(keyword) => {
+              console.log("🔥 검색어 선택됨:", keyword);
+              setSearchTerm(keyword);
+              onSearch();
+            }}
           />
-        </div>
+        )}
+        {/* 💡 검색바를 헤더 내부로 이동 */}
+        {!hideSearch && (
+          <div className="search-bar-container">
+            <SearchBar
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              onSearch={onSearch}
+              // onKeyPress={onKeyPress}
+            />
+          </div>
+        )}
       </header>
       {/* <PopularKeywords searchTerm={searchTerm} /> */}
     </>

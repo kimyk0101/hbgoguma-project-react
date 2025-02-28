@@ -236,7 +236,7 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
 
   return (
     <>
-      <Header />
+      <Header hideSearch={true} />
       <Advertise />
       <div className="sell-product-container">
         <h2>판매 상품 등록</h2>

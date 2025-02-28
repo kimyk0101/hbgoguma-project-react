@@ -196,7 +196,7 @@ export default function UserInfoPage() {
 
   return (
     <div className="user-info-container">
-      <Header />
+      <Header hideSearch={true} />
 
       {/* 상단 정보 블록 (닉네임 & 사이다 지수 + 본인인증 + 판매/구매 정보) */}
       <div className="user-info-block">
