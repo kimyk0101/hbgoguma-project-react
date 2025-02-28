@@ -32,7 +32,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
         // user_list가 객체인 경우에만 map을 적용
         const buyers = data.user_list
           ? Object.entries(data.user_list).map(([id, name]) => ({
-              id,
+              id: Number(id), // id를 숫자로 변환
               name,
             }))
           : []; // 객체가 아니면 빈 배열로 처리
