@@ -144,10 +144,7 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [preview, setPreview] = useState(null);
   const navigate = useNavigate();
-  const onBack = () => {
-    navigate("/");
-        window.location.reload(); // 🚀 강제 새로고침 (필요할 경우)
-  };
+
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
@@ -231,6 +228,7 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
       if (response.ok) {
         alert("게시물이 성공적으로 등록되었습니다!");
         onSubmitSuccess();
+        navigate("/");
       } else {
         alert("게시물 등록 실패. 다시 시도해주세요.");
       }
@@ -317,7 +315,7 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
             )}
           </div>
 
-          <button type="submit" onClick={onBack}>등록</button>
+          <button type="submit">등록</button>
         </form>
       </div>
       <Footer />
