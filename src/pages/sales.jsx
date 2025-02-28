@@ -164,11 +164,11 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
         setImageUrl(uploadResult.url); // 업로드된 이미지 URL 저장
         setPreview(uploadResult.url); // 미리보기 업데이트
       } else {
-        alert("이미지 업로드 실패. 다시 시도해주세요.");
+        // alert("이미지 업로드 실패. 다시 시도해주세요.");
       }
     } catch (error) {
       console.error("이미지 업로드 중 오류 발생:", error);
-      alert("이미지 업로드 중 오류가 발생했습니다.");
+      // alert("이미지 업로드 중 오류가 발생했습니다.");
     }
   };
   useEffect(() => {
