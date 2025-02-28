@@ -4,6 +4,7 @@ import "../css/sellProductPage.css";
 import Header from "../components/header";
 import Advertise from "../components/advertise";
 import Footer from "../components/footer";
+import { useNavigate } from "react-router-dom"; // useNavigate 임포트
 
 const allDongs = {
   강남구: [
@@ -142,6 +143,11 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [preview, setPreview] = useState(null);
+  const navigate = useNavigate();
+  const onBack = () => {
+    navigate("/");
+        window.location.reload(); // 🚀 강제 새로고침 (필요할 경우)
+  };
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
@@ -311,7 +317,7 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
             )}
           </div>
 
-          <button type="submit">등록</button>
+          <button type="submit" onClick={onBack}>등록</button>
         </form>
       </div>
       <Footer />

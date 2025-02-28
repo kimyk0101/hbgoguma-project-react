@@ -111,7 +111,6 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
         },
       ]);
     }
-
     const fetchChatData = async () => {
       try {
         const response = await fetch(
@@ -168,7 +167,6 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
   // 구매 희망 버튼 클릭 시
   const handleInterest = () => {
     console.log(interestedBuyers);
-
     // 거래가 완료되었거나 구매자가 확정된 경우, 유저가 이미 구매희망 버튼을 눌렀던 경우, 버튼 클릭을 막음
     if (
       isBuyerConfirmed ||
@@ -184,6 +182,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       const newBuyer = {
         id: user.uid,
         name: user.nickname,
+        thumbnail: user.thumbnail,
       };
       const updatedBuyers = [...interestedBuyers, newBuyer];
       setInterestedBuyers(updatedBuyers);
@@ -202,6 +201,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       updateInterestBuyers(updatedPost);
     }
   };
+
 
   // 구매 확정 버튼 클릭 시
   const handleConfirmBuyer = (buyerId) => {
@@ -337,16 +337,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
     <div>
       {/* 상품 설명 끝난 후, 구매 희망자 리스트를 하단에 위치 */}
       <div className="nego-product-footer">
-        {/* 구매자일 경우 "구매 희망" 버튼 표시 */}
-        {/* {user_id !== "" && user_id !== sellerUid && (
-          <button
-            className="nego-interest-button"
-            onClick={handleInterestToggle}
-            disabled={isBuyerConfirmed || isPurchased}
-          >
-            구매 희망
-          </button>
-        )} */}
+        {/* 구매자일 경우 '구매 희망' 버튼 표시 (판매자는 안 보임) */}
         {user_id !== newPost?.sellerUid && (
           <button
             className="nego-interest-button"
@@ -356,7 +347,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
             구매 희망
           </button>
         )}
-        {user_id !== newPost?.sellerUid && (
+        {/* {user_id !== newPost?.sellerUid && (
           <div className="nego-interested-buyers">
             <h3>구매 희망자</h3>
             <ul>
@@ -377,10 +368,39 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
                               ? "nego-disabled-button"
                               : ""
                           }
-                        >
-                          거래 확정
-                          <IoCheckboxOutline className="nego-chat-icon" />
-                        </button>
+                        > */}
+        {/* 구매 희망자 리스트 (판매자는 전체 리스트, 구매자는 본인만 확인 가능) */}
+        <div className="nego-interested-buyers">
+          <h3>구매 희망자</h3>
+          <ul>
+          {console.log("interestedBuyers:", interestedBuyers)} {/* interestedBuyers 값 로그 확인 */}
+            {interestedBuyers.length > 0 ? (
+              interestedBuyers
+                .filter((buyer) =>
+                  user_id === newPost?.sellerUid ? true : buyer.id === user_id
+                ) // 판매자는 전체 리스트, 구매자는 본인 정보만 표시
+                .map((buyer) => (
+                  <li key={buyer.id} className="nego-buyer-item">
+                    <div className="nego-button-container">
+                      <span>{buyer.name}</span>
+
+                      {selectedBuyer === buyer.id ? ( // 선택된 구매자만 "거래 확정됨" 표시
+                        <span className="nego-confirmed-text">거래 확정됨</span>
+                      ) : (
+                        user_id === newPost?.sellerUid && ( // 판매자일 때만 버튼 표시
+                          <button
+                            onClick={() => handleConfirmBuyer(buyer.id)}
+                            disabled={isBuyerConfirmed || isPurchased} // 거래 완료되면 비활성화
+                            className={
+                              isBuyerConfirmed || isPurchased
+                                ? "nego-disabled-button"
+                                : ""
+                            }
+                          >
+                            거래 확정
+                            <IoCheckboxOutline className="nego-chat-icon" />
+                          </button>
+                        ) 
                       )}
                       <button onClick={() => handleStartChat(buyer.id)}>
                         <span className="nego-chat-text">
@@ -409,8 +429,8 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
                               <img
                                 src={
                                   msg.writer_uid === user.uid
-                                    ? "https://www.w3schools.com/w3images/avatar2.png"
-                                    : "https://www.w3schools.com/howto/img_avatar.png"
+                                    ? user.thumbnail
+                                    : newPost.thumbnail
                                 }
                                 alt={
                                   msg.writer_uid === user.uid
@@ -455,12 +475,12 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
                     )}
                   </li>
                 ))
-              ) : (
-                <p>구매 희망자가 없습니다.</p>
-              )}
-            </ul>
-          </div>
-        )}
+            ) : (
+              <p>구매 희망자가 없습니다.</p>
+            )}
+          </ul>
+        </div>
+        {/* )} */}
       </div>
 
       {/* 거래 완료 팝업 */}
