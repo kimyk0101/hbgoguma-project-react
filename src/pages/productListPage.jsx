@@ -282,6 +282,11 @@ const ProductListPage = () => {
       .catch((error) => console.error("데이터 불러오기 실패:", error));
   }, []);
 
+  //인기 검색어 클릭 시 검색창에 입력 후 자동 검색
+  const handlePopularKeywordClick = (keyword) => {
+    setSearchTerm(keyword);
+  };
+
   // 페이지네이션 계산
   const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -289,11 +294,6 @@ const ProductListPage = () => {
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
-
-  //인기 검색어 클릭 시 검색창에 입력 후 자동 검색
-  const handlePopularKeywordClick = (keyword) => {
-    setSearchTerm(keyword);
-  };
 
   //  상세 페이지로 이동
   const navigate = useNavigate();
