@@ -210,7 +210,7 @@ const SellProductPage = ({ onSubmitSuccess = () => {} }) => {
       post_content: description,
       post_update: new Date().toISOString(),
       post_photo: imageUrl || "default-image-url",
-      user_list: [],
+      user_list: {},
     };
     console.log(postData);
     try {
