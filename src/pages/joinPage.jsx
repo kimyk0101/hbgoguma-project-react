@@ -323,7 +323,7 @@ const onBack = () => {
           }
         >
           <option value="1">강남구</option>
-          <option value="2">송파구</option>
+          <option value="2">서초구</option>
         </select>
         <label>동 위치:</label>
         <select
