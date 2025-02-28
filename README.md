@@ -1,8 +1,44 @@
-# React + Vite
+# 기획 목표
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 기획 의도:
 
-Currently, two official plugins are available:
+- 지역 주민들이 안전하고 편리하게 중고 물품을 거래할 수 있는 플랫폼을 구축하여
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  신뢰 기반의 커뮤니티 형성에 기여합니다.
+
+- 직거래를 활성화하여 택배 거래의 번거로움을 줄이고, 지역 경제 활성화에 이바지합니다.
+- 지역 인증 시스템을 도입하여 사기 거래를 예방하고, 안전한 거래 환경을 조성합니다.
+- 지역 커뮤니티 기능을 강화하여 중고 거래 외에도 다양한 지역 정보를 공유하고
+  소통할 수 있는 공간을 제공합니다.
+
+### 핵심 기능:
+
+```bash
+지역 인증 시스템
+직거래 매칭 시스템
+지역 커뮤니티 기능 (게시판, 채팅 등)
+판매자 매너온도 확인
+포인트로 인한 안전 결제 시스템
+신고,알림 기능
+관리자의 유연한 대처 가능
+```
+
+## 배포 환경
+
+**SpingBoot, Reaact, Docker 를 활용한 웹사이트 개발 및 서버 배포**
+
+- **고성능 백엔드와 반응형 프론트엔드를 결합한 최적의 웹 서비스 구축**
+
+  SpringBoot의 강력한 성능과 React의 유연함을 통해 사용자 경험을 극대화하는 웹 서비스를 개발합니다.
+
+- **컨테이너 기반의 안정적인 배포 환경 구축**
+
+  Docker를 활용하여 개발 환경과 운영 환경의 일관성을 유지하고, 빠르고 안정적인 배포를 실현합니다.
+
+- **클라우드 네이티브 환경에 최적화된 웹 서비스 개발 및 배포**
+  SpringBoot, React, Docker를 활용하여 MSA(Microservice Architecture) 기반의 확장 가능하고 유연한 웹 서비스를 구축하고, 클라우드 환경에 최적화된 배포 전략을 수립합니다.
+- **DevOps 환경 구축을 통한 개발 생산성 향상**
+  Docker를 활용한 CI/CD(Continuous Integration/Continuous Delivery) 파이프라인 구축을 통해 개발, 테스트, 배포 과정을 자동화하고, 개발 생산성을 극대화합니다.
+- **최신 기술 트렌드를 반영한 웹 서비스 개발 및 배포**
+
+  SpringBoot, React, Docker를 활용하여 최신 웹 개발 트렌드를 반영하고, 사용자에게 혁신적인 경험을 제공하는 웹 서비스를 구축합니다.
