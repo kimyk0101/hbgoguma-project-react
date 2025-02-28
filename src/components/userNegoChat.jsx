@@ -141,7 +141,7 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
     try {
       console.log("Sending request to update interest buyers:", updatedPost);
       const response = await fetch(
-        `http://localhost:18090/api/gogumapost/${updatedPost.id}`,
+        `http://localhost:18090/api/gogumapost/${updatedPost.id}/userList`,
         {
           method: "PATCH",
           headers: {
