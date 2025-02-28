@@ -158,7 +158,7 @@
   
 }
 
-.nego-chat-message.buyer .nego-message-text {
+.nego-chat-message.seller .nego-message-text {
   margin-left: 45px;  
   margin-top: -8px;
   background-color: #d1e7ff;
@@ -167,20 +167,20 @@
   border-radius: 10px;
 }
 
-.nego-chat-message.buyer .nego-message-time {
+.nego-chat-message.seller .nego-message-time {
   font-size: 10px;
   color: gray;
   white-space: nowrap;
   margin-left: 260px;
 }
 
-.nego-chat-message.seller {
+.nego-chat-message.buyer {
   position: relative; /* 부모 요소에 상대 위치 설정 */
   display: flex;
   align-items: flex-end;
 }
 
-.nego-chat-message.seller .nego-message-text {
+.nego-chat-message.buyer .nego-message-text {
   background-color: #ffdbdb;
   color: black;
   font-size: 18px;
@@ -189,7 +189,7 @@
   margin-right: 45px;
 }
 
-.nego-chat-message.seller .nego-message-time {
+.nego-chat-message.buyer .nego-message-time {
   position: absolute; /* 절대 위치로 설정 */
   bottom: 0; 
   left: 0; 

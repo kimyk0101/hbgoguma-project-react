@@ -182,7 +182,6 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
       const newBuyer = {
         id: user.uid,
         name: user.nickname,
-        thumbnail: user.thumbnail,
       };
       const updatedBuyers = [...interestedBuyers, newBuyer];
       setInterestedBuyers(updatedBuyers);
@@ -423,17 +422,17 @@ const UserNegoChat = ({ sellerUid, user_id, post }) => {
                             <div
                               key={msg.order_id} // order_id로 메시지 고유식별
                               className={`nego-chat-message ${
-                                msg.writer_uid === user.uid ? "seller" : "buyer"
+                                msg.writer_uid === newPost.seller_uid ? "seller" : "buyer"
                               }`}
                             >
                               <img
                                 src={
-                                  msg.writer_uid === user.uid
-                                    ? user.thumbnail
-                                    : newPost.thumbnail
+                                  msg.writer_uid === newPost.seller_uid
+                                    ? newPost.thumbnail || null
+                                    : user.thumbnail || null
                                 }
                                 alt={
-                                  msg.writer_uid === user.uid
+                                  msg.writer_uid === newPost.seller_uid
                                     ? "판매자"
                                     : "구매자"
                                 }
